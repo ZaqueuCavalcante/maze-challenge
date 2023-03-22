@@ -5,10 +5,10 @@ import java.util.List;
 
 public class Node {
 
-    public int row;
-    public int column;
+    int row;
+    int column;
 
-    public Node parent;
+    Node parent;
 
     // Up, Right, Down, Left
     public ArrayList<Node> children;
