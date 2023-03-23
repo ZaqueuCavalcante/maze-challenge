@@ -1,0 +1,21 @@
+5360 != solutions with 23 steps
+
+R R D L L D D R D U U R R R D U D R D D R R D
+R R D L L D D R D U U R R R D U D R D D R D R
+R R D L L D D R D U U R R R D U D R D D D R R
+R R D L L D D R D U U R R R D U D D R D R R D
+R R D L L D D R D U U R R R D U D D R D R D R 
+R R D L L D D R D U U R R R D U D D R D D R R 
+R R D L L D D R D U U R R R D U D D D R R R D 
+R R D L L D D R D U U R R R D U D D D R R D R 
+R R D L L D D R D U U R R R D U D D D R D R R 
+R R D L L D D R D U U R R R D U D D D D R R R 
+R R D L L D D R D U U R R R D R L R D D R R D 
+R R D L L D D R D U U R R R D R L R D D R D R 
+R R D L L D D R D U U R R R D R L R D D D R R 
+R R D L L D D R D U U R R R D R L D R D R R D 
+R R D L L D D R D U U R R R D R L D R D R D R 
+R R D L L D D R D U U R R R D R L D R D D R R
+.
+.
+.
