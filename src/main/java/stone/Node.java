@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Node {
-
     int row;
     int column;
 
