@@ -20,8 +20,13 @@ public class Player {
         this.row = row;
         this.column = column;
         isDead = false;
-        wonTheGame = false;
+        wonTheGame = true;
         path = new ArrayList<String>();
+
+        String x = "RRDDDRDDRDRDRURUDRRRRRRDDRRRRUDRDRDRDDDRDRDRDDRRDLLDRDLUDRDURRDDRDDUDRRRRRRDRDRRURDDRDRURDDLRDDRRDUUDRURLDLDRLDDRULRURLRDDRDDLRRDRDRRRRRUDDRDUUURDDLRRURDDRDDDRLRRRRRRRLRRRRRRURLRRRULLURUDDLRDLURDRURDRDRDDLRDLDRRRDRDDUDLDRUDRUDDDDLDUDRDUDDUUDRDLRRRUDLUURRDRDDDDLLLRDDDDUDRR";
+        for (char c : x.toCharArray()) {
+            path.add(String.valueOf(c).toString());
+        }
     }
 
     public void updateMoveOptions(int[][] nextMaze) {
@@ -105,24 +110,24 @@ public class Player {
         float x2 = 0;
         float y2 = 0;
 
-        game.fill(255, 0, 0);
-        game.stroke(255, 0, 0);
+        game.fill(148, 0, 211);
+        game.stroke(148, 0, 211);
         game.strokeWeight(2);
 
         for (String direction : path) {
-            if (direction == "U") {
+            if (direction.equals("U")) {
                 x2 = x1;
                 y2 = y1 - game.CIZE;
             }
-            if (direction == "R") {
+            if (direction.equals("R")) {
                 x2 = x1 + game.CIZE;
                 y2 = y1;
             }
-            if (direction == "D") {
+            if (direction.equals("D")) {
                 x2 = x1;
                 y2 = y1 + game.CIZE;
             }
-            if (direction == "L") {
+            if (direction.equals("L")) {
                 x2 = x1 - game.CIZE;
                 y2 = y1;
             }

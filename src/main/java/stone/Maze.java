@@ -79,6 +79,9 @@ public class Maze {
 
                 // TODO: Improve this
                 switch (option) {
+                    case _00:
+                        useMaze00Rules(neighbors, row, column);
+                        break;
                     case _01:
                         useMaze01Rules(neighbors, row, column);
                         break;
@@ -86,6 +89,18 @@ public class Maze {
                         useMaze02Rules(neighbors, row, column);
                         break;
                 }
+            }
+        }
+    }
+
+    private void useMaze00Rules(int neighbors, int row, int column) {
+        if (isEmpty(row, column)) {
+            if (neighbors == 2 || neighbors == 3) {
+                next[row][column] = CellType.OBSTACLE;
+            }
+        } else if (isObstacle(row, column)) {
+            if (neighbors == 4 || neighbors == 5) {
+                next[row][column] = CellType.OBSTACLE;
             }
         }
     }
