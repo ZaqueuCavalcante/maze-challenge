@@ -1,5 +1,7 @@
 package stone;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 
 import processing.core.PApplet;
@@ -10,22 +12,25 @@ public class Game extends PApplet {
     Maze maze;
     Tree tree;
 
-    int CIZE = 14;
+    int CIZE = 15;
 
     int step;
 
     Player player;
 
     public void settings() {
-        size(1600, 950);
+        // size(260, 200);
+        size(1600, 1100);
     }
 
     public void setup() {
-        mode = GameMode.FUN;
+        mode = GameMode.DEBUG;
 
         maze = new Maze(MazeOption._02);
+        maze.showNeighbors = false;
+
         tree = new Tree(maze.startCell, maze.endCell);
-        tree.root.addChildren(0, 1, 1, 0);
+        tree.root.addChildren(0, 0, 1, 0);
 
         step = 0;
 
@@ -43,6 +48,13 @@ public class Game extends PApplet {
 
     public void draw() {
         background(100);
+
+        fill(255);
+        stroke(255);
+        textSize(20);
+        textAlign(LEFT);
+        text("STEP: " + step, 25, 50);
+
         fill(255);
         stroke(0);
 
@@ -52,81 +64,25 @@ public class Game extends PApplet {
             player.draw(this);
         }
 
-        translate((float) maze.columns * CIZE + CIZE / 2, 0);
-        fill(255);
-        stroke(255);
-        line(0, 0, 0, maze.rows * CIZE);
+        tree.drawPathsOnMaze(this);
 
-        translate(CIZE / 2, 0);
-        textSize(20);
-        textAlign(LEFT);
-        text("STEP: " + step, 0, 25);
-
-        if (mode == GameMode.FUN) {
-            float y = 50;
-            text("PATH: ", 0, y);
-            int directionCount = 0;
-            for (String direction : player.path) {
-                float x = (float) 1.40 * CIZE + directionCount * CIZE / 2;
-                text(direction + " ", x, y);
-                directionCount++;
-            }
-        }
+        // tree.draw(this);
     }
+
+    boolean x = true;
 
     public void keyPressed() {
         if (keyCode == 10) { // Enter
-            step++;
-            maze.shift();
+            goToNextStep();
 
-            ArrayList<Node> newNodes = new ArrayList<Node>();
-            System.out.println("LevelNodesSize = " + tree.levelNodes.size());
+            // Instant starts = Instant.now();
 
-            if (tree.levelNodes.size() == 0) {
-                System.out.println("FUDEU");
-            }
+            // while (x) {
+            // goToNextStep();
+            // }
 
-            int minDistanceToTarget = tree.levelNodes.stream()
-                    .mapToInt(v -> v.distanceToEnd)
-                    .min().getAsInt() + 5;
-
-            for (Node levelNode : tree.levelNodes) {
-                for (int i = 0; i < 4; i++) {
-                    Node node = levelNode.children.get(i);
-
-                    if (node == null) {
-                        continue;
-                    }
-
-                    if (node.distanceToEnd > minDistanceToTarget) {
-                        continue;
-                    }
-
-                    if (tree.levelNodes.size() > 20_000 && Math.random() < 0.5) {
-                        continue;
-                    }
-
-                    int nodeRow = node.row;
-                    int nodeColumn = node.column;
-
-                    if (nodeRow == maze.endCell.row && nodeColumn == maze.endCell.column) {
-                        String path = node.getPath();
-                        System.out.println(path);
-                    }
-
-                    int up = ((nodeRow - 1) >= 0 && maze.next[nodeRow - 1][nodeColumn] != 1) ? 1 : 0;
-                    int right = ((nodeColumn + 1) < maze.columns && maze.next[nodeRow][nodeColumn + 1] != 1) ? 1 : 0;
-                    int down = ((nodeRow + 1) < maze.rows && maze.next[nodeRow + 1][nodeColumn] != 1) ? 1 : 0;
-                    int left = ((nodeColumn - 1) >= 0 && maze.next[nodeRow][nodeColumn - 1] != 1) ? 1 : 0;
-
-                    node.addChildren(up, right, down, left);
-
-                    newNodes.add(node);
-                }
-            }
-
-            tree.levelNodes = newNodes;
-            tree.level++;
+            // Instant ends = Instant.now();
+            // System.out.println(Duration.between(starts, ends).toMillis());
         }
 
         if (mode == GameMode.FUN) {
@@ -162,6 +118,65 @@ public class Game extends PApplet {
                 }
             }
         }
+    }
+
+    public void goToNextStep() {
+        step++;
+        maze.shift();
+
+        ArrayList<Node> newNodes = new ArrayList<Node>();
+        System.out.println("LevelNodesSize = " + tree.levelNodes.size());
+
+        if (tree.levelNodes.size() == 0) {
+            System.out.println("FUDEU");
+        }
+
+        int minDistanceToTarget = tree.levelNodes.stream()
+                .mapToInt(v -> v.distanceToEnd)
+                .min().getAsInt() + 5;
+
+        for (Node levelNode : tree.levelNodes) {
+            for (int i = 0; i < 4; i++) {
+                Node node = levelNode.children.get(i);
+
+                if (node == null) {
+                    continue;
+                }
+
+                if (node.distanceToEnd > minDistanceToTarget) {
+                    continue;
+                }
+
+                if (tree.levelNodes.size() > 100 && Math.random() < 0.5) {
+                    continue;
+                }
+
+                int nodeRow = node.row;
+                int nodeColumn = node.column;
+
+                if (nodeRow == maze.endCell.row && nodeColumn == maze.endCell.column) {
+                    x = false;
+
+                    // Save output on file
+
+                    return;
+                    // String path = node.getPath();
+                    // System.out.println(path);
+                }
+
+                int up = ((nodeRow - 1) >= 0 && maze.next[nodeRow - 1][nodeColumn] != 1) ? 1 : 0;
+                int right = ((nodeColumn + 1) < maze.columns && maze.next[nodeRow][nodeColumn + 1] != 1) ? 1 : 0;
+                int down = ((nodeRow + 1) < maze.rows && maze.next[nodeRow + 1][nodeColumn] != 1) ? 1 : 0;
+                int left = ((nodeColumn - 1) >= 0 && maze.next[nodeRow][nodeColumn - 1] != 1) ? 1 : 0;
+
+                node.addChildren(up, right, down, left);
+
+                newNodes.add(node);
+            }
+        }
+
+        tree.levelNodes = newNodes;
+        tree.level++;
     }
 
     public void updateMazeAndPlayer() {

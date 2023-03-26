@@ -94,9 +94,9 @@ public class Node {
         String result = "";
 
         for (int i = path.size() - 1; i >= 0; i--) {
-            result = result + path.get(i) + " ";
+            result = result + path.get(i);
         }
 
-        return result.trim();
+        return result;
     }
 }

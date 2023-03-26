@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 import processing.core.PApplet;
+import processing.core.PConstants;
 
 public class Maze {
     MazeOption option;
@@ -20,9 +21,12 @@ public class Maze {
     int[][] next;
 
     int[][] currentNeighbors;
+    boolean showNeighbors;
 
     public Maze(MazeOption option) {
         this.option = option;
+
+        showNeighbors = false;
 
         File file = new File("src/main/java/stone/mazes/maze" + option + ".txt");
         InputStream input;
@@ -208,18 +212,33 @@ public class Maze {
 
         for (int row = 0; row < game.maze.rows; row++) {
             for (int column = 0; column < game.maze.columns; column++) {
-                if (game.maze.isEmpty(row, column)) {
-                    game.fill(200);
-                }
-                if (game.maze.isObstacle(row, column)) {
-                    game.fill(0, 128, 0);
-                }
-                if (game.maze.isStart(row, column) || game.maze.isEnd(row, column)) {
-                    game.fill(255, 255, 0);
-                }
-
-                game.rect(column * game.CIZE, row * game.CIZE, game.CIZE, game.CIZE, game.CIZE / 4);
+                drawCells(game, row, column);
+                drawNeighbors(game, row, column);
             }
+        }
+    }
+
+    private void drawCells(Game game, int row, int column) {
+        if (game.maze.isEmpty(row, column)) {
+            game.fill(200);
+        }
+        if (game.maze.isObstacle(row, column)) {
+            game.fill(0, 128, 0);
+        }
+        if (game.maze.isStart(row, column) || game.maze.isEnd(row, column)) {
+            game.fill(255, 255, 0);
+        }
+
+        game.rect(column * game.CIZE, row * game.CIZE, game.CIZE, game.CIZE, game.CIZE / 4);
+    }
+
+    private void drawNeighbors(Game game, int row, int column) {
+        if (showNeighbors) {
+            int neighbors = currentNeighbors[row][column];
+            game.textSize((float) (game.CIZE * 0.40));
+            game.textAlign(PConstants.CENTER);
+            game.fill(0);
+            game.text(neighbors, column * game.CIZE + game.CIZE / 2, (float) ((row * game.CIZE) + game.CIZE * 0.65));
         }
     }
 }

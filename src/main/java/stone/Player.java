@@ -20,13 +20,14 @@ public class Player {
         this.row = row;
         this.column = column;
         isDead = false;
-        wonTheGame = true;
+        wonTheGame = false;
         path = new ArrayList<String>();
 
-        String x = "RRDDDRDDRDRDRURUDRRRRRRDDRRRRUDRDRDRDDDRDRDRDDRRDLLDRDLUDRDURRDDRDDUDRRRRRRDRDRRURDDRDRURDDLRDDRRDUUDRURLDLDRLDDRULRURLRDDRDDLRRDRDRRRRRUDDRDUUURDDLRRURDDRDDDRLRRRRRRRLRRRRRRURLRRRULLURUDDLRDLURDRURDRDRDDLRDLDRRRDRDDUDLDRUDRUDDDDLDUDRDUDDUUDRDLRRRUDLUURRDRDDDDLLLRDDDDUDRR";
-        for (char c : x.toCharArray()) {
-            path.add(String.valueOf(c).toString());
-        }
+        // String x =
+        // "RRDDDRDDRDRDRURUDRRRRRRDDRRRRUDRDRDRDDDRDRDRDDRRDLLDRDLUDRDURRDDRDDUDRRRRRRDRDRRURDDRDRURDDLRDDRRDUUDRURLDLDRLDDRULRURLRDDRDDLRRDRDRRRRRUDDRDUUURDDLRRURDDRDDDRLRRRRRRRLRRRRRRURLRRRULLURUDDLRDLURDRURDRDRDDLRDLDRRRDRDDUDLDRUDRUDDDDLDUDRDUDDUUDRDLRRRUDLUURRDRDDDDLLLRDDDDUDRR";
+        // for (char c : x.toCharArray()) {
+        // path.add(String.valueOf(c).toString());
+        // }
     }
 
     public void updateMoveOptions(int[][] nextMaze) {
@@ -74,13 +75,13 @@ public class Player {
     }
 
     public void draw(Game game) {
-        drawSelf(game);
-
-        drawMoveOptions(game);
-
         if (isDead || wonTheGame) {
             drawPath(game);
         }
+
+        drawSelf(game);
+
+        drawMoveOptions(game);
     }
 
     private void drawSelf(Game game) {
