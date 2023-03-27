@@ -15,10 +15,11 @@ public class Game extends PApplet {
     Maze maze;
     Tree tree;
     Player player;
+    int bestPathLength = 1_000_000;
     ArrayList<String> output;
 
     public void settings() {
-        maze = new Maze(MazeOption._02);
+        maze = new Maze(MazeOption._03);
 
         switch (maze.option) {
             case _00:
@@ -106,13 +107,22 @@ public class Game extends PApplet {
 
                 Collections.sort(output, (a, b) -> Integer.compare(a.length(), b.length()));
 
-                saveStrings("src/main/java/stone/solutions/release/solutions_maze" + maze.option +
-                        ".txt",
-                        output.toArray(new String[0]));
+                if (output.get(0).length() < bestPathLength) {
+                    bestPathLength = output.get(0).length();
 
-                Instant ends = Instant.now();
-                System.out.println("Found " + output.size() + " paths in " + Duration.between(starts, ends).toMillis()
-                        + " milliseconds");
+                    saveStrings("src/main/java/stone/solutions/release/solutions_maze" + maze.option +
+                            ".txt",
+                            output.toArray(new String[0]));
+
+                    Instant ends = Instant.now();
+                    System.out
+                            .println("Found " + output.size() + " paths in " + Duration.between(starts, ends).toMillis()
+                                    + " milliseconds" + " and bestPathLength = " + bestPathLength);
+                }
+
+                settings();
+                setup();
+                return;
             }
         }
 
@@ -155,7 +165,6 @@ public class Game extends PApplet {
         maze.shift();
 
         ArrayList<Node> newNodes = new ArrayList<Node>();
-        System.out.println("LevelNodesSize = " + tree.levelNodes.size());
 
         if (tree.levelNodes.size() == 0) {
             settings();
@@ -179,7 +188,7 @@ public class Game extends PApplet {
                     continue;
                 }
 
-                if (tree.levelNodes.size() > 1000 && Math.random() < 0.5) {
+                if (tree.levelNodes.size() > 100 && Math.random() < 0.5) {
                     continue;
                 }
 
