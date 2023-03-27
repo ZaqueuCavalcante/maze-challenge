@@ -22,12 +22,6 @@ public class Player {
         isDead = false;
         wonTheGame = false;
         path = new ArrayList<String>();
-
-        // String x =
-        // "RRDDDRDDRDRDRURUDRRRRRRDDRRRRUDRDRDRDDDRDRDRDDRRDLLDRDLUDRDURRDDRDDUDRRRRRRDRDRRURDDRDRURDDLRDDRRDUUDRURLDLDRLDDRULRURLRDDRDDLRRDRDRRRRRUDDRDUUURDDLRRURDDRDDDRLRRRRRRRLRRRRRRURLRRRULLURUDDLRDLURDRURDRDRDDLRDLDRRRDRDDUDLDRUDRUDDDDLDUDRDUDDUUDRDLRRRUDLUURRDRDDDDLLLRDDDDUDRR";
-        // for (char c : x.toCharArray()) {
-        // path.add(String.valueOf(c).toString());
-        // }
     }
 
     public void updateMoveOptions(int[][] nextMaze) {

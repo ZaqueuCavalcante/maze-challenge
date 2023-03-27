@@ -11,15 +11,15 @@ import org.junit.Test;
 
 import processing.core.PApplet;
 
-public class Maze01SolutionsTests {
+public class Maze00SolutionsTests {
     @Test
-    public void should_test_one_correct_solution_for_maze_01() {
+    public void should_test_one_correct_solution_for_maze_00() {
         // Arrange
-        Maze maze = new Maze(MazeOption._01);
+        Maze maze = new Maze(MazeOption._00);
 
         int row = maze.startCell.row;
         int column = maze.startCell.column;
-        String solution = "RRDLLDDRDUURRRDUDRDDRRD";
+        String solution = "DUDDRUDRR";
 
         // Act
         for (char c : solution.toCharArray()) {
@@ -49,13 +49,13 @@ public class Maze01SolutionsTests {
     }
 
     @Test
-    public void should_test_one_wrong_solution_for_maze_01() {
+    public void should_test_one_wrong_solution_for_maze_00() {
         // Arrange
         Maze maze = new Maze(MazeOption._01);
 
         int row = maze.startCell.row;
         int column = maze.startCell.column;
-        String solution = "RRDLLDDRDUURRRDUDRDDRRL";
+        String solution = "DUDDRUDRL";
 
         // Act
         for (char c : solution.toCharArray()) {
@@ -83,9 +83,9 @@ public class Maze01SolutionsTests {
     }
 
     @Test
-    public void should_test_many_correct_solutions_for_maze_01() {
+    public void should_test_many_correct_solutions_for_maze_00() {
 
-        File file = new File("src/test/java/stone/solutions/solutions_maze_01.txt");
+        File file = new File("src/test/java/stone/solutions/solutions_maze_00.txt");
         InputStream input;
         String[] solutions = new String[0];
 
@@ -98,7 +98,7 @@ public class Maze01SolutionsTests {
 
         for (String solution : solutions) {
             // Arrange
-            Maze maze = new Maze(MazeOption._01);
+            Maze maze = new Maze(MazeOption._00);
 
             int row = maze.startCell.row;
             int column = maze.startCell.column;

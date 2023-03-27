@@ -1,34 +1,42 @@
 package stone;
 
-import java.time.Duration;
-import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import processing.core.PApplet;
 
 public class Game extends PApplet {
-    GameMode mode;
+    GameMode mode = GameMode.FUN;
 
-    Maze maze;
+    Maze maze = new Maze(MazeOption._02);
     Tree tree;
 
-    int CIZE = 15;
+    int CIZE;
 
     int step;
 
     Player player;
 
+    ArrayList<String> output = new ArrayList<String>();
+
     public void settings() {
-        // size(260, 200);
-        size(1600, 1100);
+        switch (maze.option) {
+            case _00:
+                size(600, 500);
+                CIZE = 100;
+                break;
+            case _01:
+                size(500, 450);
+                CIZE = 50;
+                break;
+            case _02:
+                size(1220, 940);
+                CIZE = 14;
+                break;
+        }
     }
 
     public void setup() {
-        mode = GameMode.DEBUG;
-
-        maze = new Maze(MazeOption._02);
-        maze.showNeighbors = false;
-
         tree = new Tree(maze.startCell, maze.endCell);
         tree.root.addChildren(0, 0, 1, 0);
 
@@ -51,9 +59,9 @@ public class Game extends PApplet {
 
         fill(255);
         stroke(255);
-        textSize(20);
+        textSize(CIZE / 2);
         textAlign(LEFT);
-        text("STEP: " + step, 25, 50);
+        text("GEN: " + step, CIZE, (float) (CIZE * 0.70));
 
         fill(255);
         stroke(0);
@@ -64,16 +72,19 @@ public class Game extends PApplet {
             player.draw(this);
         }
 
-        tree.drawPathsOnMaze(this);
-
-        // tree.draw(this);
+        // tree.drawPathsOnMaze(this);
     }
-
-    boolean x = true;
 
     public void keyPressed() {
         if (keyCode == 10) { // Enter
             goToNextStep();
+
+            if (output.size() > 0) {
+                Collections.sort(output, (a, b) -> Integer.compare(a.length(), b.length()));
+
+                saveStrings("src/main/java/stone/solutions/solutions_maze" + maze.option + ".txt",
+                        output.toArray(new String[0]));
+            }
 
             // Instant starts = Instant.now();
 
@@ -147,7 +158,7 @@ public class Game extends PApplet {
                     continue;
                 }
 
-                if (tree.levelNodes.size() > 100 && Math.random() < 0.5) {
+                if (tree.levelNodes.size() > 500 && Math.random() < 0.5) {
                     continue;
                 }
 
@@ -155,13 +166,7 @@ public class Game extends PApplet {
                 int nodeColumn = node.column;
 
                 if (nodeRow == maze.endCell.row && nodeColumn == maze.endCell.column) {
-                    x = false;
-
-                    // Save output on file
-
-                    return;
-                    // String path = node.getPath();
-                    // System.out.println(path);
+                    output.add(node.getPath());
                 }
 
                 int up = ((nodeRow - 1) >= 0 && maze.next[nodeRow - 1][nodeColumn] != 1) ? 1 : 0;
