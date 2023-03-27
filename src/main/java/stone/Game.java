@@ -1,14 +1,16 @@
 package stone;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 
 import processing.core.PApplet;
 
 public class Game extends PApplet {
-    GameMode mode = GameMode.FUN;
+    GameMode mode = GameMode.DEBUG;
 
-    Maze maze = new Maze(MazeOption._02);
+    Maze maze = new Maze(MazeOption._03);
     Tree tree;
 
     int CIZE;
@@ -32,6 +34,10 @@ public class Game extends PApplet {
             case _02:
                 size(1220, 940);
                 CIZE = 14;
+                break;
+            case _03:
+                size(1760, 830);
+                CIZE = 13;
                 break;
         }
     }
@@ -75,6 +81,8 @@ public class Game extends PApplet {
         // tree.drawPathsOnMaze(this);
     }
 
+    boolean end = false;
+
     public void keyPressed() {
         if (keyCode == 10) { // Enter
             goToNextStep();
@@ -86,14 +94,22 @@ public class Game extends PApplet {
                         output.toArray(new String[0]));
             }
 
-            // Instant starts = Instant.now();
+            Instant starts = Instant.now();
 
-            // while (x) {
-            // goToNextStep();
-            // }
+            while (!end) {
+                goToNextStep();
+            }
 
-            // Instant ends = Instant.now();
-            // System.out.println(Duration.between(starts, ends).toMillis());
+            if (output.size() > 0) {
+                Collections.sort(output, (a, b) -> Integer.compare(a.length(), b.length()));
+
+                saveStrings("src/main/java/stone/solutions/solutions_maze" + maze.option +
+                        ".txt",
+                        output.toArray(new String[0]));
+            }
+
+            Instant ends = Instant.now();
+            System.out.println(Duration.between(starts, ends).toMillis());
         }
 
         if (mode == GameMode.FUN) {
@@ -158,7 +174,7 @@ public class Game extends PApplet {
                     continue;
                 }
 
-                if (tree.levelNodes.size() > 500 && Math.random() < 0.5) {
+                if (tree.levelNodes.size() > 100 && Math.random() < 0.5) {
                     continue;
                 }
 
@@ -166,6 +182,7 @@ public class Game extends PApplet {
                 int nodeColumn = node.column;
 
                 if (nodeRow == maze.endCell.row && nodeColumn == maze.endCell.column) {
+                    end = true;
                     output.add(node.getPath());
                 }
 

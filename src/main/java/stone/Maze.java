@@ -92,6 +92,9 @@ public class Maze {
                     case _02:
                         useMaze02Rules(neighbors, row, column);
                         break;
+                    case _03:
+                        useMaze03Rules(neighbors, row, column);
+                        break;
                 }
             }
         }
@@ -122,6 +125,18 @@ public class Maze {
     }
 
     private void useMaze02Rules(int neighbors, int row, int column) {
+        if (isEmpty(row, column)) {
+            if (neighbors == 2 || neighbors == 3 || neighbors == 4) {
+                next[row][column] = CellType.OBSTACLE;
+            }
+        } else if (isObstacle(row, column)) {
+            if (neighbors == 4 || neighbors == 5) {
+                next[row][column] = CellType.OBSTACLE;
+            }
+        }
+    }
+
+    private void useMaze03Rules(int neighbors, int row, int column) {
         if (isEmpty(row, column)) {
             if (neighbors == 2 || neighbors == 3 || neighbors == 4) {
                 next[row][column] = CellType.OBSTACLE;

@@ -11,15 +11,15 @@ import org.junit.Test;
 
 import processing.core.PApplet;
 
-public class Maze02SolutionsTests {
+public class Maze03SolutionsTests {
     @Test
-    public void should_test_one_correct_solution_for_maze_02() {
+    public void should_test_one_correct_solution_for_maze_03() {
         // Arrange
-        Maze maze = new Maze(MazeOption._02);
+        Maze maze = new Maze(MazeOption._03);
 
         int row = maze.startCell.row;
         int column = maze.startCell.column;
-        String solution = "DDDRRRRRDDRRRRRRURDDRLDRRDRRUDRRDRLDUDDDDDRRDDRRDRDDRDDRDDRUDRRULDDUDRRRRRRDRRDRURRDDDRUDDRLRDDRRDRDDUDDLLRRRUDLUULRURLRDDRDURULDDLDDDDRRRDRUDDRDDLRDLUDLRDRRURRRLRRLDDDRRLURDLDDDLDRRDLRRULDRRRUDDDRLRRDRURDDUDDRDRDDUDRDDRURURRRRRRUDDRLDUUUUULRURRRDRDRLDRRRDDRRRULLRDDDDUDRR";
+        String solution = "RRRRRDRRRRRRRURDLDRLRDLLDDRRLDLRRRRDDRRDRDRRUURRRDRDRDLRRRDLDRDDRDURRUDRDDLRRDRDLLDULDDRDRRRRRURRRRRURDRRDRURRUDRRRRDDLRRRRLRRURUDDURRRLUDRDRRRRRRDUDDRDDRDRRRRRRUUURRURRRDRRRDDURURDDURRULRDRRURLDRRRRRRRRULURRRDRRDDRRDRRRRRRDRRRDRDRDDRRRRRRRDRDRDDLDRDRDUDLDRDDRDDDDLDDLDRRRRDRURDDDDLRRDRRRRDDDDD";
 
         // Act
         for (char c : solution.toCharArray()) {
@@ -49,9 +49,9 @@ public class Maze02SolutionsTests {
     }
 
     @Test
-    public void should_test_one_wrong_solution_for_maze_02() {
+    public void should_test_one_wrong_solution_for_maze_03() {
         // Arrange
-        Maze maze = new Maze(MazeOption._02);
+        Maze maze = new Maze(MazeOption._03);
 
         int row = maze.startCell.row;
         int column = maze.startCell.column;
@@ -83,9 +83,9 @@ public class Maze02SolutionsTests {
     }
 
     @Test
-    public void should_test_many_correct_solutions_for_maze_02() {
+    public void should_test_many_correct_solutions_for_maze_03() {
 
-        File file = new File("src/test/java/stone/solutions/solutions_maze_02.txt");
+        File file = new File("src/test/java/stone/solutions/solutions_maze_03.txt");
         InputStream input;
         String[] solutions = new String[0];
 
@@ -98,7 +98,7 @@ public class Maze02SolutionsTests {
 
         for (String solution : solutions) {
             // Arrange
-            Maze maze = new Maze(MazeOption._02);
+            Maze maze = new Maze(MazeOption._03);
 
             int row = maze.startCell.row;
             int column = maze.startCell.column;

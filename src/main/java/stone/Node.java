@@ -21,8 +21,8 @@ public class Node {
         children = new ArrayList<Node>();
 
         // TODO: Fix this. Static prop?
-        int targetNodeRow = 64;
-        int targetNodeColumn = 84;
+        int targetNodeRow = 60;
+        int targetNodeColumn = 132;
         distanceToEnd = Math.abs(targetNodeRow - row) + Math.abs(targetNodeColumn - column);
     }
 
