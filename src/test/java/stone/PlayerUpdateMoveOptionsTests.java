@@ -12,7 +12,7 @@ public class PlayerUpdateMoveOptionsTests {
         Player player = new Player(maze.startCell.row, maze.startCell.column);
 
         // Act
-        player.updateMoveOptions(maze.current);
+        player.updateMoveOptions(maze);
 
         // Assert
         assertThat(player.canMoveUp).isFalse();

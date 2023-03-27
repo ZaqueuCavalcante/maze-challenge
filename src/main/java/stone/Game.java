@@ -8,20 +8,18 @@ import java.util.Collections;
 import processing.core.PApplet;
 
 public class Game extends PApplet {
-    GameMode mode = GameMode.DEBUG;
-
-    Maze maze = new Maze(MazeOption._03);
-    Tree tree;
-
-    int CIZE;
+    GameMode mode = GameMode.RELEASE;
 
     int step;
-
+    int CIZE;
+    Maze maze;
+    Tree tree;
     Player player;
-
-    ArrayList<String> output = new ArrayList<String>();
+    ArrayList<String> output;
 
     public void settings() {
+        maze = new Maze(MazeOption._02);
+
         switch (maze.option) {
             case _00:
                 size(600, 500);
@@ -43,24 +41,35 @@ public class Game extends PApplet {
     }
 
     public void setup() {
-        tree = new Tree(maze.startCell, maze.endCell);
-        tree.root.addChildren(0, 0, 1, 0);
-
         step = 0;
 
-        switch (mode) {
-            case FUN:
-                player = new Player(maze.startCell.row, maze.startCell.column);
-                player.updateMoveOptions(maze.next);
-                break;
-            case DEBUG:
-                break;
-            case RELEASE:
-                break;
+        if (mode == GameMode.FUN) {
+            player = new Player(maze.startCell.row, maze.startCell.column);
+            player.updateMoveOptions(maze);
         }
+
+        tree = new Tree(maze);
+
+        output = new ArrayList<String>();
     }
 
     public void draw() {
+        if (mode == GameMode.RELEASE) {
+            return;
+        }
+
+        drawGenerationCounter();
+
+        maze.draw(this);
+
+        if (mode == GameMode.FUN) {
+            player.draw(this);
+        }
+
+        tree.drawPathsOnMaze(this);
+    }
+
+    private void drawGenerationCounter() {
         background(100);
 
         fill(255);
@@ -71,54 +80,48 @@ public class Game extends PApplet {
 
         fill(255);
         stroke(0);
-
-        maze.draw(this);
-
-        if (mode == GameMode.FUN) {
-            player.draw(this);
-        }
-
-        // tree.drawPathsOnMaze(this);
     }
-
-    boolean end = false;
 
     public void keyPressed() {
         if (keyCode == 10) { // Enter
-            goToNextStep();
-
-            if (output.size() > 0) {
-                Collections.sort(output, (a, b) -> Integer.compare(a.length(), b.length()));
-
-                saveStrings("src/main/java/stone/solutions/solutions_maze" + maze.option + ".txt",
-                        output.toArray(new String[0]));
-            }
-
-            Instant starts = Instant.now();
-
-            while (!end) {
+            if (mode == GameMode.DEBUG) {
                 goToNextStep();
+
+                if (output.size() > 0) {
+                    Collections.sort(output, (a, b) -> Integer.compare(a.length(), b.length()));
+
+                    saveStrings("src/main/java/stone/solutions/debug/solutions_maze" + maze.option + ".txt",
+                            output.toArray(new String[0]));
+
+                    System.out.println("Found " + output.size() + " paths");
+                }
             }
 
-            if (output.size() > 0) {
+            if (mode == GameMode.RELEASE) {
+                Instant starts = Instant.now();
+
+                while (output.size() == 0) {
+                    goToNextStep();
+                }
+
                 Collections.sort(output, (a, b) -> Integer.compare(a.length(), b.length()));
 
-                saveStrings("src/main/java/stone/solutions/solutions_maze" + maze.option +
+                saveStrings("src/main/java/stone/solutions/release/solutions_maze" + maze.option +
                         ".txt",
                         output.toArray(new String[0]));
-            }
 
-            Instant ends = Instant.now();
-            System.out.println(Duration.between(starts, ends).toMillis());
+                Instant ends = Instant.now();
+                System.out.println("Found " + output.size() + " paths in " + Duration.between(starts, ends).toMillis()
+                        + " milliseconds");
+            }
         }
 
         if (mode == GameMode.FUN) {
-            if (player.isDead) {
+            if (player.isDead || player.wonTheGame) {
                 return;
             }
 
             if (keyCode >= 37 && keyCode <= 40) {
-
                 if (keyCode == 38 && player.row > 0) {
                     player.up();
                     updateMazeAndPlayer();
@@ -136,11 +139,11 @@ public class Game extends PApplet {
                     updateMazeAndPlayer();
                 }
 
-                if (maze.isObstacle(player.row, player.column)) {
+                if (maze.currentIsObstacle(player.row, player.column)) {
                     player.die();
                 }
 
-                if (maze.isEnd(player.row, player.column)) {
+                if (maze.currentIsEnd(player.row, player.column)) {
                     player.win();
                 }
             }
@@ -155,7 +158,9 @@ public class Game extends PApplet {
         System.out.println("LevelNodesSize = " + tree.levelNodes.size());
 
         if (tree.levelNodes.size() == 0) {
-            System.out.println("FUDEU");
+            settings();
+            setup();
+            return;
         }
 
         int minDistanceToTarget = tree.levelNodes.stream()
@@ -174,7 +179,7 @@ public class Game extends PApplet {
                     continue;
                 }
 
-                if (tree.levelNodes.size() > 100 && Math.random() < 0.5) {
+                if (tree.levelNodes.size() > 1000 && Math.random() < 0.5) {
                     continue;
                 }
 
@@ -182,28 +187,22 @@ public class Game extends PApplet {
                 int nodeColumn = node.column;
 
                 if (nodeRow == maze.endCell.row && nodeColumn == maze.endCell.column) {
-                    end = true;
                     output.add(node.getPath());
                 }
 
-                int up = ((nodeRow - 1) >= 0 && maze.next[nodeRow - 1][nodeColumn] != 1) ? 1 : 0;
-                int right = ((nodeColumn + 1) < maze.columns && maze.next[nodeRow][nodeColumn + 1] != 1) ? 1 : 0;
-                int down = ((nodeRow + 1) < maze.rows && maze.next[nodeRow + 1][nodeColumn] != 1) ? 1 : 0;
-                int left = ((nodeColumn - 1) >= 0 && maze.next[nodeRow][nodeColumn - 1] != 1) ? 1 : 0;
-
-                node.addChildren(up, right, down, left);
+                int[] directions = maze.getNextDirections(nodeRow, nodeColumn);
+                node.addChildren(directions[0], directions[1], directions[2], directions[3]);
 
                 newNodes.add(node);
             }
         }
 
-        tree.levelNodes = newNodes;
-        tree.level++;
+        tree.goToNextLevel(newNodes);
     }
 
     public void updateMazeAndPlayer() {
         step++;
         maze.shift();
-        player.updateMoveOptions(maze.next);
+        player.updateMoveOptions(maze);
     }
 }

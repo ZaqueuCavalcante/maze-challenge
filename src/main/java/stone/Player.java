@@ -24,11 +24,12 @@ public class Player {
         path = new ArrayList<String>();
     }
 
-    public void updateMoveOptions(int[][] nextMaze) {
-        canMoveUp = (row - 1) >= 0 && nextMaze[row - 1][column] != CellType.OBSTACLE;
-        canMoveRight = (column + 1) < nextMaze[0].length && nextMaze[row][column + 1] != CellType.OBSTACLE;
-        canMoveDown = (row + 1) < nextMaze.length && nextMaze[row + 1][column] != CellType.OBSTACLE;
-        canMoveLeft = (column - 1) >= 0 && nextMaze[row][column - 1] != CellType.OBSTACLE;
+    public void updateMoveOptions(Maze maze) {
+        int[] directions = maze.getNextDirections(row, column);
+        canMoveUp = directions[0] == 1;
+        canMoveRight = directions[1] == 1;
+        canMoveDown = directions[2] == 1;
+        canMoveLeft = directions[3] == 1;
     }
 
     public void resetMoveOptions() {

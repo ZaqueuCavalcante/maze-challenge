@@ -40,7 +40,7 @@ public class Maze00SolutionsTests {
                 column--;
             }
 
-            assertThat(maze.isObstacle(row, column)).isFalse();
+            assertThat(maze.currentIsObstacle(row, column)).isFalse();
         }
 
         // Assert
@@ -122,7 +122,7 @@ public class Maze00SolutionsTests {
                     column--;
                 }
 
-                assertThat(maze.isObstacle(row, column)).isFalse();
+                assertThat(maze.currentIsObstacle(row, column)).isFalse();
             }
 
             // Assert

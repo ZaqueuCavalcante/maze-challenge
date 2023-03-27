@@ -12,18 +12,23 @@ public class Node {
     // Up, Right, Down, Left
     public ArrayList<Node> children;
 
+    int endRow;
+    int endColumn;
     int distanceToEnd;
 
     public Node(int row, int column, Node parent) {
+        this(row, column, parent, parent.endRow, parent.endColumn);
+    }
+
+    public Node(int row, int column, Node parent, int endRow, int endColumn) {
         this.row = row;
         this.column = column;
         this.parent = parent;
         children = new ArrayList<Node>();
 
-        // TODO: Fix this. Static prop?
-        int targetNodeRow = 60;
-        int targetNodeColumn = 132;
-        distanceToEnd = Math.abs(targetNodeRow - row) + Math.abs(targetNodeColumn - column);
+        this.endRow = endRow;
+        this.endColumn = endColumn;
+        distanceToEnd = Math.abs(endRow - row) + Math.abs(endColumn - column);
     }
 
     public void addChildren(int up, int right, int down, int left) {

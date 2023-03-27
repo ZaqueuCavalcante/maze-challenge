@@ -8,7 +8,7 @@ public class NodeGetPathTests {
     @Test
     public void should_return_empty_path_for_root_node() {
         // Arrange
-        Node rootNode = new Node(2, 3, null);
+        Node rootNode = new Node(2, 3, null, 4, 5);
 
         // Act
         String path = rootNode.getPath();
@@ -20,7 +20,7 @@ public class NodeGetPathTests {
     @Test
     public void should_return_path_for_first_up_move() {
         // Arrange
-        Node rootNode = new Node(1, 1, null);
+        Node rootNode = new Node(1, 1, null, 4, 5);
         rootNode.addChildren(1, 0, 0, 0);
 
         Node endNode = rootNode.getUpNode();
@@ -35,7 +35,7 @@ public class NodeGetPathTests {
     @Test
     public void should_return_path_for_first_right_move() {
         // Arrange
-        Node rootNode = new Node(1, 1, null);
+        Node rootNode = new Node(1, 1, null, 4, 5);
         rootNode.addChildren(0, 1, 0, 0);
 
         Node endNode = rootNode.getRightNode();
@@ -50,7 +50,7 @@ public class NodeGetPathTests {
     @Test
     public void should_return_path_for_first_down_move() {
         // Arrange
-        Node rootNode = new Node(1, 1, null);
+        Node rootNode = new Node(1, 1, null, 4, 5);
         rootNode.addChildren(0, 0, 1, 0);
 
         Node endNode = rootNode.getDownNode();
@@ -65,7 +65,7 @@ public class NodeGetPathTests {
     @Test
     public void should_return_path_for_first_left_move() {
         // Arrange
-        Node rootNode = new Node(1, 1, null);
+        Node rootNode = new Node(1, 1, null, 4, 5);
         rootNode.addChildren(0, 0, 0, 1);
 
         Node endNode = rootNode.getLeftNode();
@@ -80,7 +80,7 @@ public class NodeGetPathTests {
     @Test
     public void should_return_path_for_right_right_down_movements() {
         // Arrange
-        Node rootNode = new Node(0, 0, null);
+        Node rootNode = new Node(0, 0, null, 4, 5);
         rootNode.addChildren(0, 1, 0, 0);
 
         Node firstNode = rootNode.getRightNode();
@@ -101,7 +101,7 @@ public class NodeGetPathTests {
     @Test
     public void should_return_path_for_down_down_right_movements() {
         // Arrange
-        Node rootNode = new Node(0, 0, null);
+        Node rootNode = new Node(0, 0, null, 4, 5);
         rootNode.addChildren(0, 0, 1, 0);
 
         Node firstNode = rootNode.getDownNode();

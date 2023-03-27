@@ -8,17 +8,16 @@ public class TreeCreationTests {
     @Test
     public void should_create_a_new_tree_with_correct_values() {
         // Arrange
-        Cell startCell = new Cell(0, 0, 3);
-        Cell endCell = new Cell(6, 7, 4);
+        Maze maze = new Maze(MazeOption._01);
 
         // Act
-        Tree tree = new Tree(startCell, endCell);
+        Tree tree = new Tree(maze);
 
         // Assert
-        assertThat(tree.root.row).isEqualTo(startCell.row);
-        assertThat(tree.root.column).isEqualTo(startCell.column);
-        assertThat(tree.target.row).isEqualTo(endCell.row);
-        assertThat(tree.target.column).isEqualTo(endCell.column);
+        assertThat(tree.root.row).isEqualTo(0);
+        assertThat(tree.root.column).isEqualTo(0);
+        assertThat(tree.target.row).isEqualTo(6);
+        assertThat(tree.target.column).isEqualTo(7);
 
         assertThat(tree.level).isEqualTo(0);
         assertThat(tree.levelNodes.size()).isEqualTo(1);

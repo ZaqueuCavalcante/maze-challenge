@@ -49,9 +49,9 @@ public class Maze {
                     int value = Integer.parseInt(String.valueOf(lines[row].charAt(column)));
                     current[row][column] = value;
 
-                    if (isStart(row, column)) {
+                    if (currentIsStart(row, column)) {
                         startCell = new Cell(row, column, value);
-                    } else if (isEnd(row, column)) {
+                    } else if (currentIsEnd(row, column)) {
                         endCell = new Cell(row, column, value);
                     }
                 }
@@ -81,7 +81,6 @@ public class Maze {
             for (int column = 0; column < columns; column++) {
                 int neighbors = currentNeighbors[row][column];
 
-                // TODO: Improve this
                 switch (option) {
                     case _00:
                         useMaze00Rules(neighbors, row, column);
@@ -101,11 +100,11 @@ public class Maze {
     }
 
     private void useMaze00Rules(int neighbors, int row, int column) {
-        if (isEmpty(row, column)) {
+        if (currentIsEmpty(row, column)) {
             if (neighbors == 2 || neighbors == 3) {
                 next[row][column] = CellType.OBSTACLE;
             }
-        } else if (isObstacle(row, column)) {
+        } else if (currentIsObstacle(row, column)) {
             if (neighbors == 4 || neighbors == 5) {
                 next[row][column] = CellType.OBSTACLE;
             }
@@ -113,11 +112,11 @@ public class Maze {
     }
 
     private void useMaze01Rules(int neighbors, int row, int column) {
-        if (isEmpty(row, column)) {
+        if (currentIsEmpty(row, column)) {
             if (neighbors == 2 || neighbors == 3) {
                 next[row][column] = CellType.OBSTACLE;
             }
-        } else if (isObstacle(row, column)) {
+        } else if (currentIsObstacle(row, column)) {
             if (neighbors == 4 || neighbors == 5 || neighbors == 6) {
                 next[row][column] = CellType.OBSTACLE;
             }
@@ -125,11 +124,11 @@ public class Maze {
     }
 
     private void useMaze02Rules(int neighbors, int row, int column) {
-        if (isEmpty(row, column)) {
+        if (currentIsEmpty(row, column)) {
             if (neighbors == 2 || neighbors == 3 || neighbors == 4) {
                 next[row][column] = CellType.OBSTACLE;
             }
-        } else if (isObstacle(row, column)) {
+        } else if (currentIsObstacle(row, column)) {
             if (neighbors == 4 || neighbors == 5) {
                 next[row][column] = CellType.OBSTACLE;
             }
@@ -137,11 +136,11 @@ public class Maze {
     }
 
     private void useMaze03Rules(int neighbors, int row, int column) {
-        if (isEmpty(row, column)) {
+        if (currentIsEmpty(row, column)) {
             if (neighbors == 2 || neighbors == 3 || neighbors == 4) {
                 next[row][column] = CellType.OBSTACLE;
             }
-        } else if (isObstacle(row, column)) {
+        } else if (currentIsObstacle(row, column)) {
             if (neighbors == 4 || neighbors == 5) {
                 next[row][column] = CellType.OBSTACLE;
             }
@@ -161,44 +160,44 @@ public class Maze {
         int neighbors = 0;
 
         if ((row - 1) >= 0 && (column - 1) >= 0) {
-            if (isObstacle(row - 1, column - 1)) {
+            if (currentIsObstacle(row - 1, column - 1)) {
                 neighbors++;
             }
         }
         if ((row - 1) >= 0) {
-            if (isObstacle(row - 1, column)) {
+            if (currentIsObstacle(row - 1, column)) {
                 neighbors++;
             }
         }
         if ((row - 1) >= 0 && (column + 1) < columns) {
-            if (isObstacle(row - 1, column + 1)) {
+            if (currentIsObstacle(row - 1, column + 1)) {
                 neighbors++;
             }
         }
 
         if ((column - 1) >= 0) {
-            if (isObstacle(row, column - 1)) {
+            if (currentIsObstacle(row, column - 1)) {
                 neighbors++;
             }
         }
         if ((column + 1) < columns) {
-            if (isObstacle(row, column + 1)) {
+            if (currentIsObstacle(row, column + 1)) {
                 neighbors++;
             }
         }
 
         if ((row + 1) < rows && (column - 1) >= 0) {
-            if (isObstacle(row + 1, column - 1)) {
+            if (currentIsObstacle(row + 1, column - 1)) {
                 neighbors++;
             }
         }
         if ((row + 1) < rows) {
-            if (isObstacle(row + 1, column)) {
+            if (currentIsObstacle(row + 1, column)) {
                 neighbors++;
             }
         }
         if ((row + 1) < rows && (column + 1) < columns) {
-            if (isObstacle(row + 1, column + 1)) {
+            if (currentIsObstacle(row + 1, column + 1)) {
                 neighbors++;
             }
         }
@@ -206,20 +205,29 @@ public class Maze {
         return neighbors;
     }
 
-    public boolean isEmpty(int row, int column) {
+    public boolean currentIsEmpty(int row, int column) {
         return current[row][column] == CellType.EMPTY;
     }
 
-    public boolean isObstacle(int row, int column) {
+    public boolean currentIsObstacle(int row, int column) {
         return current[row][column] == CellType.OBSTACLE;
     }
 
-    public boolean isStart(int row, int column) {
+    public boolean currentIsStart(int row, int column) {
         return current[row][column] == CellType.START;
     }
 
-    public boolean isEnd(int row, int column) {
+    public boolean currentIsEnd(int row, int column) {
         return current[row][column] == CellType.END;
+    }
+
+    public int[] getNextDirections(int row, int column) {
+        int up = ((row - 1) >= 0 && next[row - 1][column] != CellType.OBSTACLE) ? 1 : 0;
+        int right = ((column + 1) < columns && next[row][column + 1] != CellType.OBSTACLE) ? 1 : 0;
+        int down = ((row + 1) < rows && next[row + 1][column] != CellType.OBSTACLE) ? 1 : 0;
+        int left = ((column - 1) >= 0 && next[row][column - 1] != CellType.OBSTACLE) ? 1 : 0;
+
+        return new int[] { up, right, down, left };
     }
 
     public void draw(Game game) {
@@ -234,13 +242,13 @@ public class Maze {
     }
 
     private void drawCells(Game game, int row, int column) {
-        if (game.maze.isEmpty(row, column)) {
+        if (game.maze.currentIsEmpty(row, column)) {
             game.fill(200);
         }
-        if (game.maze.isObstacle(row, column)) {
+        if (game.maze.currentIsObstacle(row, column)) {
             game.fill(0, 128, 0);
         }
-        if (game.maze.isStart(row, column) || game.maze.isEnd(row, column)) {
+        if (game.maze.currentIsStart(row, column) || game.maze.currentIsEnd(row, column)) {
             game.fill(255, 255, 0);
         }
 
@@ -248,12 +256,14 @@ public class Maze {
     }
 
     private void drawNeighbors(Game game, int row, int column) {
-        if (showNeighbors) {
-            int neighbors = currentNeighbors[row][column];
-            game.textSize((float) (game.CIZE * 0.40));
-            game.textAlign(PConstants.CENTER);
-            game.fill(0);
-            game.text(neighbors, column * game.CIZE + game.CIZE / 2, (float) ((row * game.CIZE) + game.CIZE * 0.65));
+        if (!showNeighbors) {
+            return;
         }
+
+        int neighbors = currentNeighbors[row][column];
+        game.textSize((float) (game.CIZE * 0.40));
+        game.textAlign(PConstants.CENTER);
+        game.fill(0);
+        game.text(neighbors, column * game.CIZE + game.CIZE / 2, (float) ((row * game.CIZE) + game.CIZE * 0.65));
     }
 }

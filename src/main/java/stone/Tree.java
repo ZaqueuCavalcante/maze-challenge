@@ -9,15 +9,32 @@ public class Tree {
     int level;
     ArrayList<Node> levelNodes;
 
-    public Tree(Cell startCell, Cell endCell) {
-        root = new Node(startCell.row, startCell.column, null);
-        target = new Node(endCell.row, endCell.column, null);
+    boolean showPathsOnMaze;
+
+    public Tree(Maze maze) {
+        root = new Node(maze.startCell.row, maze.startCell.column, null, maze.endCell.row, maze.endCell.column);
+
+        int[] directions = maze.getNextDirections(root.row, root.column);
+        root.addChildren(directions[0], directions[1], directions[2], directions[3]);
+
+        target = new Node(maze.endCell.row, maze.endCell.column, null, maze.endCell.row, maze.endCell.column);
         level = 0;
         levelNodes = new ArrayList<Node>();
         levelNodes.add(root);
+
+        showPathsOnMaze = false;
+    }
+
+    public void goToNextLevel(ArrayList<Node> newNodes) {
+        levelNodes = newNodes;
+        level++;
     }
 
     public void drawPathsOnMaze(Game game) {
+        if (!showPathsOnMaze) {
+            return;
+        }
+
         game.fill(255, 0, 0);
         game.stroke(255, 0, 0);
 
