@@ -21,6 +21,11 @@ public class Game extends PApplet {
     public void settings() {
         maze = new Maze(MazeOption._03);
 
+        if (mode == GameMode.RELEASE) {
+            size(500, 500);
+            return;
+        }
+
         switch (maze.option) {
             case _00:
                 size(600, 500);
@@ -169,12 +174,43 @@ public class Game extends PApplet {
         if (tree.levelNodes.size() == 0) {
             settings();
             setup();
+            System.out.println("NOT FOUND");
             return;
         }
 
-        int minDistanceToTarget = tree.levelNodes.stream()
+        int minDistanceToEnd = tree.levelNodes.stream()
                 .mapToInt(v -> v.distanceToEnd)
-                .min().getAsInt() + 5;
+                .min().getAsInt();
+
+        System.out.println("LevelNodes = " + tree.levelNodes.size());
+        // System.out.println("MinDistanceToEnd = " + minDistanceToEnd);
+
+        int tolerance = 7;
+        int nodesCount = 0;
+
+        while (nodesCount == 0) {
+            for (Node levelNode : tree.levelNodes) {
+                for (int i = 0; i < 4; i++) {
+                    Node node = levelNode.children.get(i);
+
+                    if (node == null) {
+                        continue;
+                    }
+
+                    if (node.distanceToEnd > minDistanceToEnd + tolerance) {
+                        continue;
+                    }
+
+                    nodesCount++;
+                }
+            }
+            if (nodesCount == 0) {
+                tolerance++;
+            }
+        }
+
+        System.out.println("Tolerance = " + tolerance);
+        System.out.println("NodesCount = " + nodesCount);
 
         for (Node levelNode : tree.levelNodes) {
             for (int i = 0; i < 4; i++) {
@@ -184,7 +220,7 @@ public class Game extends PApplet {
                     continue;
                 }
 
-                if (node.distanceToEnd > minDistanceToTarget) {
+                if (node.distanceToEnd > minDistanceToEnd + tolerance) {
                     continue;
                 }
 
@@ -200,7 +236,13 @@ public class Game extends PApplet {
                 }
 
                 int[] directions = maze.getNextDirections(nodeRow, nodeColumn);
-                node.addChildren(directions[0], directions[1], directions[2], directions[3]);
+
+                int up = directions[0];
+                int right = directions[1];
+                int down = directions[2];
+                int left = directions[3];
+
+                node.addChildren(up, right, down, left);
 
                 newNodes.add(node);
             }
