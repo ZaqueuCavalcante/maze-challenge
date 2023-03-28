@@ -2,6 +2,30 @@
 
 Solução para o Desafio do Labirinto Autômato Stone.
 
+## Pontos que levei em consideração para resolver o desafio
+
+- Entender bem o problema proposto
+- Modelagem com classes, estrutura de dados e diagramas
+- Ter um jeito de visualizar a execução do programa ao longo do tempo
+- Ter testes automatizados para possibilitar produtividade e refatoração
+- Deixar o código genérico, a ponto de aceitar diferentes inputs e regras de propagação
+
+<img src="docs/run_tests.gif" alt= "Tests" width="530" height="481">
+
+## Como rodar o projeto?
+
+- Instale a JDK 11 ou superior
+- Escolha o GameMode
+- Escolhar o MazeOption
+- Inicie o programa
+
+## Chutes pra fase 2
+
+- Labirinto gigante
+- Células inicial e final fora dos cantos do labirinto
+- Player pode se mover nas diagonais tbm
+- Células inicial e final (ou só a final) mudam de lugar a cada geração
+
 ## Visualizando o problema
 
 O labirinto a seguir está em seu estado inicial. Ele possui 3 linhas e 4 colunas.
@@ -39,28 +63,3 @@ Para o labirinto acima, segue a representação em árvore para as primeiras 5 g
 Assim, a cada gareção, os caminhos que se aproximam mais do final do labirinto são mantidos, enquanto os demais são descartados.
 
 Uma das soluções pra esse é "DUDDURDRR";
-
----
-
-## Pontos que levei em consideração para resolver o desafio
-
-- Entender bem o problema proposto
-- Modelagem com classes, estrutura de dados e diagramas
-- Ter um jeito de visualizar a execução do programa ao longo do tempo
-- Ter testes automatizados para possibilitar produtividade e refatoração
-- Deixar o código genérico, a ponto de aceitar diferentes inputs e regras de propagação
-
-## Como rodar o projeto?
-
-- Instale a JDK 11
-- Instale o Processing
-- Escolha o GameMode
-- Escolhar o MazeOption
-- Inicie o programa
-
-## Chutes pra fase 2
-
-- Labirinto gigante
-- Células inicial e final fora dos cantos do labirinto
-- Player pode se mover nas diagonais tbm
-- Células inicial e final (ou só a final) mudam de lugar a cada geração

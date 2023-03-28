@@ -19,7 +19,7 @@ public class Game extends PApplet {
     ArrayList<String> output;
 
     public void settings() {
-        maze = new Maze(MazeOption._03);
+        maze = new Maze(MazeOption._02);
 
         if (mode == GameMode.RELEASE) {
             size(500, 500);
@@ -182,49 +182,19 @@ public class Game extends PApplet {
                 .mapToInt(v -> v.distanceToEnd)
                 .min().getAsInt();
 
-        System.out.println("LevelNodes = " + tree.levelNodes.size());
-        // System.out.println("MinDistanceToEnd = " + minDistanceToEnd);
-
-        int tolerance = 7;
-        int nodesCount = 0;
-
-        while (nodesCount == 0) {
-            for (Node levelNode : tree.levelNodes) {
-                for (int i = 0; i < 4; i++) {
-                    Node node = levelNode.children.get(i);
-
-                    if (node == null) {
-                        continue;
-                    }
-
-                    if (node.distanceToEnd > minDistanceToEnd + tolerance) {
-                        continue;
-                    }
-
-                    nodesCount++;
-                }
-            }
-            if (nodesCount == 0) {
-                tolerance++;
-            }
-        }
-
-        System.out.println("Tolerance = " + tolerance);
-        System.out.println("NodesCount = " + nodesCount);
-
         for (Node levelNode : tree.levelNodes) {
+            if (levelNode.distanceToEnd > minDistanceToEnd + 4) {
+                continue;
+            }
+
+            if (tree.levelNodes.size() > 500 && Math.random() < 0.5) {
+                continue;
+            }
+
             for (int i = 0; i < 4; i++) {
                 Node node = levelNode.children.get(i);
 
                 if (node == null) {
-                    continue;
-                }
-
-                if (node.distanceToEnd > minDistanceToEnd + tolerance) {
-                    continue;
-                }
-
-                if (tree.levelNodes.size() > 100 && Math.random() < 0.5) {
                     continue;
                 }
 
