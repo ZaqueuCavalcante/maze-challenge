@@ -11,6 +11,11 @@ public class Player {
     boolean canMoveDown;
     boolean canMoveLeft;
 
+    boolean canMoveUpRight;
+    boolean canMoveRightDown;
+    boolean canMoveDownLeft;
+    boolean canMoveLeftUp;
+
     boolean isDead;
     boolean wonTheGame;
 
@@ -27,9 +32,13 @@ public class Player {
     public void updateMoveOptions(Maze maze) {
         int[] directions = maze.getNextDirections(row, column);
         canMoveUp = directions[0] == 1;
-        canMoveRight = directions[1] == 1;
-        canMoveDown = directions[2] == 1;
-        canMoveLeft = directions[3] == 1;
+        canMoveUpRight = directions[1] == 1;
+        canMoveRight = directions[2] == 1;
+        canMoveRightDown = directions[3] == 1;
+        canMoveDown = directions[4] == 1;
+        canMoveDownLeft = directions[5] == 1;
+        canMoveLeft = directions[6] == 1;
+        canMoveLeftUp = directions[7] == 1;
     }
 
     public void resetMoveOptions() {
@@ -37,6 +46,11 @@ public class Player {
         canMoveRight = false;
         canMoveDown = false;
         canMoveLeft = false;
+
+        canMoveUpRight = false;
+        canMoveRightDown = false;
+        canMoveDownLeft = false;
+        canMoveLeftUp = false;
     }
 
     public void die() {
@@ -51,22 +65,46 @@ public class Player {
 
     public void up() {
         row--;
-        path.add("U");
+        path.add("8");
+    }
+
+    public void upRight() {
+        row--;
+        column++;
+        path.add("9");
     }
 
     public void right() {
         column++;
-        path.add("R");
+        path.add("6");
+    }
+
+    public void rightDown() {
+        column++;
+        row++;
+        path.add("3");
     }
 
     public void down() {
         row++;
-        path.add("D");
+        path.add("2");
+    }
+
+    public void downLeft() {
+        row++;
+        column--;
+        path.add("1");
     }
 
     public void left() {
         column--;
-        path.add("L");
+        path.add("4");
+    }
+
+    public void leftUp() {
+        column--;
+        row--;
+        path.add("7");
     }
 
     public void draw(Game game) {
@@ -85,18 +123,33 @@ public class Player {
     }
 
     private void drawMoveOptions(Game game) {
+        float r = game.CIZE / 2;
+        float x = (float) (column * game.CIZE + r);
+        float y = row * game.CIZE + r;
+
         if (canMoveUp) {
-            game.circle((float) (column * game.CIZE + game.CIZE / 2), (float) (row * game.CIZE), game.CIZE / 4);
+            game.circle(x, y - r, r / 2);
+        }
+        if (canMoveUpRight) {
+            game.circle(x + r, y - r, r / 2);
         }
         if (canMoveRight) {
-            game.circle((float) (column * game.CIZE + game.CIZE), row * game.CIZE + game.CIZE / 2, game.CIZE / 4);
+            game.circle(x + r, y, r / 2);
+        }
+        if (canMoveRightDown) {
+            game.circle(x + r, y + r, r / 2);
         }
         if (canMoveDown) {
-            game.circle((float) (column * game.CIZE + game.CIZE / 2), (float) (row * game.CIZE + game.CIZE),
-                    game.CIZE / 4);
+            game.circle(x, y + r, r / 2);
+        }
+        if (canMoveDownLeft) {
+            game.circle(x - r, y + r, r / 2);
         }
         if (canMoveLeft) {
-            game.circle((float) (column * game.CIZE), row * game.CIZE + game.CIZE / 2, game.CIZE / 4);
+            game.circle(x - r, y, r / 2);
+        }
+        if (canMoveLeftUp) {
+            game.circle(x - r, y - r, r / 2);
         }
     }
 
@@ -111,21 +164,38 @@ public class Player {
         game.strokeWeight(2);
 
         for (String direction : path) {
-            if (direction.equals("U")) {
+            if (direction.equals("8")) {
                 x2 = x1;
                 y2 = y1 - game.CIZE;
             }
-            if (direction.equals("R")) {
+            if (direction.equals("6")) {
                 x2 = x1 + game.CIZE;
                 y2 = y1;
             }
-            if (direction.equals("D")) {
+            if (direction.equals("2")) {
                 x2 = x1;
                 y2 = y1 + game.CIZE;
             }
-            if (direction.equals("L")) {
+            if (direction.equals("4")) {
                 x2 = x1 - game.CIZE;
                 y2 = y1;
+            }
+
+            if (direction.equals("9")) {
+                x2 = x1 + game.CIZE;
+                y2 = y1 - game.CIZE;
+            }
+            if (direction.equals("3")) {
+                x2 = x1 + game.CIZE;
+                y2 = y1 + game.CIZE;
+            }
+            if (direction.equals("1")) {
+                x2 = x1 - game.CIZE;
+                y2 = y1 + game.CIZE;
+            }
+            if (direction.equals("7")) {
+                x2 = x1 - game.CIZE;
+                y2 = y1 - game.CIZE;
             }
 
             game.line(x1, y1, x2, y2);

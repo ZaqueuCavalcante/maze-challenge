@@ -223,11 +223,22 @@ public class Maze {
 
     public int[] getNextDirections(int row, int column) {
         int up = ((row - 1) >= 0 && next[row - 1][column] != CellType.OBSTACLE) ? 1 : 0;
+
+        int upRight = ((row - 1) >= 0 && (column + 1) < columns && next[row - 1][column + 1] != CellType.OBSTACLE) ? 1 : 0;
+
         int right = ((column + 1) < columns && next[row][column + 1] != CellType.OBSTACLE) ? 1 : 0;
+
+        int rightDown = ((column + 1) < columns && (row + 1) < rows && next[row + 1][column + 1] != CellType.OBSTACLE) ? 1 : 0;
+
         int down = ((row + 1) < rows && next[row + 1][column] != CellType.OBSTACLE) ? 1 : 0;
+
+        int downLeft = ((row + 1) < rows && (column - 1) >= 0 && next[row + 1][column - 1] != CellType.OBSTACLE) ? 1 : 0;
+
         int left = ((column - 1) >= 0 && next[row][column - 1] != CellType.OBSTACLE) ? 1 : 0;
 
-        return new int[] { up, right, down, left };
+        int leftUp = ((column - 1) >= 0 && (row - 1) >= 0 && next[row - 1][column - 1] != CellType.OBSTACLE) ? 1 : 0;
+
+        return new int[] { up, upRight, right, rightDown, down, downLeft, left, leftUp };
     }
 
     public void draw(Game game) {

@@ -8,7 +8,7 @@ import java.util.Collections;
 import processing.core.PApplet;
 
 public class Game extends PApplet {
-    GameMode mode = GameMode.RELEASE;
+    GameMode mode = GameMode.FUN;
 
     int step;
     int CIZE;
@@ -19,7 +19,7 @@ public class Game extends PApplet {
     ArrayList<String> output;
 
     public void settings() {
-        maze = new Maze(MazeOption._02);
+        maze = new Maze(MazeOption._01);
 
         if (mode == GameMode.RELEASE) {
             size(500, 500);
@@ -89,6 +89,9 @@ public class Game extends PApplet {
     }
 
     public void keyPressed() {
+
+        System.out.println("KEY = " + key);
+
         if (keyCode == 10) { // Enter
             if (mode == GameMode.DEBUG) {
                 goToNextStep();
@@ -136,21 +139,37 @@ public class Game extends PApplet {
                 return;
             }
 
-            if (keyCode >= 37 && keyCode <= 40) {
-                if (keyCode == 38 && player.row > 0) {
+            if (keyCode >= 97 && keyCode <= 105) {
+                if (keyCode == 104 && player.row > 0) {
                     player.up();
                     updateMazeAndPlayer();
                 }
-                if (keyCode == 39 && player.column < maze.columns - 1) {
+                if (keyCode == 105 && player.row > 0 && player.column < maze.columns - 1) {
+                    player.upRight();
+                    updateMazeAndPlayer();
+                }
+                if (keyCode == 102 && player.column < maze.columns - 1) {
                     player.right();
                     updateMazeAndPlayer();
                 }
-                if (keyCode == 40 && player.row < maze.rows - 1) {
+                if (keyCode == 99 && player.column < maze.columns - 1 && player.row < maze.rows - 1) {
+                    player.rightDown();
+                    updateMazeAndPlayer();
+                }
+                if (keyCode == 98 && player.row < maze.rows - 1) {
                     player.down();
                     updateMazeAndPlayer();
                 }
-                if (keyCode == 37 && player.column > 0) {
+                if (keyCode == 97 && player.row < maze.rows - 1 && player.column > 0) {
+                    player.downLeft();
+                    updateMazeAndPlayer();
+                }
+                if (keyCode == 100 && player.column > 0) {
                     player.left();
+                    updateMazeAndPlayer();
+                }
+                if (keyCode == 103 && player.column > 0 && player.row > 0) {
+                    player.leftUp();
                     updateMazeAndPlayer();
                 }
 
