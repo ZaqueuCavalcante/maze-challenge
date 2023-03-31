@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 public class Tree {
     Node root;
-    Node target;
 
     int level;
     ArrayList<Node> levelNodes;
@@ -14,10 +13,6 @@ public class Tree {
     public Tree(Maze maze) {
         root = new Node(maze.startCell.row, maze.startCell.column, null, maze.endCell.row, maze.endCell.column);
 
-        int[] directions = maze.getNextDirections(root.row, root.column);
-        root.addChildren(directions[0], directions[1], directions[2], directions[3]);
-
-        target = new Node(maze.endCell.row, maze.endCell.column, null, maze.endCell.row, maze.endCell.column);
         level = 0;
         levelNodes = new ArrayList<Node>();
         levelNodes.add(root);

@@ -16,8 +16,6 @@ public class TreeCreationTests {
         // Assert
         assertThat(tree.root.row).isEqualTo(0);
         assertThat(tree.root.column).isEqualTo(0);
-        assertThat(tree.target.row).isEqualTo(6);
-        assertThat(tree.target.column).isEqualTo(7);
 
         assertThat(tree.level).isEqualTo(0);
         assertThat(tree.levelNodes.size()).isEqualTo(1);

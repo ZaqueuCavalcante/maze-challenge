@@ -12,10 +12,12 @@ public class Game extends PApplet {
 
     int step;
     int CIZE;
+
     Maze maze;
     Tree tree;
+
     Player player;
-    int bestPathLength = 1_000_000;
+
     ArrayList<String> output;
 
     public void settings() {
@@ -112,18 +114,14 @@ public class Game extends PApplet {
 
                 Collections.sort(output, (a, b) -> Integer.compare(a.length(), b.length()));
 
-                if (output.get(0).length() < bestPathLength) {
-                    bestPathLength = output.get(0).length();
+                saveStrings("src/main/java/stone/solutions/release/solutions_maze" + maze.option +
+                        ".txt",
+                        output.toArray(new String[0]));
 
-                    saveStrings("src/main/java/stone/solutions/release/solutions_maze" + maze.option +
-                            ".txt",
-                            output.toArray(new String[0]));
-
-                    Instant ends = Instant.now();
-                    System.out
-                            .println("Found " + output.size() + " paths in " + Duration.between(starts, ends).toMillis()
-                                    + " milliseconds" + " and bestPathLength = " + bestPathLength);
-                }
+                Instant ends = Instant.now();
+                System.out
+                        .println("Found " + output.size() + " paths in " + Duration.between(starts, ends).toMillis()
+                                + " milliseconds" + " and bestPathLength = " + output.get(0).length());
 
                 settings();
                 setup();
@@ -166,14 +164,9 @@ public class Game extends PApplet {
     }
 
     public void goToNextStep() {
-        step++;
-        maze.shift();
-
         ArrayList<Node> newNodes = new ArrayList<Node>();
 
         if (tree.levelNodes.size() == 0) {
-            settings();
-            setup();
             System.out.println("NOT FOUND");
             return;
         }
@@ -182,14 +175,54 @@ public class Game extends PApplet {
                 .mapToInt(v -> v.distanceToEnd)
                 .min().getAsInt();
 
-        for (Node levelNode : tree.levelNodes) {
-            if (levelNode.distanceToEnd > minDistanceToEnd + 4) {
-                continue;
-            }
+        long totalNodesMinDistance = tree.levelNodes.stream()
+                .filter(v -> v.distanceToEnd == minDistanceToEnd)
+                .count();
 
-            if (tree.levelNodes.size() > 500 && Math.random() < 0.5) {
-                continue;
+        int maxRow = tree.levelNodes.stream()
+                .mapToInt(v -> v.row)
+                .max().getAsInt();
+
+        int maxColumn = tree.levelNodes.stream()
+                .mapToInt(v -> v.column)
+                .max().getAsInt();
+
+        // System.out.println("TotalLevelNodes = " + tree.levelNodes.size());
+        // System.out.println("MinDistanceToEnd = " + minDistanceToEnd);
+        // System.out.println("TotalNodesMinDistance = " + totalNodesMinDistance);
+        // System.out.println("MaxRow = " + maxRow);
+        // System.out.println("MaxColumn = " + maxColumn);
+
+        ArrayList<Node> filteredNodes = new ArrayList<Node>();
+        for (int row = 0; row <= maxRow; row++) {
+            for (int column = maxColumn; column >= 0; column--) {
+                final int finalRow = row;
+                final int finalColumn = column;
+                Node node = tree.levelNodes.stream()
+                        .filter(n -> n.row == finalRow && n.column == finalColumn)
+                        .findFirst()
+                        .orElse(null);
+
+                if (node == null) {
+                    continue;
+                }
+
+                filteredNodes.add(node);
+                // column = -1;
             }
+        }
+
+        // System.out.println("TotalFilteredNodes = " + filteredNodes.size());
+        // System.out.println("------------------------");
+
+        for (Node levelNode : filteredNodes) {
+
+            int[] directions = maze.getNextDirections(levelNode.row, levelNode.column);
+            int up = directions[0];
+            int right = directions[1];
+            int down = directions[2];
+            int left = directions[3];
+            levelNode.addChildren(up, right, down, left);
 
             for (int i = 0; i < 4; i++) {
                 Node node = levelNode.children.get(i);
@@ -205,20 +238,14 @@ public class Game extends PApplet {
                     output.add(node.getPath());
                 }
 
-                int[] directions = maze.getNextDirections(nodeRow, nodeColumn);
-
-                int up = directions[0];
-                int right = directions[1];
-                int down = directions[2];
-                int left = directions[3];
-
-                node.addChildren(up, right, down, left);
-
                 newNodes.add(node);
             }
         }
 
         tree.goToNextLevel(newNodes);
+
+        step++;
+        maze.shift();
     }
 
     public void updateMazeAndPlayer() {

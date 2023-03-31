@@ -19,7 +19,7 @@ public class Maze01SolutionsTests {
 
         int row = maze.startCell.row;
         int column = maze.startCell.column;
-        String solution = "RRDLLDDRDUURRRDUDRDDRRD";
+        String solution = "RRLLDRRULDDRRRLRDRDDRDR";
 
         // Act
         for (char c : solution.toCharArray()) {
