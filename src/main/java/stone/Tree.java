@@ -8,6 +8,8 @@ public class Tree {
     int level;
     ArrayList<Node> levelNodes;
 
+    ArrayList<Node> solutions;
+
     boolean showPathsOnMaze;
 
     public Tree(Maze maze) {
@@ -17,12 +19,88 @@ public class Tree {
         levelNodes = new ArrayList<Node>();
         levelNodes.add(root);
 
-        showPathsOnMaze = false;
+        solutions = new ArrayList<Node>();
+
+        showPathsOnMaze = true;
     }
 
     public void goToNextLevel(ArrayList<Node> newNodes) {
         levelNodes = newNodes;
         level++;
+    }
+
+    public ArrayList<Node> getFilteredNodes() {
+        ArrayList<Node> filteredNodes = new ArrayList<Node>();
+
+        int maxRow = levelNodes.stream()
+                .mapToInt(v -> v.row)
+                .max().getAsInt();
+
+        int maxColumn = levelNodes.stream()
+                .mapToInt(v -> v.column)
+                .max().getAsInt();
+
+        for (int row = 0; row <= maxRow; row++) {
+            int picketCells = 0;
+            for (int column = maxColumn; column >= 0; column--) {
+                final int finalRow = row;
+                final int finalColumn = column;
+                Node node = levelNodes.stream()
+                        .filter(n -> n.row == finalRow && n.column == finalColumn)
+                        .findFirst()
+                        .orElse(null);
+
+                if (node == null) {
+                    continue;
+                }
+
+                filteredNodes.add(node);
+
+                picketCells++;
+                if (picketCells == 2) {
+                    column = -1;
+                }
+            }
+        }
+
+        return filteredNodes;
+    }
+
+    public void goToNextLevel(Maze maze) {
+        ArrayList<Node> newNodes = new ArrayList<Node>();
+        ArrayList<Node> filteredNodes = getFilteredNodes();
+
+        for (Node levelNode : filteredNodes) {
+            int[] directions = maze.getNextDirections(levelNode.row, levelNode.column);
+            levelNode.addChildren(directions[0], directions[1], directions[2], directions[3]);
+
+            for (int i = 0; i < 4; i++) {
+                Node node = levelNode.children.get(i);
+
+                if (node == null) {
+                    continue;
+                }
+
+                if (node.row == maze.endCell.row && node.column == maze.endCell.column) {
+                    solutions.add(node);
+                }
+
+                newNodes.add(node);
+            }
+        }
+
+        levelNodes = newNodes;
+        level++;
+    }
+
+    public ArrayList<String> getSolutionsPaths() {
+        ArrayList<String> paths = new ArrayList<String>();
+
+        for (Node node : solutions) {
+            paths.add(node.getPath());
+        }
+
+        return paths;
     }
 
     public void drawPathsOnMaze(Game game) {
