@@ -17,7 +17,7 @@ public class Tree {
         levelNodes = new ArrayList<Node>();
         levelNodes.add(root);
 
-        showPathsOnMaze = false;
+        showPathsOnMaze = true;
     }
 
     public void goToNextLevel(ArrayList<Node> newNodes) {
@@ -30,10 +30,10 @@ public class Tree {
             return;
         }
 
-        game.fill(255, 0, 0);
-        game.stroke(255, 0, 0);
+        game.fill(255, 255, 0);
+        game.stroke(255, 255, 0);
 
-        game.strokeWeight(2);
+        game.strokeWeight(2.50f);
 
         for (Node node : levelNodes) {
             float x1 = game.maze.startCell.column * game.CIZE + game.CIZE / 2;

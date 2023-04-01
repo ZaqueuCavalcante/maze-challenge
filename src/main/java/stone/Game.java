@@ -8,7 +8,7 @@ import java.util.Collections;
 import processing.core.PApplet;
 
 public class Game extends PApplet {
-    GameMode mode = GameMode.RELEASE;
+    GameMode mode = GameMode.FUN;
 
     int step;
     int CIZE;
@@ -20,8 +20,10 @@ public class Game extends PApplet {
 
     ArrayList<String> output;
 
+    ArrayList<Node> outputNodes;
+
     public void settings() {
-        maze = new Maze(MazeOption._02);
+        maze = new Maze(MazeOption._03);
 
         if (mode == GameMode.RELEASE) {
             size(500, 500);
@@ -38,12 +40,12 @@ public class Game extends PApplet {
                 CIZE = 50;
                 break;
             case _02:
-                size(1220, 940);
-                CIZE = 14;
+                size(1305, 1010);
+                CIZE = 15;
                 break;
             case _03:
-                size(1760, 830);
-                CIZE = 13;
+                size(2165, 1010);
+                CIZE = 16;
                 break;
         }
     }
@@ -59,6 +61,7 @@ public class Game extends PApplet {
         tree = new Tree(maze);
 
         output = new ArrayList<String>();
+        outputNodes = new ArrayList<Node>();
     }
 
     public void draw() {
@@ -84,18 +87,23 @@ public class Game extends PApplet {
         stroke(255);
         textSize(CIZE / 2);
         textAlign(LEFT);
-        text("GEN: " + step, CIZE, (float) (CIZE * 0.70));
+        // text("GEN: " + step, CIZE, (float) (CIZE * 0.70));
 
         fill(255);
         stroke(0);
     }
 
+    boolean x = false;
+
     public void keyPressed() {
         if (keyCode == 10) { // Enter
-            if (mode == GameMode.DEBUG) {
+            if (mode == GameMode.DEBUG && !x) {
                 goToNextStep();
 
                 if (output.size() > 0) {
+                    tree.levelNodes = outputNodes;
+                    x = true;
+
                     Collections.sort(output, (a, b) -> Integer.compare(a.length(), b.length()));
 
                     saveStrings("src/main/java/stone/solutions/debug/solutions_maze" + maze.option + ".txt",
@@ -166,19 +174,6 @@ public class Game extends PApplet {
     public void goToNextStep() {
         ArrayList<Node> newNodes = new ArrayList<Node>();
 
-        if (tree.levelNodes.size() == 0) {
-            System.out.println("NOT FOUND");
-            return;
-        }
-
-        int minDistanceToEnd = tree.levelNodes.stream()
-                .mapToInt(v -> v.distanceToEnd)
-                .min().getAsInt();
-
-        long totalNodesMinDistance = tree.levelNodes.stream()
-                .filter(v -> v.distanceToEnd == minDistanceToEnd)
-                .count();
-
         int maxRow = tree.levelNodes.stream()
                 .mapToInt(v -> v.row)
                 .max().getAsInt();
@@ -187,14 +182,9 @@ public class Game extends PApplet {
                 .mapToInt(v -> v.column)
                 .max().getAsInt();
 
-        // System.out.println("TotalLevelNodes = " + tree.levelNodes.size());
-        // System.out.println("MinDistanceToEnd = " + minDistanceToEnd);
-        // System.out.println("TotalNodesMinDistance = " + totalNodesMinDistance);
-        // System.out.println("MaxRow = " + maxRow);
-        // System.out.println("MaxColumn = " + maxColumn);
-
         ArrayList<Node> filteredNodes = new ArrayList<Node>();
         for (int row = 0; row <= maxRow; row++) {
+            int picketCells = 0;
             for (int column = maxColumn; column >= 0; column--) {
                 final int finalRow = row;
                 final int finalColumn = column;
@@ -208,15 +198,14 @@ public class Game extends PApplet {
                 }
 
                 filteredNodes.add(node);
-                // column = -1;
+                picketCells++;
+                if (picketCells == 2) {
+                    column = -1;
+                }
             }
         }
 
-        // System.out.println("TotalFilteredNodes = " + filteredNodes.size());
-        // System.out.println("------------------------");
-
         for (Node levelNode : filteredNodes) {
-
             int[] directions = maze.getNextDirections(levelNode.row, levelNode.column);
             int up = directions[0];
             int right = directions[1];
@@ -236,6 +225,7 @@ public class Game extends PApplet {
 
                 if (nodeRow == maze.endCell.row && nodeColumn == maze.endCell.column) {
                     output.add(node.getPath());
+                    outputNodes.add(node);
                 }
 
                 newNodes.add(node);
