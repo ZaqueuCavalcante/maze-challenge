@@ -205,6 +205,36 @@ public class Maze {
         return neighbors;
     }
 
+    public boolean isSolution(String path) {
+        int row = startCell.row;
+        int column = startCell.column;
+
+        for (char c : path.toCharArray()) {
+            shift();
+
+            String direction = String.valueOf(c).toString();
+
+            if (direction.equals("U")) {
+                row--;
+            }
+            if (direction.equals("R")) {
+                column++;
+            }
+            if (direction.equals("D")) {
+                row++;
+            }
+            if (direction.equals("L")) {
+                column--;
+            }
+
+            if (currentIsObstacle(row, column)) {
+                return false;
+            }
+        }
+
+        return row == endCell.row && column == endCell.column;
+    }
+
     public boolean currentIsEmpty(int row, int column) {
         return current[row][column] == CellType.EMPTY;
     }

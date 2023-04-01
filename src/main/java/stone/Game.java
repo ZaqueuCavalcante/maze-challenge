@@ -23,7 +23,7 @@ public class Game extends PApplet {
     ArrayList<Node> outputNodes;
 
     public void settings() {
-        maze = new Maze(MazeOption._03);
+        maze = new Maze(MazeOption._01);
 
         if (mode == GameMode.RELEASE) {
             size(500, 500);

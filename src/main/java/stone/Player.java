@@ -85,18 +85,22 @@ public class Player {
     }
 
     private void drawMoveOptions(Game game) {
+        float x = (float) (column * game.CIZE + game.CIZE / 2);
+        float y = row * game.CIZE + game.CIZE / 2;
+        float delta = game.CIZE / 2;
+        float radius = game.CIZE / 4;
+
         if (canMoveUp) {
-            game.circle((float) (column * game.CIZE + game.CIZE / 2), (float) (row * game.CIZE), game.CIZE / 4);
+            game.circle(x, y - delta, radius);
         }
         if (canMoveRight) {
-            game.circle((float) (column * game.CIZE + game.CIZE), row * game.CIZE + game.CIZE / 2, game.CIZE / 4);
+            game.circle(x + delta, y, radius);
         }
         if (canMoveDown) {
-            game.circle((float) (column * game.CIZE + game.CIZE / 2), (float) (row * game.CIZE + game.CIZE),
-                    game.CIZE / 4);
+            game.circle(x, y + delta, radius);
         }
         if (canMoveLeft) {
-            game.circle((float) (column * game.CIZE), row * game.CIZE + game.CIZE / 2, game.CIZE / 4);
+            game.circle(x - delta, y, radius);
         }
     }
 

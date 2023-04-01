@@ -11,13 +11,13 @@ public class Tree {
     boolean showPathsOnMaze;
 
     public Tree(Maze maze) {
-        root = new Node(maze.startCell.row, maze.startCell.column, null, maze.endCell.row, maze.endCell.column);
+        root = new Node(maze.startCell.row, maze.startCell.column, null);
 
         level = 0;
         levelNodes = new ArrayList<Node>();
         levelNodes.add(root);
 
-        showPathsOnMaze = true;
+        showPathsOnMaze = false;
     }
 
     public void goToNextLevel(ArrayList<Node> newNodes) {

@@ -16,118 +16,50 @@ public class Maze01SolutionsTests {
     public void should_test_one_correct_solution_for_maze_01() {
         // Arrange
         Maze maze = new Maze(MazeOption._01);
-
-        int row = maze.startCell.row;
-        int column = maze.startCell.column;
-        String solution = "RRLLDRRULDDRRRLRDRDDRDR";
+        String path = "RRLLDRRULDDRRRLRDRDDRDR";
 
         // Act
-        for (char c : solution.toCharArray()) {
-            maze.shift();
-
-            String direction = String.valueOf(c).toString();
-
-            if (direction.equals("U")) {
-                row--;
-            }
-            if (direction.equals("R")) {
-                column++;
-            }
-            if (direction.equals("D")) {
-                row++;
-            }
-            if (direction.equals("L")) {
-                column--;
-            }
-
-            assertThat(maze.currentIsObstacle(row, column)).isFalse();
-        }
+        boolean isSolution = maze.isSolution(path);
 
         // Assert
-        assertThat(row).isEqualTo(maze.endCell.row);
-        assertThat(column).isEqualTo(maze.endCell.column);
+        assertThat(isSolution).isTrue();
     }
 
     @Test
     public void should_test_one_wrong_solution_for_maze_01() {
         // Arrange
         Maze maze = new Maze(MazeOption._01);
-
-        int row = maze.startCell.row;
-        int column = maze.startCell.column;
-        String solution = "RRDLLDDRDUURRRDUDRDDRRL";
+        String path = "RRDLLDDRDUURRRDUDRDDRRL";
 
         // Act
-        for (char c : solution.toCharArray()) {
-            maze.shift();
-
-            String direction = String.valueOf(c).toString();
-
-            if (direction.equals("U")) {
-                row--;
-            }
-            if (direction.equals("R")) {
-                column++;
-            }
-            if (direction.equals("D")) {
-                row++;
-            }
-            if (direction.equals("L")) {
-                column--;
-            }
-        }
+        boolean isSolution = maze.isSolution(path);
 
         // Assert
-        assertThat(row).isNotEqualTo(maze.endCell.row);
-        assertThat(column).isNotEqualTo(maze.endCell.column);
+        assertThat(isSolution).isFalse();
     }
 
     @Test
     public void should_test_many_correct_solutions_for_maze_01() {
-
         File file = new File("src/test/java/stone/solutions/solutions_maze_01.txt");
         InputStream input;
-        String[] solutions = new String[0];
+        String[] paths = new String[0];
 
         try {
             input = new FileInputStream(file);
-            solutions = PApplet.loadStrings(input);
+            paths = PApplet.loadStrings(input);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
 
-        for (String solution : solutions) {
+        for (String path : paths) {
             // Arrange
             Maze maze = new Maze(MazeOption._01);
 
-            int row = maze.startCell.row;
-            int column = maze.startCell.column;
-
             // Act
-            for (char c : solution.toCharArray()) {
-                maze.shift();
-
-                String direction = String.valueOf(c).toString();
-
-                if (direction.equals("U")) {
-                    row--;
-                }
-                if (direction.equals("R")) {
-                    column++;
-                }
-                if (direction.equals("D")) {
-                    row++;
-                }
-                if (direction.equals("L")) {
-                    column--;
-                }
-
-                assertThat(maze.currentIsObstacle(row, column)).isFalse();
-            }
+            boolean isSolution = maze.isSolution(path);
 
             // Assert
-            assertThat(row).isEqualTo(maze.endCell.row);
-            assertThat(column).isEqualTo(maze.endCell.column);
+            assertThat(isSolution).isTrue();
         }
     }
 }

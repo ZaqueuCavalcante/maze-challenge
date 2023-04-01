@@ -12,7 +12,7 @@ public class NodeAddChildrenTests {
         int column = 3;
 
         // Act
-        Node rootNode = new Node(row, column, null, 4, 5);
+        Node rootNode = new Node(row, column, null);
 
         // Assert
         assertThat(rootNode.row).isEqualTo(row);
@@ -30,7 +30,7 @@ public class NodeAddChildrenTests {
         int left = 0;
 
         // Act
-        Node rootNode = new Node(2, 3, null, 4, 5);
+        Node rootNode = new Node(2, 3, null);
         rootNode.addChildren(up, right, down, left);
 
         // Assert
@@ -50,7 +50,7 @@ public class NodeAddChildrenTests {
         int left = 0;
 
         // Act
-        Node rootNode = new Node(2, 3, null, 4, 5);
+        Node rootNode = new Node(2, 3, null);
         rootNode.addChildren(up, right, down, left);
 
         // Assert
@@ -74,7 +74,7 @@ public class NodeAddChildrenTests {
         int left = 0;
 
         // Act
-        Node rootNode = new Node(2, 3, null, 4, 5);
+        Node rootNode = new Node(2, 3, null);
         rootNode.addChildren(up, right, down, left);
 
         // Assert
@@ -98,7 +98,7 @@ public class NodeAddChildrenTests {
         int left = 0;
 
         // Act
-        Node rootNode = new Node(2, 3, null, 4, 5);
+        Node rootNode = new Node(2, 3, null);
         rootNode.addChildren(up, right, down, left);
 
         // Assert
@@ -122,7 +122,7 @@ public class NodeAddChildrenTests {
         int left = 1;
 
         // Act
-        Node rootNode = new Node(2, 3, null, 4, 5);
+        Node rootNode = new Node(2, 3, null);
         rootNode.addChildren(up, right, down, left);
 
         // Assert
@@ -146,7 +146,7 @@ public class NodeAddChildrenTests {
         int left = 0;
 
         // Act
-        Node rootNode = new Node(2, 3, null, 4, 5);
+        Node rootNode = new Node(2, 3, null);
         rootNode.addChildren(up, right, down, left);
 
         // Assert
@@ -174,7 +174,7 @@ public class NodeAddChildrenTests {
         int left = 0;
 
         // Act
-        Node rootNode = new Node(2, 3, null, 4, 5);
+        Node rootNode = new Node(2, 3, null);
         rootNode.addChildren(up, right, down, left);
 
         // Assert
@@ -202,7 +202,7 @@ public class NodeAddChildrenTests {
         int left = 1;
 
         // Act
-        Node rootNode = new Node(2, 3, null, 4, 5);
+        Node rootNode = new Node(2, 3, null);
         rootNode.addChildren(up, right, down, left);
 
         // Assert
@@ -230,7 +230,7 @@ public class NodeAddChildrenTests {
         int left = 0;
 
         // Act
-        Node rootNode = new Node(2, 3, null, 4, 5);
+        Node rootNode = new Node(2, 3, null);
         rootNode.addChildren(up, right, down, left);
 
         // Assert
@@ -262,7 +262,7 @@ public class NodeAddChildrenTests {
         int left = 1;
 
         // Act
-        Node rootNode = new Node(2, 3, null, 4, 5);
+        Node rootNode = new Node(2, 3, null);
         rootNode.addChildren(up, right, down, left);
 
         // Assert
@@ -294,7 +294,7 @@ public class NodeAddChildrenTests {
         int left = 1;
 
         // Act
-        Node rootNode = new Node(2, 3, null, 4, 5);
+        Node rootNode = new Node(2, 3, null);
         rootNode.addChildren(up, right, down, left);
 
         // Assert
