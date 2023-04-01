@@ -8,7 +8,7 @@ import java.util.Collections;
 import processing.core.PApplet;
 
 public class Game extends PApplet {
-    GameMode mode = GameMode.DEBUG;
+    GameMode mode = GameMode.RELEASE;
 
     int CIZE;
 
@@ -16,8 +16,6 @@ public class Game extends PApplet {
     Tree tree;
 
     Player player;
-
-    ArrayList<String> output;
 
     public void settings() {
         maze = new Maze(MazeOption._02);
@@ -60,7 +58,7 @@ public class Game extends PApplet {
             return;
         }
 
-        drawGenerationCounter();
+        setColors();
 
         maze.draw(this);
 
@@ -71,7 +69,7 @@ public class Game extends PApplet {
         tree.drawPathsOnMaze(this);
     }
 
-    private void drawGenerationCounter() {
+    private void setColors() {
         background(100);
         fill(255);
         stroke(0);
@@ -131,7 +129,7 @@ public class Game extends PApplet {
             if (tree.solutions.size() > 0) {
                 tree.levelNodes = tree.solutions;
 
-                output = tree.getSolutionsPaths();
+                ArrayList<String> output = tree.getSolutionsPaths();
 
                 Collections.sort(output, (a, b) -> Integer.compare(a.length(), b.length()));
 
@@ -151,7 +149,7 @@ public class Game extends PApplet {
                 goToNextStep();
             }
 
-            output = tree.getSolutionsPaths();
+            ArrayList<String> output = tree.getSolutionsPaths();
 
             Collections.sort(output, (a, b) -> Integer.compare(a.length(), b.length()));
 

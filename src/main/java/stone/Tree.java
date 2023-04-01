@@ -41,7 +41,6 @@ public class Tree {
                 .max().getAsInt();
 
         for (int row = 0; row <= maxRow; row++) {
-            int picketCells = 0;
             for (int column = maxColumn; column >= 0; column--) {
                 final int finalRow = row;
                 final int finalColumn = column;
@@ -55,11 +54,34 @@ public class Tree {
                 }
 
                 filteredNodes.add(node);
+                column = -1;
+            }
+        }
 
-                picketCells++;
-                if (picketCells == 2) {
-                    column = -1;
+        for (int column = 0; column <= maxColumn; column++) {
+            for (int row = maxRow; row >= 0; row--) {
+                final int finalRow = row;
+                final int finalColumn = column;
+
+                boolean nodeAlreadyFiltered = filteredNodes.stream()
+                        .anyMatch(n -> n.row == finalRow && n.column == finalColumn);
+
+                if (nodeAlreadyFiltered) {
+                    row = -1;
+                    continue;
                 }
+
+                Node node = levelNodes.stream()
+                        .filter(n -> n.row == finalRow && n.column == finalColumn)
+                        .findFirst()
+                        .orElse(null);
+
+                if (node == null) {
+                    continue;
+                }
+
+                filteredNodes.add(node);
+                row = -1;
             }
         }
 

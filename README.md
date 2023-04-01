@@ -62,4 +62,8 @@ Para o labirinto acima, segue a representação em árvore para as primeiras 5 g
 
 Assim, a cada gareção, os caminhos que se aproximam mais do final do labirinto são mantidos, enquanto os demais são descartados.
 
+Esse filtro eh feito pegando os nos da "fronteira", ou seja, mais a direita e mais abaixo no labirinto.
+
+Perceba que varios nod 
+
 Uma das soluções pra esse é "DUDDURDRR";
