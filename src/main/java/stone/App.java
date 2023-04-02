@@ -5,7 +5,7 @@ import java.time.Instant;
 
 public class App {
     public static void main(String[] args) {
-        Maze maze = new Maze(MazeOption._03);
+        Maze maze = new Maze(MazeOption._02);
         Tree tree = new Tree(maze);
 
         Instant start = Instant.now();

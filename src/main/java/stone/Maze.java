@@ -159,19 +159,19 @@ public class Maze {
     private int getNeighbors(int row, int column) {
         int neighbors = 0;
 
-        if ((row - 1) >= 0 && (column - 1) >= 0) {
-            if (currentIsObstacle(row - 1, column - 1)) {
-                neighbors++;
-            }
-        }
         if ((row - 1) >= 0) {
+            if ((column - 1) >= 0) {
+                if (currentIsObstacle(row - 1, column - 1)) {
+                    neighbors++;
+                }
+            }
             if (currentIsObstacle(row - 1, column)) {
                 neighbors++;
             }
-        }
-        if ((row - 1) >= 0 && (column + 1) < columns) {
-            if (currentIsObstacle(row - 1, column + 1)) {
-                neighbors++;
+            if ((column + 1) < columns) {
+                if (currentIsObstacle(row - 1, column + 1)) {
+                    neighbors++;
+                }
             }
         }
 
@@ -186,20 +186,22 @@ public class Maze {
             }
         }
 
-        if ((row + 1) < rows && (column - 1) >= 0) {
-            if (currentIsObstacle(row + 1, column - 1)) {
-                neighbors++;
-            }
-        }
         if ((row + 1) < rows) {
+
+            if ((column - 1) >= 0) {
+                if (currentIsObstacle(row + 1, column - 1)) {
+                    neighbors++;
+                }
+            }
             if (currentIsObstacle(row + 1, column)) {
                 neighbors++;
             }
-        }
-        if ((row + 1) < rows && (column + 1) < columns) {
-            if (currentIsObstacle(row + 1, column + 1)) {
-                neighbors++;
+            if ((column + 1) < columns) {
+                if (currentIsObstacle(row + 1, column + 1)) {
+                    neighbors++;
+                }
             }
+
         }
 
         return neighbors;
