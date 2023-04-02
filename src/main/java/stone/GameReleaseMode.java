@@ -13,7 +13,7 @@ import processing.core.PApplet;
 
 public class GameReleaseMode {
     public static void run() {
-        Maze maze = new Maze(MazeOption._03);
+        Maze maze = new Maze03();
         Tree tree = new Tree(maze);
 
         Instant start = Instant.now();
@@ -30,7 +30,7 @@ public class GameReleaseMode {
 
         System.out.println(output.size() + " paths | " + duration + " ms | " + output.get(0).length() + " moves");
 
-        String fileName = "src/main/java/stone/solutions/release/solutions_maze" + maze.option + ".txt";
+        String fileName = "src/main/java/stone/solutions/release/solutions_maze_" + maze.option + ".txt";
         File file = new File(fileName);
         OutputStream outputStream;
 

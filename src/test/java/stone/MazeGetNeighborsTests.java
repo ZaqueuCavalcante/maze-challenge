@@ -8,7 +8,7 @@ public class MazeGetNeighborsTests {
     @Test
     public void should_get_neighbors_for_the_maze_01_state_0() {
         // Arrange / Act
-        Maze maze = new Maze(MazeOption._01);
+        Maze maze = new Maze01();
 
         // Assert
         assertThat(maze.currentNeighbors[0]).isEqualTo(new int[] { 0, 0, 0, 1, 1, 1, 0, 0 });
@@ -23,7 +23,7 @@ public class MazeGetNeighborsTests {
     @Test
     public void should_get_neighbors_for_the_maze_01_state_1() {
         // Arrange / Act
-        Maze maze = new Maze(MazeOption._01);
+        Maze maze = new Maze01();
         maze.shift();
 
         // Assert
@@ -39,7 +39,7 @@ public class MazeGetNeighborsTests {
     @Test
     public void should_get_neighbors_for_the_maze_01_state_2() {
         // Arrange / Act
-        Maze maze = new Maze(MazeOption._01);
+        Maze maze = new Maze01();
         maze.shift();
         maze.shift();
 

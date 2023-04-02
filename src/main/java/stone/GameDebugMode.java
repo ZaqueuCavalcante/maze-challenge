@@ -7,7 +7,7 @@ public class GameDebugMode extends Game {
     Tree tree;
 
     public void settings() {
-        maze = new Maze(MazeOption._02);
+        maze = new Maze02();
         tree = new Tree(maze);
 
         int[] mazeSizes = maze.getDrawSizes();
@@ -32,7 +32,7 @@ public class GameDebugMode extends Game {
 
                 Collections.sort(output, (a, b) -> Integer.compare(a.length(), b.length()));
 
-                String fileName = "src/main/java/stone/solutions/debug/solutions_maze" + maze.option + ".txt";
+                String fileName = "src/main/java/stone/solutions/debug/solutions_maze_" + maze.option + ".txt";
                 saveStrings(fileName, output.toArray(new String[0]));
 
                 System.out.println(output.size() + " paths | " + output.get(0).length() + " moves");

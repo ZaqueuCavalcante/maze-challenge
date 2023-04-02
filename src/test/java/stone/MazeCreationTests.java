@@ -8,7 +8,7 @@ public class MazeCreationTests {
     @Test
     public void should_create_a_new_maze_01_with_correct_rows_and_columns() {
         // Arrange / Act
-        Maze maze = new Maze(MazeOption._01);
+        Maze maze = new Maze01();
 
         // Assert
         assertThat(maze.rows).isEqualTo(7);
@@ -18,7 +18,7 @@ public class MazeCreationTests {
     @Test
     public void should_create_a_new_maze_01_with_correct_start_cell() {
         // Arrange / Act
-        Maze maze = new Maze(MazeOption._01);
+        Maze maze = new Maze01();
 
         // Assert
         assertThat(maze.startCell.row).isEqualTo(0);
@@ -29,7 +29,7 @@ public class MazeCreationTests {
     @Test
     public void should_create_a_new_maze_01_with_correct_end_cell() {
         // Arrange / Act
-        Maze maze = new Maze(MazeOption._01);
+        Maze maze = new Maze01();
 
         // Assert
         assertThat(maze.endCell.row).isEqualTo(6);
@@ -40,7 +40,7 @@ public class MazeCreationTests {
     @Test
     public void should_create_a_new_maze_01_with_correct_current_initial_state() {
         // Arrange / Act
-        Maze maze = new Maze(MazeOption._01);
+        Maze maze = new Maze01();
 
         // Assert
         assertThat(maze.current[0]).isEqualTo(new int[] { 3, 0, 0, 0, 0, 0, 0, 0 });
@@ -55,7 +55,7 @@ public class MazeCreationTests {
     @Test
     public void should_create_a_new_maze_01_with_correct_next_initial_state() {
         // Arrange / Act
-        Maze maze = new Maze(MazeOption._01);
+        Maze maze = new Maze01();
 
         // Assert
         assertThat(maze.next[0]).isEqualTo(new int[] { 3, 0, 0, 0, 0, 0, 0, 0 });

@@ -8,7 +8,7 @@ public class PlayerUpdateMoveOptionsTests {
     @Test
     public void should_set_the_player_move_options_on_maze_01_initial_state() {
         // Arrange
-        Maze maze = new Maze(MazeOption._01);
+        Maze maze = new Maze01();
         Player player = new Player(maze.startCell.row, maze.startCell.column);
 
         // Act

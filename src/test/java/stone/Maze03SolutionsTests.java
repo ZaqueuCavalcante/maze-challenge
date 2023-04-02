@@ -15,7 +15,7 @@ public class Maze03SolutionsTests {
     @Test
     public void should_test_one_correct_solution_for_maze_03() {
         // Arrange
-        Maze maze = new Maze(MazeOption._03);
+        Maze maze = new Maze03();
         String path = "RRRRRRRRRRRRRRRRDRRRDDURURRLRDDULURDRDURRRLRDLDURUDURDDDDUDDDDRRDURRDRDDRDRDDURRDRDDRRRDRRRRURLUULLDDLRRRRRRRDRLRDDDRDRULRURRRRDURLLLLRRRDDDDDRRRRRRRRRRRDUUUURRRRLDRDDDDRRLRDDRRDLRRRRRDRRRRLRRDRDDRLDDRDDURRURRRUURRRDRDUURDRDDRDDDRRURUDRRDURDRRRRRRDDRRDDDRRRURDURDUDDDRRDRRDLDDLDDRDDRRRULRDRRRDDDDDURDRUDLRRRRRR";
 
         // Act
@@ -28,7 +28,7 @@ public class Maze03SolutionsTests {
     @Test
     public void should_test_one_wrong_solution_for_maze_03() {
         // Arrange
-        Maze maze = new Maze(MazeOption._03);
+        Maze maze = new Maze03();
         String path = "RRDDRDRURRRRDRRRDDRRDDDURRDRRUDRDRLDUDDDDDRRDDRRDDRDRLUDRR";
 
         // Act
@@ -53,7 +53,7 @@ public class Maze03SolutionsTests {
 
         for (String path : paths) {
             // Arrange
-            Maze maze = new Maze(MazeOption._03);
+            Maze maze = new Maze03();
 
             // Act
             boolean isSolution = maze.isSolution(path);

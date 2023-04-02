@@ -15,7 +15,7 @@ public class Maze02SolutionsTests {
     @Test
     public void should_test_one_correct_solution_for_maze_02() {
         // Arrange
-        Maze maze = new Maze(MazeOption._02);
+        Maze maze = new Maze02();
         String path = "RRRRRRRRRRRRRRRRRRRRRRRRRRRLRLRDLDRRRRDRRRDLDRRRDRRRDDLRDLRURRRDDDUDDRURURUDUUUDRDRURURDDDLDRDDRDRRDDLDDDDRRUUUDULDLRDDURDDDRLRDRRRRDDDRDUDRRDRRRRRULDRRDDRURDLDRDDURDRDRURURDDDRRDUDRRDRRRULRRDLDLDRRDULLRDRRDDDDLURDLUDDLRDDULDLRLLDRRRDDRDUULDDRDDDDDDURRUUDDDDDDLLLRDDDDUDRR";
 
         // Act
@@ -28,7 +28,7 @@ public class Maze02SolutionsTests {
     @Test
     public void should_test_one_of_best_solutions_for_maze_02() {
         // Arrange
-        Maze maze = new Maze(MazeOption._02);
+        Maze maze = new Maze02();
         String path = "RDDRRDRDDRRRDURDRRRDRRDRRUDRUDRRDRDRDDDRDRDLDLRRDRDDRDDRDDRURRDLRLUDRDRRRRRDDRRRRUDRDDRRUDDLRDDRRDRDLDRLDLDRDURUUULRURLRDDRDDDLDDRRRDURDDDUUUDDRDDLRULDRUDRRRUDLRDRRLDDDRRULRDDDLDLRDRDLRRULDRRRUDDRLDRRDDDRDLDRDRRRDUDRURRLRLRRRRRRRUDULDDRUURURLURURDRRLDDRRRDDRRRULLRDDDDUDRR";
 
         // Act
@@ -41,7 +41,7 @@ public class Maze02SolutionsTests {
     @Test
     public void should_test_another_of_best_solutions_for_maze_02() {
         // Arrange
-        Maze maze = new Maze(MazeOption._02);
+        Maze maze = new Maze02();
         String path = "DRRRRDRRLRDDRDRDRLRDRRRRRDRRUDRRDRDRDDDRDDRRDRLLDDDRRDDRDDRURDRUDLDURDRRRRRDRDRRURDDRRDRLRDLRDDRRDRURRDLLULRDLDDRULRURLRDDRDDDUUDUDLDDDRRDDDRRURDLDRRDULUDRRRRDRLLRRLDDDRURUDDDDLDLRDRDLRRLUDRRURDUDDDRRDDDDLRRDDRRLRRDRRURLDURRRRRRRUDDLURDRUUURUDRDUURDUDDRRRDDRRRULLRDDDDUDRR";
 
         // Act
@@ -54,7 +54,7 @@ public class Maze02SolutionsTests {
     @Test
     public void should_test_one_wrong_solution_for_maze_02() {
         // Arrange
-        Maze maze = new Maze(MazeOption._02);
+        Maze maze = new Maze02();
         String path = "RRDDRDRURRRRDRRRDDRRDDDURRDRRUDRDRLDUDDDDDRRDDRRDDRDRLUDRR";
 
         // Act
@@ -79,7 +79,7 @@ public class Maze02SolutionsTests {
 
         for (String path : paths) {
             // Arrange
-            Maze maze = new Maze(MazeOption._02);
+            Maze maze = new Maze02();
 
             // Act
             boolean isSolution = maze.isSolution(path);

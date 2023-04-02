@@ -8,7 +8,7 @@ public class MazeShiftTests {
     @Test
     public void should_shift_the_maze_01_to_the_state_3() {
         // Arrange
-        Maze maze = new Maze(MazeOption._01);
+        Maze maze = new Maze01();
 
         // Act
         maze.shift();
@@ -27,7 +27,7 @@ public class MazeShiftTests {
     @Test
     public void should_shift_the_maze_01_to_the_state_4() {
         // Arrange
-        Maze maze = new Maze(MazeOption._01);
+        Maze maze = new Maze01();
 
         // Act
         maze.shift();
@@ -47,7 +47,7 @@ public class MazeShiftTests {
     @Test
     public void should_shift_the_maze_01_to_the_state_5() {
         // Arrange
-        Maze maze = new Maze(MazeOption._01);
+        Maze maze = new Maze01();
 
         // Act
         maze.shift();
@@ -68,7 +68,7 @@ public class MazeShiftTests {
     @Test
     public void should_shift_the_maze_01_to_the_state_6() {
         // Arrange
-        Maze maze = new Maze(MazeOption._01);
+        Maze maze = new Maze01();
 
         // Act
         maze.shift();

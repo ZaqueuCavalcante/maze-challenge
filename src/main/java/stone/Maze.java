@@ -8,8 +8,8 @@ import java.io.InputStream;
 import processing.core.PApplet;
 import processing.core.PConstants;
 
-public class Maze {
-    MazeOption option;
+public abstract class Maze {
+    String option;
 
     int rows;
     int columns;
@@ -23,12 +23,11 @@ public class Maze {
     int[][] currentNeighbors;
     boolean showNeighbors;
 
-    public Maze(MazeOption option) {
+    public Maze(String option) {
         this.option = option;
-
         showNeighbors = false;
 
-        File file = new File("src/main/java/stone/mazes/maze" + option + ".txt");
+        File file = new File("src/main/java/stone/data/maze_" + option + ".txt");
         InputStream input;
 
         try {
@@ -80,72 +79,14 @@ public class Maze {
         for (int row = 0; row < rows; row++) {
             for (int column = 0; column < columns; column++) {
                 int neighbors = currentNeighbors[row][column];
-
-                switch (option) {
-                    case _00:
-                        useMaze00Rules(neighbors, row, column);
-                        break;
-                    case _01:
-                        useMaze01Rules(neighbors, row, column);
-                        break;
-                    case _02:
-                        useMaze02Rules(neighbors, row, column);
-                        break;
-                    case _03:
-                        useMaze03Rules(neighbors, row, column);
-                        break;
-                }
+                useRules(neighbors, row, column);
             }
         }
     }
 
-    private void useMaze00Rules(int neighbors, int row, int column) {
-        if (currentIsEmpty(row, column)) {
-            if (neighbors == 2 || neighbors == 3) {
-                next[row][column] = CellType.OBSTACLE;
-            }
-        } else if (currentIsObstacle(row, column)) {
-            if (neighbors == 4 || neighbors == 5) {
-                next[row][column] = CellType.OBSTACLE;
-            }
-        }
-    }
+    protected abstract void useRules(int neighbors, int row, int column);
 
-    private void useMaze01Rules(int neighbors, int row, int column) {
-        if (currentIsEmpty(row, column)) {
-            if (neighbors == 2 || neighbors == 3) {
-                next[row][column] = CellType.OBSTACLE;
-            }
-        } else if (currentIsObstacle(row, column)) {
-            if (neighbors == 4 || neighbors == 5 || neighbors == 6) {
-                next[row][column] = CellType.OBSTACLE;
-            }
-        }
-    }
-
-    private void useMaze02Rules(int neighbors, int row, int column) {
-        if (currentIsEmpty(row, column)) {
-            if (neighbors == 2 || neighbors == 3 || neighbors == 4) {
-                next[row][column] = CellType.OBSTACLE;
-            }
-        } else if (currentIsObstacle(row, column)) {
-            if (neighbors == 4 || neighbors == 5) {
-                next[row][column] = CellType.OBSTACLE;
-            }
-        }
-    }
-
-    private void useMaze03Rules(int neighbors, int row, int column) {
-        if (currentIsEmpty(row, column)) {
-            if (neighbors == 2 || neighbors == 3 || neighbors == 4) {
-                next[row][column] = CellType.OBSTACLE;
-            }
-        } else if (currentIsObstacle(row, column)) {
-            if (neighbors == 4 || neighbors == 5) {
-                next[row][column] = CellType.OBSTACLE;
-            }
-        }
-    }
+    public abstract int[] getDrawSizes();
 
     private void calculateNeighbors() {
         currentNeighbors = new int[rows][columns];
@@ -258,21 +199,6 @@ public class Maze {
         int left = ((column - 1) >= 0 && next[row][column - 1] != CellType.OBSTACLE) ? 1 : 0;
 
         return new int[] { up, right, down, left };
-    }
-
-    public int[] getDrawSizes() {
-        switch (option) {
-            case _00:
-                return new int[] { 600, 500, 100 };
-            case _01:
-                return new int[] { 500, 450, 50 };
-            case _02:
-                return new int[] { 1305, 1010, 15 };
-            case _03:
-                return new int[] { 2165, 1010, 16 };
-            default:
-                return new int[] { 100, 100, 10 };
-        }
     }
 
     public void draw(Game game) {
