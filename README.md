@@ -16,7 +16,7 @@ Solução para o Desafio do Labirinto Autômato Stone.
 
 - Instale a JDK 11 ou superior
 - Escolha o GameMode
-- Escolhar o MazeOption
+- Dentro do GameMode escolhido, escolhar o MazeOption
 - Inicie o programa
 
 ## Chutes pra fase 2
@@ -64,13 +64,10 @@ Assim, a cada gareção, os caminhos que se aproximam mais do final do labirinto
 
 Esse filtro eh feito pegando os nos da "fronteira", ou seja, mais a direita e mais abaixo no labirinto.
 
-Perceba que varios nod 
+Perceba que varios nod
 
 Uma das soluções pra esse é "DUDDURDRR";
-
 
 ## References
 
 http://cell-auto.com/optimisation/
-
-

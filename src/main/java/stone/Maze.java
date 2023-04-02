@@ -90,29 +90,69 @@ public abstract class Maze {
 
     private void calculateNeighbors() {
         currentNeighbors = new int[rows][columns];
-        for (int row = 0; row < rows; row++) {
-            for (int column = 0; column < columns; column++) {
+
+        for (int column = 0; column < columns; column++) {
+            currentNeighbors[0][column] = getNeighborsTopRow(0, column);
+            currentNeighbors[rows - 1][column] = getNeighborsDownRow(rows - 1, column);
+        }
+
+        for (int row = 1; row < rows - 1; row++) {
+            currentNeighbors[row][0] = getNeighborsLeftColumn(row, 0);
+            currentNeighbors[row][columns - 1] = getNeighborsRightColumn(row, columns - 1);
+        }
+
+        for (int row = 1; row < rows - 1; row++) {
+            for (int column = 1; column < columns - 1; column++) {
                 currentNeighbors[row][column] = getNeighbors(row, column);
             }
         }
     }
 
-    private int getNeighbors(int row, int column) {
+    private int getNeighborsTopRow(int row, int column) {
         int neighbors = 0;
 
-        if ((row - 1) >= 0) {
-            if ((column - 1) >= 0) {
-                if (currentIsObstacle(row - 1, column - 1)) {
-                    neighbors++;
-                }
-            }
-            if (currentIsObstacle(row - 1, column)) {
+        if ((column - 1) >= 0) {
+            if (currentIsObstacle(row, column - 1)) {
                 neighbors++;
             }
-            if ((column + 1) < columns) {
-                if (currentIsObstacle(row - 1, column + 1)) {
-                    neighbors++;
-                }
+        }
+        if ((column + 1) < columns) {
+            if (currentIsObstacle(row, column + 1)) {
+                neighbors++;
+            }
+        }
+
+        if ((column - 1) >= 0) {
+            if (currentIsObstacle(row + 1, column - 1)) {
+                neighbors++;
+            }
+        }
+        if (currentIsObstacle(row + 1, column)) {
+            neighbors++;
+        }
+        if ((column + 1) < columns) {
+            if (currentIsObstacle(row + 1, column + 1)) {
+                neighbors++;
+            }
+        }
+
+        return neighbors;
+    }
+
+    private int getNeighborsDownRow(int row, int column) {
+        int neighbors = 0;
+
+        if ((column - 1) >= 0) {
+            if (currentIsObstacle(row - 1, column - 1)) {
+                neighbors++;
+            }
+        }
+        if (currentIsObstacle(row - 1, column)) {
+            neighbors++;
+        }
+        if ((column + 1) < columns) {
+            if (currentIsObstacle(row - 1, column + 1)) {
+                neighbors++;
             }
         }
 
@@ -127,20 +167,93 @@ public abstract class Maze {
             }
         }
 
+        return neighbors;
+    }
+
+    private int getNeighborsLeftColumn(int row, int column) {
+        int neighbors = 0;
+
+        if ((row - 1) >= 0) {
+            if (currentIsObstacle(row - 1, column)) {
+                neighbors++;
+            }
+            if (currentIsObstacle(row - 1, column + 1)) {
+                neighbors++;
+            }
+        }
+
+        if (currentIsObstacle(row, column + 1)) {
+            neighbors++;
+        }
+
         if ((row + 1) < rows) {
-            if ((column - 1) >= 0) {
-                if (currentIsObstacle(row + 1, column - 1)) {
-                    neighbors++;
-                }
+            if (currentIsObstacle(row + 1, column)) {
+                neighbors++;
+            }
+            if (currentIsObstacle(row + 1, column + 1)) {
+                neighbors++;
+            }
+        }
+
+        return neighbors;
+    }
+
+    private int getNeighborsRightColumn(int row, int column) {
+        int neighbors = 0;
+
+        if ((row - 1) >= 0) {
+            if (currentIsObstacle(row - 1, column - 1)) {
+                neighbors++;
+            }
+            if (currentIsObstacle(row - 1, column)) {
+                neighbors++;
+            }
+        }
+
+        if (currentIsObstacle(row, column - 1)) {
+            neighbors++;
+        }
+
+        if ((row + 1) < rows) {
+            if (currentIsObstacle(row + 1, column - 1)) {
+                neighbors++;
             }
             if (currentIsObstacle(row + 1, column)) {
                 neighbors++;
             }
-            if ((column + 1) < columns) {
-                if (currentIsObstacle(row + 1, column + 1)) {
-                    neighbors++;
-                }
-            }
+        }
+
+        return neighbors;
+    }
+
+    private int getNeighbors(int row, int column) {
+        int neighbors = 0;
+
+        if (currentIsObstacle(row - 1, column - 1)) {
+            neighbors++;
+        }
+        if (currentIsObstacle(row - 1, column)) {
+            neighbors++;
+        }
+        if (currentIsObstacle(row - 1, column + 1)) {
+            neighbors++;
+        }
+
+        if (currentIsObstacle(row, column - 1)) {
+            neighbors++;
+        }
+        if (currentIsObstacle(row, column + 1)) {
+            neighbors++;
+        }
+
+        if (currentIsObstacle(row + 1, column - 1)) {
+            neighbors++;
+        }
+        if (currentIsObstacle(row + 1, column)) {
+            neighbors++;
+        }
+        if (currentIsObstacle(row + 1, column + 1)) {
+            neighbors++;
         }
 
         return neighbors;
