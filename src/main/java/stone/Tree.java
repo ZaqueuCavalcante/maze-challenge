@@ -110,6 +110,14 @@ public class Tree {
         level++;
     }
 
+    // Only for tests
+    public void goToLevel(int targetLevel, Maze maze) {
+        while (this.level < targetLevel) {
+            this.goToNextLevel(maze);
+            maze.shift();
+        }
+    }
+
     public ArrayList<String> getSolutionsPaths() {
         ArrayList<String> paths = new ArrayList<String>();
 
