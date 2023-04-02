@@ -187,7 +187,6 @@ public class Maze {
         }
 
         if ((row + 1) < rows) {
-
             if ((column - 1) >= 0) {
                 if (currentIsObstacle(row + 1, column - 1)) {
                     neighbors++;
@@ -201,7 +200,6 @@ public class Maze {
                     neighbors++;
                 }
             }
-
         }
 
         return neighbors;
@@ -260,6 +258,21 @@ public class Maze {
         int left = ((column - 1) >= 0 && next[row][column - 1] != CellType.OBSTACLE) ? 1 : 0;
 
         return new int[] { up, right, down, left };
+    }
+
+    public int[] getDrawSizes() {
+        switch (option) {
+            case _00:
+                return new int[] { 600, 500, 100 };
+            case _01:
+                return new int[] { 500, 450, 50 };
+            case _02:
+                return new int[] { 1305, 1010, 15 };
+            case _03:
+                return new int[] { 2165, 1010, 16 };
+            default:
+                return new int[] { 100, 100, 10 };
+        }
     }
 
     public void draw(Game game) {

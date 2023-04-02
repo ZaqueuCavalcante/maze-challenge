@@ -1,6 +1,6 @@
 package stone;
 
-enum GameMode {
+enum Mode {
     FUN,
     DEBUG,
     RELEASE,

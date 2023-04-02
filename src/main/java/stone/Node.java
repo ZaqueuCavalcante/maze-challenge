@@ -2,7 +2,6 @@ package stone;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class Node {
     int row;
@@ -57,12 +56,12 @@ public class Node {
     @Override
     public boolean equals(Object other) {
         Node node = (Node) other;
-        return row == node.row && column == node.column;
+        return id == node.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(row, column);
+        return id;
     }
 
     public Node getUpNode() {
