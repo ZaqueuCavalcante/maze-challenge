@@ -18,6 +18,6 @@ public class Maze04 extends Maze {
     }
 
     public int[] getDrawSizes() {
-        return new int[] { 2430, 980, 4 };
+        return new int[] { 970, 930, 4 };
     }
 }
