@@ -67,3 +67,10 @@ Esse filtro eh feito pegando os nos da "fronteira", ou seja, mais a direita e ma
 Perceba que varios nod 
 
 Uma das soluções pra esse é "DUDDURDRR";
+
+
+## References
+
+http://cell-auto.com/optimisation/
+
+

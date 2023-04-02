@@ -1,53 +1,56 @@
 package stone;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 
 public class Tree {
     Node root;
 
     int level;
-    ArrayList<Node> levelNodes;
+    HashMap<Integer, Node> levelNodes;
 
-    ArrayList<Node> solutions;
+    HashSet<Node> solutions;
+
+    int[][] ids;
 
     boolean showPathsOnMaze;
 
     public Tree(Maze maze) {
-        root = new Node(maze.startCell.row, maze.startCell.column, null);
+        int id = 0;
+        ids = new int[maze.rows][maze.columns];
+        for (int row = 0; row < maze.rows; row++) {
+            for (int column = 0; column < maze.columns; column++) {
+                ids[row][column] = id;
+                id++;
+            }
+        }
+
+        root = new Node(maze.startCell.row, maze.startCell.column, null, ids);
 
         level = 0;
-        levelNodes = new ArrayList<Node>();
-        levelNodes.add(root);
+        levelNodes = new HashMap<Integer, Node>();
+        levelNodes.put(root.id, root);
 
-        solutions = new ArrayList<Node>();
+        solutions = new HashSet<>();
 
         showPathsOnMaze = true;
     }
 
-    public void goToNextLevel(ArrayList<Node> newNodes) {
-        levelNodes = newNodes;
-        level++;
-    }
+    public HashSet<Node> getFilteredNodes() {
+        HashSet<Node> filteredNodes = new HashSet<>();
 
-    public ArrayList<Node> getFilteredNodes() {
-        ArrayList<Node> filteredNodes = new ArrayList<Node>();
-
-        int maxRow = levelNodes.stream()
+        int maxRow = levelNodes.values().stream()
                 .mapToInt(v -> v.row)
                 .max().getAsInt();
 
-        int maxColumn = levelNodes.stream()
+        int maxColumn = levelNodes.values().stream()
                 .mapToInt(v -> v.column)
                 .max().getAsInt();
 
         for (int row = 0; row <= maxRow; row++) {
             for (int column = maxColumn; column >= 0; column--) {
-                final int finalRow = row;
-                final int finalColumn = column;
-                Node node = levelNodes.stream()
-                        .filter(n -> n.row == finalRow && n.column == finalColumn)
-                        .findFirst()
-                        .orElse(null);
+                Node node = levelNodes.getOrDefault(ids[row][column], null);
 
                 if (node == null) {
                     continue;
@@ -60,21 +63,13 @@ public class Tree {
 
         for (int column = 0; column <= maxColumn; column++) {
             for (int row = maxRow; row >= 0; row--) {
-                final int finalRow = row;
-                final int finalColumn = column;
-
-                boolean nodeAlreadyFiltered = filteredNodes.stream()
-                        .anyMatch(n -> n.row == finalRow && n.column == finalColumn);
-
+                boolean nodeAlreadyFiltered = filteredNodes.contains(new Node(row, column, null));
                 if (nodeAlreadyFiltered) {
                     row = -1;
                     continue;
                 }
 
-                Node node = levelNodes.stream()
-                        .filter(n -> n.row == finalRow && n.column == finalColumn)
-                        .findFirst()
-                        .orElse(null);
+                Node node = levelNodes.getOrDefault(ids[row][column], null);
 
                 if (node == null) {
                     continue;
@@ -89,12 +84,12 @@ public class Tree {
     }
 
     public void goToNextLevel(Maze maze) {
-        ArrayList<Node> newNodes = new ArrayList<Node>();
-        ArrayList<Node> filteredNodes = getFilteredNodes();
+        HashMap<Integer, Node> newNodes = new HashMap<Integer, Node>();
+        HashSet<Node> filteredNodes = getFilteredNodes();
 
         for (Node levelNode : filteredNodes) {
             int[] directions = maze.getNextDirections(levelNode.row, levelNode.column);
-            levelNode.addChildren(directions[0], directions[1], directions[2], directions[3]);
+            levelNode.addChildren(directions[0], directions[1], directions[2], directions[3], ids);
 
             for (int i = 0; i < 4; i++) {
                 Node node = levelNode.children.get(i);
@@ -107,7 +102,7 @@ public class Tree {
                     solutions.add(node);
                 }
 
-                newNodes.add(node);
+                newNodes.put(node.id, node);
             }
         }
 
@@ -135,7 +130,7 @@ public class Tree {
 
         game.strokeWeight(2.50f);
 
-        for (Node node : levelNodes) {
+        for (Node node : levelNodes.values()) {
             float x1 = game.maze.startCell.column * game.CIZE + game.CIZE / 2;
             float y1 = game.maze.startCell.row * game.CIZE + game.CIZE / 2;
             float x2 = 0;

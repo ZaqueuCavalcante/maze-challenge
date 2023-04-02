@@ -18,7 +18,7 @@ public class Game extends PApplet {
     Player player;
 
     public void settings() {
-        maze = new Maze(MazeOption._02);
+        maze = new Maze(MazeOption._03);
         tree = new Tree(maze);
 
         if (mode == GameMode.RELEASE) {
@@ -127,7 +127,7 @@ public class Game extends PApplet {
             goToNextStep();
 
             if (tree.solutions.size() > 0) {
-                tree.levelNodes = tree.solutions;
+                // tree.levelNodes = tree.solutions;
 
                 ArrayList<String> output = tree.getSolutionsPaths();
 

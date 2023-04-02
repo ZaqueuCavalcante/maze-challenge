@@ -2,10 +2,13 @@ package stone;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Node {
     int row;
     int column;
+
+    int id;
 
     Node parent;
 
@@ -19,6 +22,14 @@ public class Node {
         children = new ArrayList<Node>();
     }
 
+    public Node(int row, int column, Node parent, int[][] ids) {
+        this.row = row;
+        this.column = column;
+        this.parent = parent;
+        children = new ArrayList<Node>();
+        this.id = ids[row][column];
+    }
+
     public void addChildren(int up, int right, int down, int left) {
         Node upNode = (up == 1) ? new Node(row - 1, column, this) : null;
         Node rightNode = (right == 1) ? new Node(row, column + 1, this) : null;
@@ -29,6 +40,29 @@ public class Node {
         children.add(rightNode);
         children.add(downNode);
         children.add(leftNode);
+    }
+
+    public void addChildren(int up, int right, int down, int left, int[][] ids) {
+        Node upNode = (up == 1) ? new Node(row - 1, column, this, ids) : null;
+        Node rightNode = (right == 1) ? new Node(row, column + 1, this, ids) : null;
+        Node downNode = (down == 1) ? new Node(row + 1, column, this, ids) : null;
+        Node leftNode = (left == 1) ? new Node(row, column - 1, this, ids) : null;
+
+        children.add(upNode);
+        children.add(rightNode);
+        children.add(downNode);
+        children.add(leftNode);
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        Node node = (Node) other;
+        return row == node.row && column == node.column;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(row, column);
     }
 
     public Node getUpNode() {
