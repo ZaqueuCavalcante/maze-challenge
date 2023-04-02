@@ -4,4 +4,5 @@ enum Mode {
     FUN,
     DEBUG,
     RELEASE,
+    MAKER,
 }

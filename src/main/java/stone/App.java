@@ -3,7 +3,7 @@ package stone;
 import processing.core.PApplet;
 
 public class App {
-    static Mode mode = Mode.RELEASE;
+    static Mode mode = Mode.DEBUG;
 
     public static void main(String[] args) {
         if (mode == Mode.FUN) {
@@ -14,6 +14,9 @@ public class App {
         }
         if (mode == Mode.RELEASE) {
             releaseMode();
+        }
+        if (mode == Mode.MAKER) {
+            makerMode();
         }
     }
 
@@ -27,5 +30,9 @@ public class App {
 
     public static void releaseMode() {
         GameReleaseMode.run();
+    }
+
+    public static void makerMode() {
+        PApplet.main(new String[] { "stone.MazeGenerator" });
     }
 }
