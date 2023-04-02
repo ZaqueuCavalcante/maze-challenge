@@ -14,31 +14,12 @@ public class Node {
     // Up, Right, Down, Left
     public ArrayList<Node> children;
 
-    public Node(int row, int column, Node parent) {
-        this.row = row;
-        this.column = column;
-        this.parent = parent;
-        children = new ArrayList<Node>();
-    }
-
     public Node(int row, int column, Node parent, int[][] ids) {
         this.row = row;
         this.column = column;
         this.parent = parent;
         children = new ArrayList<Node>();
         this.id = ids[row][column];
-    }
-
-    public void addChildren(int up, int right, int down, int left) {
-        Node upNode = (up == 1) ? new Node(row - 1, column, this) : null;
-        Node rightNode = (right == 1) ? new Node(row, column + 1, this) : null;
-        Node downNode = (down == 1) ? new Node(row + 1, column, this) : null;
-        Node leftNode = (left == 1) ? new Node(row, column - 1, this) : null;
-
-        children.add(upNode);
-        children.add(rightNode);
-        children.add(downNode);
-        children.add(leftNode);
     }
 
     public void addChildren(int up, int right, int down, int left, int[][] ids) {

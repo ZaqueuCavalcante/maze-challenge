@@ -63,7 +63,7 @@ public class Tree {
 
         for (int column = 0; column <= maxColumn; column++) {
             for (int row = maxRow; row >= 0; row--) {
-                boolean nodeAlreadyFiltered = filteredNodes.contains(new Node(row, column, null));
+                boolean nodeAlreadyFiltered = filteredNodes.contains(new Node(row, column, null, ids));
                 if (nodeAlreadyFiltered) {
                     row = -1;
                     continue;

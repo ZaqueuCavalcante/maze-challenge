@@ -5,6 +5,9 @@ import static org.assertj.core.api.Assertions.*;
 import org.junit.Test;
 
 public class NodeAddChildrenTests {
+    Maze maze = new Maze01();
+    Tree tree = new Tree(maze);
+
     @Test
     public void should_create_a_root_node() {
         // Arrange
@@ -12,7 +15,7 @@ public class NodeAddChildrenTests {
         int column = 3;
 
         // Act
-        Node rootNode = new Node(row, column, null);
+        Node rootNode = new Node(row, column, null, tree.ids);
 
         // Assert
         assertThat(rootNode.row).isEqualTo(row);
@@ -30,8 +33,8 @@ public class NodeAddChildrenTests {
         int left = 0;
 
         // Act
-        Node rootNode = new Node(2, 3, null);
-        rootNode.addChildren(up, right, down, left);
+        Node rootNode = new Node(2, 3, null, tree.ids);
+        rootNode.addChildren(up, right, down, left, tree.ids);
 
         // Assert
         assertThat(rootNode.children).hasSize(4);
@@ -50,8 +53,8 @@ public class NodeAddChildrenTests {
         int left = 0;
 
         // Act
-        Node rootNode = new Node(2, 3, null);
-        rootNode.addChildren(up, right, down, left);
+        Node rootNode = new Node(2, 3, null, tree.ids);
+        rootNode.addChildren(up, right, down, left, tree.ids);
 
         // Assert
         assertThat(rootNode.children).hasSize(4);
@@ -74,8 +77,8 @@ public class NodeAddChildrenTests {
         int left = 0;
 
         // Act
-        Node rootNode = new Node(2, 3, null);
-        rootNode.addChildren(up, right, down, left);
+        Node rootNode = new Node(2, 3, null, tree.ids);
+        rootNode.addChildren(up, right, down, left, tree.ids);
 
         // Assert
         assertThat(rootNode.children).hasSize(4);
@@ -98,8 +101,8 @@ public class NodeAddChildrenTests {
         int left = 0;
 
         // Act
-        Node rootNode = new Node(2, 3, null);
-        rootNode.addChildren(up, right, down, left);
+        Node rootNode = new Node(2, 3, null, tree.ids);
+        rootNode.addChildren(up, right, down, left, tree.ids);
 
         // Assert
         assertThat(rootNode.children).hasSize(4);
@@ -122,8 +125,8 @@ public class NodeAddChildrenTests {
         int left = 1;
 
         // Act
-        Node rootNode = new Node(2, 3, null);
-        rootNode.addChildren(up, right, down, left);
+        Node rootNode = new Node(2, 3, null, tree.ids);
+        rootNode.addChildren(up, right, down, left, tree.ids);
 
         // Assert
         assertThat(rootNode.children).hasSize(4);
@@ -146,8 +149,8 @@ public class NodeAddChildrenTests {
         int left = 0;
 
         // Act
-        Node rootNode = new Node(2, 3, null);
-        rootNode.addChildren(up, right, down, left);
+        Node rootNode = new Node(2, 3, null, tree.ids);
+        rootNode.addChildren(up, right, down, left, tree.ids);
 
         // Assert
         assertThat(rootNode.children).hasSize(4);
@@ -174,8 +177,8 @@ public class NodeAddChildrenTests {
         int left = 0;
 
         // Act
-        Node rootNode = new Node(2, 3, null);
-        rootNode.addChildren(up, right, down, left);
+        Node rootNode = new Node(2, 3, null, tree.ids);
+        rootNode.addChildren(up, right, down, left, tree.ids);
 
         // Assert
         assertThat(rootNode.children).hasSize(4);
@@ -202,8 +205,8 @@ public class NodeAddChildrenTests {
         int left = 1;
 
         // Act
-        Node rootNode = new Node(2, 3, null);
-        rootNode.addChildren(up, right, down, left);
+        Node rootNode = new Node(2, 3, null, tree.ids);
+        rootNode.addChildren(up, right, down, left, tree.ids);
 
         // Assert
         assertThat(rootNode.children).hasSize(4);
@@ -230,8 +233,8 @@ public class NodeAddChildrenTests {
         int left = 0;
 
         // Act
-        Node rootNode = new Node(2, 3, null);
-        rootNode.addChildren(up, right, down, left);
+        Node rootNode = new Node(2, 3, null, tree.ids);
+        rootNode.addChildren(up, right, down, left, tree.ids);
 
         // Assert
         assertThat(rootNode.children).hasSize(4);
@@ -262,8 +265,8 @@ public class NodeAddChildrenTests {
         int left = 1;
 
         // Act
-        Node rootNode = new Node(2, 3, null);
-        rootNode.addChildren(up, right, down, left);
+        Node rootNode = new Node(2, 3, null, tree.ids);
+        rootNode.addChildren(up, right, down, left, tree.ids);
 
         // Assert
         assertThat(rootNode.children).hasSize(4);
@@ -294,8 +297,8 @@ public class NodeAddChildrenTests {
         int left = 1;
 
         // Act
-        Node rootNode = new Node(2, 3, null);
-        rootNode.addChildren(up, right, down, left);
+        Node rootNode = new Node(2, 3, null, tree.ids);
+        rootNode.addChildren(up, right, down, left, tree.ids);
 
         // Assert
         assertThat(rootNode.children).hasSize(4);
