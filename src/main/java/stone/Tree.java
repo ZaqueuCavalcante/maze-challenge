@@ -133,8 +133,8 @@ public class Tree {
             return;
         }
 
-        game.fill(255, 255, 0);
-        game.stroke(255, 255, 0);
+        game.fill(255, 0, 0);
+        game.stroke(255, 0, 0);
 
         game.strokeWeight(2.50f);
 

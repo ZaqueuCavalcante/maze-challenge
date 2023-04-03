@@ -10,8 +10,6 @@ Solução para o Desafio do Labirinto Autômato Stone.
 - Ter testes automatizados para possibilitar produtividade e refatoração
 - Deixar o código genérico, a ponto de aceitar diferentes inputs e regras de propagação
 
-<img src="docs/run_tests.gif" alt= "Tests" width="530" height="481">
-
 ## Como rodar o projeto?
 
 - Instale a JDK 11 ou superior
@@ -26,48 +24,60 @@ Solução para o Desafio do Labirinto Autômato Stone.
 - Player pode se mover nas diagonais tbm
 - Células inicial e final (ou só a final) mudam de lugar a cada geração
 
-## Visualizando o problema
+## Entendendo, visualizando e resolvendo o problema
 
-O labirinto a seguir está em seu estado inicial. Ele possui 3 linhas e 4 colunas.
+Segue o primeiro labirinto do desafio:
 
-O número em cada célula representa a quantidade de vizinhos verdes dela.
+<img src="docs/maze-01-level-00.png" alt= "" width="415" height="366">
 
-<img src="docs/simple-maze.png" alt= "Simple Maze" width="350" height="250">
+Ele possui 7 linhas e 8 colunas, seguindo o modelo de propagação:
 
-Ele segue o modelo de propagação:
+- As células brancas com 2 ou 3 vizinhos viram verdes.
+- As células verdes com 4 ou 5 ou 6 vizinhos permanecem verdes. Do contrário, viram brancas.
 
-    - As células brancas com 2 ou 3 vizinhos viram verdes.
-    - As células verdes com 4 ou 5 vizinhos permanecem verdes. Do contrário, viram brancas.
+Podemos representar os caminhos possíveis no labirinto utilizando uma árvore, onde:
 
-A seguir temos a evolução do labirinto para as 5 primeiras gerações:
+- Cada nó da árvore está associado a uma única célula no labirinto.
+- Cada célula do labirinto pode estar associada a mais de um nó da árvore.
 
-<img src="docs/neighbors.gif" alt= "Neighbors" width="550" height="350">
+Para exemplificar, o estado inicial do labirinto leva à seguinte árvore:
 
-Podemos representar os caminhos válidos no labirinto utilizando uma árvore:
+<img src="docs/tree-01-level-00.png" alt= "" width="232" height="113">
 
-    - Cada nó da árvore está associado a uma única célula no labirinto.
-    - Cada célula do labirinto pode estar associada a mais de um nó da árvore.
+Na geração seguinte (nível 01), temos que:
 
-Assim, a ideia principal da solução é:
+<img src="docs/maze-01-level-01.png" alt= "" width="415" height="366">
+<img src="docs/tree-01-level-01.png" alt= "" width="383" height="189">
+
+E na próxima (nível 02):
+
+<img src="docs/maze-01-level-02.png" alt= "" width="415" height="366">
+<img src="docs/tree-01-level-02.png" alt= "" width="383" height="189">
+
+Perceba que temos um padrão aqui:
 
 `Iniciando em uma célula qualquer do labirinto, cada alteração de estado do automato gera um novo nível na árvore de caminhos.`
 
 Isso escala rapidamente, mesmo para labirintos pequenos, pois para cada direção (U, R, D, L) possível, são gerados mais 4 direções.
 
-No caso máximo, temos: 4 -> 16 -> 64 -> 256 -> 1.024 -> 4.096 -> 16.384 -> 65.536 -> 262.144 -> 1.048.576
+No caso máximo, temos: 4 -> 16 -> 64 -> 256 -> 1.024 -> 4.096 -> 16.384 -> 65.536 -> 262.144 -> 1.048.576 ...
 
-Para o labirinto acima, segue a representação em árvore para as primeiras 5 gerações:
+Podemos montar uma rotina para resolver o problema da seguinte forma:
 
-<img src="docs/maze_00_tree.png" alt= "Tree" width="600" height="500">
+- 0 ➡️ Carregue o estado inicial do labirinto e da árvore;
+- 1 ➡️ Itere sobre os nós do nível atual da árvore, filtrando um nó para cada célula mais à direita e mais à baixo do labirinto;
+- 2 ➡️ Itere sobre os nós filtrados, expandindo cada um para formar o próximo nível da árvore;
+- 3 ➡️ Se algum nó expandido for o nó objetivo (última célula do labirinto), encerre a busca;
+- 4 ➡️ Caso contrário, transicione o labirinto para o próximo estado e volte para o passo 1;
 
-Assim, a cada gareção, os caminhos que se aproximam mais do final do labirinto são mantidos, enquanto os demais são descartados.
+Perceba que o filtro do passo 1 é feito pegando os nós da "fronteira", ou seja, mais a direita e mais abaixo no labirinto.
 
-Esse filtro eh feito pegando os nos da "fronteira", ou seja, mais a direita e mais abaixo no labirinto.
+Para otimizar esse processo de filtrar os nós do nível atual, fiz o seguinte:
 
-Perceba que varios nod
+- Os nós do nível foram armazenados em um HashMap, onde a chave é um inteiro e o valor, um nó.
+- Essa chave corresponde ao id do nó. Cada nó possui um id pré-definido, com base na linha e na coluna da célula correspondente.
+- Assim, conseguimos inserir e buscar um nó do HashMap em tempo constante.
+- Já os nós filtrados são armazenados em um HashSet, onde podemos verificar se um nó já foi filtrado antes também em tempo constante.
+- Um ponto interessante aqui é que o próprio HashMap já pode filtrar os nós expandidos que já estiverem dentro dele, pois não permite duplicações de chave.
 
-Uma das soluções pra esse é "DUDDURDRR";
-
-## References
-
-http://cell-auto.com/optimisation/
+Após o filtro, iteramos sobre os nós filtrados do HashSet, expandindo cada um e formando o novo nível da árvore.
