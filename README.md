@@ -10,6 +10,8 @@ Solução para o Desafio do Labirinto Autômato Stone.
 - Ter testes automatizados para possibilitar produtividade e refatoração
 - Deixar o código genérico, a ponto de aceitar diferentes inputs e regras de propagação
 
+<img src="docs/tests.gif" alt= "" width="369" height="484">
+
 ## Como rodar o projeto?
 
 - Instale a JDK 11 ou superior
