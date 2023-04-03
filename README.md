@@ -52,7 +52,7 @@ Na geração seguinte (nível 01), temos que:
 E na próxima (nível 02):
 
 <img src="docs/maze-01-level-02.png" alt= "" width="415" height="366">
-<img src="docs/tree-01-level-02.png" alt= "" width="383" height="189">
+<img src="docs/tree-01-level-02.png" alt= "" width="1070" height="311">
 
 Perceba que temos um padrão aqui:
 
