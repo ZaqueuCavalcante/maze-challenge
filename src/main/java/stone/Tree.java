@@ -3,6 +3,7 @@ package stone;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Random;
 
 public class Tree {
     Node root;
@@ -16,7 +17,7 @@ public class Tree {
 
     boolean showPathsOnMaze;
 
-    public Tree(Maze maze) {
+    public Tree(Maze maze, int rootLifes) {
         int id = 0;
         ids = new int[maze.rows][maze.columns];
         for (int row = 0; row < maze.rows; row++) {
@@ -26,7 +27,7 @@ public class Tree {
             }
         }
 
-        root = new Node(maze.startCell.row, maze.startCell.column, null, ids);
+        root = new Node(maze.startCell.row, maze.startCell.column, null, ids, rootLifes);
 
         level = 0;
         levelNodes = new HashMap<Integer, Node>();
@@ -63,7 +64,7 @@ public class Tree {
 
         for (int column = 0; column <= maxColumn; column++) {
             for (int row = maxRow; row >= 0; row--) {
-                boolean nodeAlreadyFiltered = filteredNodes.contains(new Node(row, column, null, ids));
+                boolean nodeAlreadyFiltered = filteredNodes.contains(new Node(row, column, null, ids, 0));
                 if (nodeAlreadyFiltered) {
                     row = -1;
                     continue;
@@ -89,7 +90,27 @@ public class Tree {
 
         for (Node levelNode : filteredNodes) {
             int[] directions = maze.getNextDirections(levelNode.row, levelNode.column);
-            levelNode.addChildren(directions[0], directions[1], directions[2], directions[3], ids);
+            int up = directions[0];
+            int right = directions[1];
+            int down = directions[2];
+            int left = directions[3];
+
+            if (right != CellType.EMPTY && down != CellType.EMPTY && levelNode.lifes >= 2) {
+                if (right == CellType.OBSTACLE && down == CellType.OBSTACLE) {
+                    Random r = new Random();
+                    if (r.nextDouble() >= 0.5) {
+                        right = CellType.OBSTACLE_LIFE;
+                    } else {
+                        down = CellType.OBSTACLE_LIFE;
+                    }
+                } else if (right == CellType.OBSTACLE) {
+                    right = CellType.OBSTACLE_LIFE;
+                } else if (down == CellType.OBSTACLE) {
+                    down = CellType.OBSTACLE_LIFE;
+                }
+            }
+
+            levelNode.addChildren(up, right, down, left, ids);
 
             for (int i = 0; i < 4; i++) {
                 Node node = levelNode.children.get(i);
@@ -106,7 +127,7 @@ public class Tree {
             }
         }
 
-        System.out.println("LEVEL = " + level);
+        // System.out.println("LEVEL = " + level);
         levelNodes = newNodes;
         level++;
     }

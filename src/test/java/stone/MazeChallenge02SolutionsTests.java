@@ -30,7 +30,32 @@ public class MazeChallenge02SolutionsTests {
             Maze maze = new MazeChallenge02();
 
             // Act
-            boolean isSolution = maze.isSolution(path);
+            boolean isSolution = maze.isSolution(path, 1);
+
+            // Assert
+            assertThat(isSolution).isTrue();
+        }
+    }
+
+    @Test
+    public void should_test_many_correct_solutions_for_maze_challenge_02_using_6_lifes() {
+        File file = new File("src/test/java/stone/solutions/solutions_maze_challenge_02_using_lifes.txt");
+        InputStream input;
+        String[] paths = new String[0];
+
+        try {
+            input = new FileInputStream(file);
+            paths = PApplet.loadStrings(input);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        for (String path : paths) {
+            // Arrange
+            Maze maze = new MazeChallenge02();
+
+            // Act
+            boolean isSolution = maze.isSolution(path, 6);
 
             // Assert
             assertThat(isSolution).isTrue();

@@ -26,10 +26,10 @@ public class Player {
 
     public void updateMoveOptions(Maze maze) {
         int[] directions = maze.getNextDirections(row, column);
-        canMoveUp = directions[0] == 1;
-        canMoveRight = directions[1] == 1;
-        canMoveDown = directions[2] == 1;
-        canMoveLeft = directions[3] == 1;
+        canMoveUp = directions[0] == CellType.EMPTY;
+        canMoveRight = directions[1] == CellType.EMPTY;
+        canMoveDown = directions[2] == CellType.EMPTY;
+        canMoveLeft = directions[3] == CellType.EMPTY;
     }
 
     public void resetMoveOptions() {

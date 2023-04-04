@@ -19,7 +19,7 @@ public class Maze00SolutionsTests {
         String path = "DUDDRUDRR";
 
         // Act
-        boolean isSolution = maze.isSolution(path);
+        boolean isSolution = maze.isSolution(path, 1);
 
         // Assert
         assertThat(isSolution).isTrue();
@@ -32,7 +32,7 @@ public class Maze00SolutionsTests {
         String path = "DUDDRUDRL";
 
         // Act
-        boolean isSolution = maze.isSolution(path);
+        boolean isSolution = maze.isSolution(path, 1);
 
         // Assert
         assertThat(isSolution).isFalse();
@@ -56,7 +56,7 @@ public class Maze00SolutionsTests {
             Maze maze = new Maze00();
 
             // Act
-            boolean isSolution = maze.isSolution(path);
+            boolean isSolution = maze.isSolution(path, 1);
 
             // Assert
             assertThat(isSolution).isTrue();

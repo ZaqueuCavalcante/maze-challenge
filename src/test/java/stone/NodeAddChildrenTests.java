@@ -6,7 +6,7 @@ import org.junit.Test;
 
 public class NodeAddChildrenTests {
     Maze maze = new Maze01();
-    Tree tree = new Tree(maze);
+    Tree tree = new Tree(maze, 1);
 
     @Test
     public void should_create_a_root_node() {
@@ -15,25 +15,26 @@ public class NodeAddChildrenTests {
         int column = 3;
 
         // Act
-        Node rootNode = new Node(row, column, null, tree.ids);
+        Node rootNode = new Node(row, column, null, tree.ids, 1);
 
         // Assert
         assertThat(rootNode.row).isEqualTo(row);
         assertThat(rootNode.column).isEqualTo(column);
         assertThat(rootNode.parent).isNull();
         assertThat(rootNode.children).hasSize(0);
+        assertThat(rootNode.lifes).isEqualTo(1);
     }
 
     @Test
     public void should_create_a_root_node_without_children() {
         // Arrange
-        int up = 0;
-        int right = 0;
-        int down = 0;
-        int left = 0;
+        int up = 1;
+        int right = 1;
+        int down = 1;
+        int left = 1;
 
         // Act
-        Node rootNode = new Node(2, 3, null, tree.ids);
+        Node rootNode = new Node(2, 3, null, tree.ids, 1);
         rootNode.addChildren(up, right, down, left, tree.ids);
 
         // Assert
@@ -47,13 +48,13 @@ public class NodeAddChildrenTests {
     @Test
     public void should_create_a_root_node_with_only_up_child() {
         // Arrange
-        int up = 1;
-        int right = 0;
-        int down = 0;
-        int left = 0;
+        int up = 0;
+        int right = 1;
+        int down = 1;
+        int left = 1;
 
         // Act
-        Node rootNode = new Node(2, 3, null, tree.ids);
+        Node rootNode = new Node(2, 3, null, tree.ids, 1);
         rootNode.addChildren(up, right, down, left, tree.ids);
 
         // Assert
@@ -71,13 +72,13 @@ public class NodeAddChildrenTests {
     @Test
     public void should_create_a_root_node_with_only_right_child() {
         // Arrange
-        int up = 0;
-        int right = 1;
-        int down = 0;
-        int left = 0;
+        int up = 1;
+        int right = 0;
+        int down = 1;
+        int left = 1;
 
         // Act
-        Node rootNode = new Node(2, 3, null, tree.ids);
+        Node rootNode = new Node(2, 3, null, tree.ids, 1);
         rootNode.addChildren(up, right, down, left, tree.ids);
 
         // Assert
@@ -95,13 +96,13 @@ public class NodeAddChildrenTests {
     @Test
     public void should_create_a_root_node_with_only_down_child() {
         // Arrange
-        int up = 0;
-        int right = 0;
-        int down = 1;
-        int left = 0;
+        int up = 1;
+        int right = 1;
+        int down = 0;
+        int left = 1;
 
         // Act
-        Node rootNode = new Node(2, 3, null, tree.ids);
+        Node rootNode = new Node(2, 3, null, tree.ids, 1);
         rootNode.addChildren(up, right, down, left, tree.ids);
 
         // Assert
@@ -119,13 +120,13 @@ public class NodeAddChildrenTests {
     @Test
     public void should_create_a_root_node_with_only_left_child() {
         // Arrange
-        int up = 0;
-        int right = 0;
-        int down = 0;
-        int left = 1;
+        int up = 1;
+        int right = 1;
+        int down = 1;
+        int left = 0;
 
         // Act
-        Node rootNode = new Node(2, 3, null, tree.ids);
+        Node rootNode = new Node(2, 3, null, tree.ids, 1);
         rootNode.addChildren(up, right, down, left, tree.ids);
 
         // Assert
@@ -143,13 +144,13 @@ public class NodeAddChildrenTests {
     @Test
     public void should_create_a_root_node_with_up_and_right_children() {
         // Arrange
-        int up = 1;
-        int right = 1;
-        int down = 0;
-        int left = 0;
+        int up = 0;
+        int right = 0;
+        int down = 1;
+        int left = 1;
 
         // Act
-        Node rootNode = new Node(2, 3, null, tree.ids);
+        Node rootNode = new Node(2, 3, null, tree.ids, 1);
         rootNode.addChildren(up, right, down, left, tree.ids);
 
         // Assert
@@ -171,13 +172,13 @@ public class NodeAddChildrenTests {
     @Test
     public void should_create_a_root_node_with_up_and_down_children() {
         // Arrange
-        int up = 1;
-        int right = 0;
-        int down = 1;
-        int left = 0;
+        int up = 0;
+        int right = 1;
+        int down = 0;
+        int left = 1;
 
         // Act
-        Node rootNode = new Node(2, 3, null, tree.ids);
+        Node rootNode = new Node(2, 3, null, tree.ids, 1);
         rootNode.addChildren(up, right, down, left, tree.ids);
 
         // Assert
@@ -199,13 +200,13 @@ public class NodeAddChildrenTests {
     @Test
     public void should_create_a_root_node_with_up_and_left_children() {
         // Arrange
-        int up = 1;
-        int right = 0;
-        int down = 0;
-        int left = 1;
+        int up = 0;
+        int right = 1;
+        int down = 1;
+        int left = 0;
 
         // Act
-        Node rootNode = new Node(2, 3, null, tree.ids);
+        Node rootNode = new Node(2, 3, null, tree.ids, 1);
         rootNode.addChildren(up, right, down, left, tree.ids);
 
         // Assert
@@ -227,13 +228,13 @@ public class NodeAddChildrenTests {
     @Test
     public void should_create_a_root_node_with_up_and_right_and_down_children() {
         // Arrange
-        int up = 1;
-        int right = 1;
-        int down = 1;
-        int left = 0;
+        int up = 0;
+        int right = 0;
+        int down = 0;
+        int left = 1;
 
         // Act
-        Node rootNode = new Node(2, 3, null, tree.ids);
+        Node rootNode = new Node(2, 3, null, tree.ids, 1);
         rootNode.addChildren(up, right, down, left, tree.ids);
 
         // Assert
@@ -259,13 +260,13 @@ public class NodeAddChildrenTests {
     @Test
     public void should_create_a_root_node_with_up_and_right_and_left_children() {
         // Arrange
-        int up = 1;
-        int right = 1;
-        int down = 0;
-        int left = 1;
+        int up = 0;
+        int right = 0;
+        int down = 1;
+        int left = 0;
 
         // Act
-        Node rootNode = new Node(2, 3, null, tree.ids);
+        Node rootNode = new Node(2, 3, null, tree.ids, 1);
         rootNode.addChildren(up, right, down, left, tree.ids);
 
         // Assert
@@ -291,13 +292,13 @@ public class NodeAddChildrenTests {
     @Test
     public void should_create_a_root_node_with_all_children() {
         // Arrange
-        int up = 1;
-        int right = 1;
-        int down = 1;
-        int left = 1;
+        int up = 0;
+        int right = 0;
+        int down = 0;
+        int left = 0;
 
         // Act
-        Node rootNode = new Node(2, 3, null, tree.ids);
+        Node rootNode = new Node(2, 3, null, tree.ids, 1);
         rootNode.addChildren(up, right, down, left, tree.ids);
 
         // Assert

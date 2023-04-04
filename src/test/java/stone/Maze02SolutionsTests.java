@@ -19,7 +19,7 @@ public class Maze02SolutionsTests {
         String path = "RRRRRRRRRRRRRRRRRRRRRRRRRRRLRLRDLDRRRRDRRRDLDRRRDRRRDDLRDLRURRRDDDUDDRURURUDUUUDRDRURURDDDLDRDDRDRRDDLDDDDRRUUUDULDLRDDURDDDRLRDRRRRDDDRDUDRRDRRRRRULDRRDDRURDLDRDDURDRDRURURDDDRRDUDRRDRRRULRRDLDLDRRDULLRDRRDDDDLURDLUDDLRDDULDLRLLDRRRDDRDUULDDRDDDDDDURRUUDDDDDDLLLRDDDDUDRR";
 
         // Act
-        boolean isSolution = maze.isSolution(path);
+        boolean isSolution = maze.isSolution(path, 1);
 
         // Assert
         assertThat(isSolution).isTrue();
@@ -32,7 +32,7 @@ public class Maze02SolutionsTests {
         String path = "RDDRRDRDDRRRDURDRRRDRRDRRUDRUDRRDRDRDDDRDRDLDLRRDRDDRDDRDDRURRDLRLUDRDRRRRRDDRRRRUDRDDRRUDDLRDDRRDRDLDRLDLDRDURUUULRURLRDDRDDDLDDRRRDURDDDUUUDDRDDLRULDRUDRRRUDLRDRRLDDDRRULRDDDLDLRDRDLRRULDRRRUDDRLDRRDDDRDLDRDRRRDUDRURRLRLRRRRRRRUDULDDRUURURLURURDRRLDDRRRDDRRRULLRDDDDUDRR";
 
         // Act
-        boolean isSolution = maze.isSolution(path);
+        boolean isSolution = maze.isSolution(path, 1);
 
         // Assert
         assertThat(isSolution).isTrue();
@@ -45,7 +45,7 @@ public class Maze02SolutionsTests {
         String path = "DRRRRDRRLRDDRDRDRLRDRRRRRDRRUDRRDRDRDDDRDDRRDRLLDDDRRDDRDDRURDRUDLDURDRRRRRDRDRRURDDRRDRLRDLRDDRRDRURRDLLULRDLDDRULRURLRDDRDDDUUDUDLDDDRRDDDRRURDLDRRDULUDRRRRDRLLRRLDDDRURUDDDDLDLRDRDLRRLUDRRURDUDDDRRDDDDLRRDDRRLRRDRRURLDURRRRRRRUDDLURDRUUURUDRDUURDUDDRRRDDRRRULLRDDDDUDRR";
 
         // Act
-        boolean isSolution = maze.isSolution(path);
+        boolean isSolution = maze.isSolution(path, 1);
 
         // Assert
         assertThat(isSolution).isTrue();
@@ -58,7 +58,7 @@ public class Maze02SolutionsTests {
         String path = "RRDDRDRURRRRDRRRDDRRDDDURRDRRUDRDRLDUDDDDDRRDDRRDDRDRLUDRR";
 
         // Act
-        boolean isSolution = maze.isSolution(path);
+        boolean isSolution = maze.isSolution(path, 1);
 
         // Assert
         assertThat(isSolution).isFalse();
@@ -82,7 +82,7 @@ public class Maze02SolutionsTests {
             Maze maze = new Maze02();
 
             // Act
-            boolean isSolution = maze.isSolution(path);
+            boolean isSolution = maze.isSolution(path, 1);
 
             // Assert
             assertThat(isSolution).isTrue();

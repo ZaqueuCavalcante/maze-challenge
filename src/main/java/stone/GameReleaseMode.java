@@ -14,7 +14,7 @@ import processing.core.PApplet;
 public class GameReleaseMode {
     public static void run() {
         Maze maze = new MazeChallenge02();
-        Tree tree = new Tree(maze);
+        Tree tree = new Tree(maze, 6);
 
         Instant start = Instant.now();
 

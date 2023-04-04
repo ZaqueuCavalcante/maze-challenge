@@ -259,7 +259,7 @@ public abstract class Maze {
         return neighbors;
     }
 
-    public boolean isSolution(String path) {
+    public boolean isSolution(String path, int lifes) {
         int row = startCell.row;
         int column = startCell.column;
 
@@ -282,7 +282,10 @@ public abstract class Maze {
             }
 
             if (currentIsObstacle(row, column)) {
-                return false;
+                if (lifes == 1) {
+                    return false;
+                }
+                lifes--;
             }
         }
 
@@ -306,10 +309,25 @@ public abstract class Maze {
     }
 
     public int[] getNextDirections(int row, int column) {
-        int up = ((row - 1) >= 0 && next[row - 1][column] != CellType.OBSTACLE) ? 1 : 0;
-        int right = ((column + 1) < columns && next[row][column + 1] != CellType.OBSTACLE) ? 1 : 0;
-        int down = ((row + 1) < rows && next[row + 1][column] != CellType.OBSTACLE) ? 1 : 0;
-        int left = ((column - 1) >= 0 && next[row][column - 1] != CellType.OBSTACLE) ? 1 : 0;
+        int up = (row - 1) < 0 ? CellType.OUT : 0;
+        if (up != CellType.OUT) {
+            up = (next[row - 1][column] == CellType.OBSTACLE) ? CellType.OBSTACLE : CellType.EMPTY;
+        }
+
+        int right = (column + 1) == columns ? CellType.OUT : 0;
+        if (right != CellType.OUT) {
+            right = (next[row][column + 1] == CellType.OBSTACLE) ? CellType.OBSTACLE : CellType.EMPTY;
+        }
+
+        int down = (row + 1) == rows ? CellType.OUT : 0;
+        if (down != CellType.OUT) {
+            down = (next[row + 1][column] == CellType.OBSTACLE) ? CellType.OBSTACLE : CellType.EMPTY;
+        }
+
+        int left = (column - 1) < 0 ? CellType.OUT : 0;
+        if (left != CellType.OUT) {
+            left = (next[row][column - 1] == CellType.OBSTACLE) ? CellType.OBSTACLE : CellType.EMPTY;
+        }
 
         return new int[] { up, right, down, left };
     }

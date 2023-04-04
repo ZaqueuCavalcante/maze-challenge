@@ -9,7 +9,7 @@ public class TreeGoToNextLevelTests {
     public void should_start_at_root_node() {
         // Arrange
         Maze maze = new Maze01();
-        Tree tree = new Tree(maze);
+        Tree tree = new Tree(maze, 1);
 
         // Act / Assert
         assertThat(tree.levelNodes.size()).isEqualTo(1);
@@ -20,7 +20,7 @@ public class TreeGoToNextLevelTests {
     public void should_expand_to_the_level_01() {
         // Arrange
         Maze maze = new Maze01();
-        Tree tree = new Tree(maze);
+        Tree tree = new Tree(maze, 1);
 
         // Act
         tree.goToLevel(1, maze);
@@ -35,7 +35,7 @@ public class TreeGoToNextLevelTests {
     public void should_expand_to_the_level_02() {
         // Arrange
         Maze maze = new Maze01();
-        Tree tree = new Tree(maze);
+        Tree tree = new Tree(maze, 1);
 
         // Act
         tree.goToLevel(2, maze);
@@ -52,7 +52,7 @@ public class TreeGoToNextLevelTests {
     public void should_expand_to_the_level_03() {
         // Arrange
         Maze maze = new Maze01();
-        Tree tree = new Tree(maze);
+        Tree tree = new Tree(maze, 1);
 
         // Act
         tree.goToLevel(3, maze);
@@ -70,7 +70,7 @@ public class TreeGoToNextLevelTests {
     public void should_expand_to_the_level_04() {
         // Arrange
         Maze maze = new Maze01();
-        Tree tree = new Tree(maze);
+        Tree tree = new Tree(maze, 1);
 
         // Act
         tree.goToLevel(4, maze);
@@ -88,7 +88,7 @@ public class TreeGoToNextLevelTests {
     public void should_expand_to_the_level_05() {
         // Arrange
         Maze maze = new Maze01();
-        Tree tree = new Tree(maze);
+        Tree tree = new Tree(maze, 1);
 
         // Act
         tree.goToLevel(5, maze);
@@ -105,7 +105,7 @@ public class TreeGoToNextLevelTests {
     public void should_expand_to_the_level_06() {
         // Arrange
         Maze maze = new Maze01();
-        Tree tree = new Tree(maze);
+        Tree tree = new Tree(maze, 1);
 
         // Act
         tree.goToLevel(6, maze);
@@ -128,7 +128,7 @@ public class TreeGoToNextLevelTests {
     public void should_expand_to_the_level_07() {
         // Arrange
         Maze maze = new Maze01();
-        Tree tree = new Tree(maze);
+        Tree tree = new Tree(maze, 1);
 
         // Act
         tree.goToLevel(7, maze);

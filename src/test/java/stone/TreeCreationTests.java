@@ -11,7 +11,7 @@ public class TreeCreationTests {
         Maze maze = new Maze01();
 
         // Act
-        Tree tree = new Tree(maze);
+        Tree tree = new Tree(maze, 1);
 
         // Assert
         assertThat(tree.root.row).isEqualTo(0);
@@ -27,7 +27,7 @@ public class TreeCreationTests {
         Maze maze = new Maze01();
 
         // Act
-        Tree tree = new Tree(maze);
+        Tree tree = new Tree(maze, 1);
 
         // Assert
         assertThat(tree.ids[0]).isEqualTo(new int[] { 0, 1, 2, 3, 4, 5, 6, 7 });

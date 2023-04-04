@@ -6,12 +6,12 @@ import org.junit.Test;
 
 public class NodeGetPathTests {
     Maze maze = new Maze00();
-    Tree tree = new Tree(maze);
+    Tree tree = new Tree(maze, 1);
 
     @Test
     public void should_return_empty_path_for_root_node() {
         // Arrange
-        Node rootNode = new Node(2, 3, null, tree.ids);
+        Node rootNode = new Node(2, 3, null, tree.ids, 1);
 
         // Act
         String path = rootNode.getPath();
@@ -23,8 +23,8 @@ public class NodeGetPathTests {
     @Test
     public void should_return_path_for_first_up_move() {
         // Arrange
-        Node rootNode = new Node(1, 1, null, tree.ids);
-        rootNode.addChildren(1, 0, 0, 0, tree.ids);
+        Node rootNode = new Node(1, 1, null, tree.ids, 1);
+        rootNode.addChildren(0, 1, 1, 1, tree.ids);
 
         Node endNode = rootNode.getUpNode();
 
@@ -38,8 +38,8 @@ public class NodeGetPathTests {
     @Test
     public void should_return_path_for_first_right_move() {
         // Arrange
-        Node rootNode = new Node(1, 1, null, tree.ids);
-        rootNode.addChildren(0, 1, 0, 0, tree.ids);
+        Node rootNode = new Node(1, 1, null, tree.ids, 1);
+        rootNode.addChildren(1, 0, 1, 1, tree.ids);
 
         Node endNode = rootNode.getRightNode();
 
@@ -53,8 +53,8 @@ public class NodeGetPathTests {
     @Test
     public void should_return_path_for_first_down_move() {
         // Arrange
-        Node rootNode = new Node(1, 1, null, tree.ids);
-        rootNode.addChildren(0, 0, 1, 0, tree.ids);
+        Node rootNode = new Node(1, 1, null, tree.ids, 1);
+        rootNode.addChildren(1, 1, 0, 1, tree.ids);
 
         Node endNode = rootNode.getDownNode();
 
@@ -68,8 +68,8 @@ public class NodeGetPathTests {
     @Test
     public void should_return_path_for_first_left_move() {
         // Arrange
-        Node rootNode = new Node(1, 1, null, tree.ids);
-        rootNode.addChildren(0, 0, 0, 1, tree.ids);
+        Node rootNode = new Node(1, 1, null, tree.ids, 1);
+        rootNode.addChildren(1, 1, 1, 0, tree.ids);
 
         Node endNode = rootNode.getLeftNode();
 
@@ -83,14 +83,14 @@ public class NodeGetPathTests {
     @Test
     public void should_return_path_for_right_right_down_movements() {
         // Arrange
-        Node rootNode = new Node(0, 0, null, tree.ids);
-        rootNode.addChildren(0, 1, 0, 0, tree.ids);
+        Node rootNode = new Node(0, 0, null, tree.ids, 1);
+        rootNode.addChildren(1, 0, 1, 1, tree.ids);
 
         Node firstNode = rootNode.getRightNode();
-        firstNode.addChildren(0, 1, 0, 0, tree.ids);
+        firstNode.addChildren(1, 0, 1, 1, tree.ids);
 
         Node secondNode = firstNode.getRightNode();
-        secondNode.addChildren(0, 0, 1, 0, tree.ids);
+        secondNode.addChildren(1, 1, 0, 1, tree.ids);
 
         Node endNode = secondNode.getDownNode();
 
@@ -104,14 +104,14 @@ public class NodeGetPathTests {
     @Test
     public void should_return_path_for_down_down_right_movements() {
         // Arrange
-        Node rootNode = new Node(0, 0, null, tree.ids);
-        rootNode.addChildren(0, 0, 1, 0, tree.ids);
+        Node rootNode = new Node(0, 0, null, tree.ids, 1);
+        rootNode.addChildren(1, 1, 0, 1, tree.ids);
 
         Node firstNode = rootNode.getDownNode();
-        firstNode.addChildren(0, 0, 1, 0, tree.ids);
+        firstNode.addChildren(1, 1, 0, 1, tree.ids);
 
         Node secondNode = firstNode.getDownNode();
-        secondNode.addChildren(0, 1, 0, 0, tree.ids);
+        secondNode.addChildren(1, 0, 1, 1, tree.ids);
 
         Node endNode = secondNode.getRightNode();
 

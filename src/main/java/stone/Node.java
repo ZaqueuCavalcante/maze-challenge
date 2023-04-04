@@ -14,19 +14,35 @@ public class Node {
     // Up, Right, Down, Left
     public ArrayList<Node> children;
 
-    public Node(int row, int column, Node parent, int[][] ids) {
+    int lifes;
+
+    public Node(int row, int column, Node parent, int[][] ids, int lifes) {
         this.row = row;
         this.column = column;
         this.parent = parent;
         children = new ArrayList<Node>();
         this.id = ids[row][column];
+        this.lifes = lifes;
     }
 
     public void addChildren(int up, int right, int down, int left, int[][] ids) {
-        Node upNode = (up == 1) ? new Node(row - 1, column, this, ids) : null;
-        Node rightNode = (right == 1) ? new Node(row, column + 1, this, ids) : null;
-        Node downNode = (down == 1) ? new Node(row + 1, column, this, ids) : null;
-        Node leftNode = (left == 1) ? new Node(row, column - 1, this, ids) : null;
+        Node upNode = (up == CellType.EMPTY) ? new Node(row - 1, column, this, ids, this.lifes) : null;
+
+        Node rightNode = null;
+        if (right == CellType.EMPTY) {
+            rightNode = new Node(row, column + 1, this, ids, this.lifes);
+        } else if (right == CellType.OBSTACLE_LIFE) {
+            rightNode = new Node(row, column + 1, this, ids, this.lifes - 1);
+        }
+
+        Node downNode = null;
+        if (down == CellType.EMPTY) {
+            downNode = new Node(row + 1, column, this, ids, this.lifes);
+        } else if (down == CellType.OBSTACLE_LIFE) {
+            downNode = new Node(row + 1, column, this, ids, this.lifes - 1);
+        }
+
+        Node leftNode = (left == CellType.EMPTY) ? new Node(row, column - 1, this, ids, this.lifes) : null;
 
         children.add(upNode);
         children.add(rightNode);
