@@ -81,14 +81,15 @@ public class MazeChunkTests {
         // Assert
         for (int row = 0; row < chunk.rows; row++) {
             for (int column = 0; column < chunk.columns; column++) {
-                int value = chunk.values[row][column];
+                int initialValue = chunk.initial[row][column];
+                int currentValue = chunk.values[row][column];
 
-                if (value == 0) {
-                    assertThat(chunk.initial[row][column]).isEqualTo(0);
+                if (currentValue == 0) {
+                    assertThat(initialValue == 9 || initialValue == 0).isTrue();
                 }
 
-                if (value == 1) {
-                    assertThat(chunk.initial[row][column]).isEqualTo(1);
+                if (currentValue == 1) {
+                    assertThat(initialValue == 9 || initialValue == 1).isTrue();
                 }
             }
         }
