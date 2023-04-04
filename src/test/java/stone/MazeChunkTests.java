@@ -2,6 +2,8 @@ package stone;
 
 import static org.assertj.core.api.Assertions.*;
 
+import java.util.HashMap;
+
 import org.junit.Test;
 
 public class MazeChunkTests {
@@ -139,34 +141,120 @@ public class MazeChunkTests {
         // Arrange
         MazeChunk chunk = new MazeChunk();
 
-        int zeros = 0;
-        int ones = 0;
-        for (int row = 0; row < chunk.rows; row++) {
-            for (int column = 0; column < chunk.columns; column++) {
-                int value = chunk.values[row][column];
-                if (value == 0) {
-                    zeros++;
-                } else if (value == 1) {
-                    ones++;
+        // Act
+        chunk.solve();
+
+        int zeros = chunk.getCountOf(0);
+        int ones = chunk.getCountOf(1);
+        int nines = chunk.getCountOf(9);
+
+        Node root = new Node(1, 1, null, chunk.ids);
+        HashMap<Integer, Node> levelNodes = new HashMap<>();
+        levelNodes.put(chunk.ids[1][1], root);
+
+        HashMap<Integer, Node> allNodes = new HashMap<>();
+
+        while (allNodes.size() < zeros) {
+            HashMap<Integer, Node> expandedNodes = new HashMap<>();
+
+            if (levelNodes.size() == 0) {
+                break;
+            }
+
+            for (Node levelNode : levelNodes.values()) {
+                if (allNodes.getOrDefault(chunk.ids[levelNode.row][levelNode.column], null) != null) {
+                    continue;
+                }
+
+                allNodes.put(levelNode.id, levelNode);
+
+                int[] directions = chunk.getDirections(levelNode.row, levelNode.column);
+
+                int up = directions[0] == CellType.EMPTY ? 1 : 0;
+                int right = directions[1] == CellType.EMPTY ? 1 : 0;
+                int down = directions[2] == CellType.EMPTY ? 1 : 0;
+                int left = directions[3] == CellType.EMPTY ? 1 : 0;
+
+                levelNode.addChildren(up, right, down, left, chunk.ids);
+
+                for (int i = 0; i < 4; i++) {
+                    Node node = levelNode.children.get(i);
+
+                    if (node == null) {
+                        continue;
+                    }
+
+                    expandedNodes.put(node.id, node);
                 }
             }
+
+            levelNodes = expandedNodes;
         }
+
+        // Assert
+        assertThat(zeros + ones).isEqualTo(chunk.rows * chunk.columns);
+        assertThat(nines).isEqualTo(0);
+        assertThat(allNodes.size()).isEqualTo(zeros);
+    }
+
+    @Test
+    public void the_solved_maze_chunk_should_have_all_1s_connected() {
+        // Arrange
+        MazeChunk chunk = new MazeChunk();
 
         // Act
         chunk.solve();
 
-        // Assert
-        assertThat(zeros + ones).isEqualTo(chunk.rows + chunk.columns);
+        int zeros = chunk.getCountOf(0);
+        int ones = chunk.getCountOf(1);
+        int nines = chunk.getCountOf(9);
 
-        for (int row = 0; row < chunk.rows - 1; row++) {
-            for (int column = 0; column < chunk.columns - 1; column++) {
-                int value00 = chunk.values[row][column];
-                int value01 = chunk.values[row][column + 1];
-                int value02 = chunk.values[row + 1][column];
-                int value03 = chunk.values[row + 1][column + 1];
+        Node root = new Node(0, 6, null, chunk.ids);
+        HashMap<Integer, Node> levelNodes = new HashMap<>();
+        levelNodes.put(chunk.ids[0][6], root);
 
-                assertThat(value00 == 1 && value00 == value01 && value00 == value02 && value00 == value03).isFalse();
+        HashMap<Integer, Node> allNodes = new HashMap<>();
+
+        while (allNodes.size() < ones) {
+            HashMap<Integer, Node> expandedNodes = new HashMap<>();
+
+            if (levelNodes.size() == 0) {
+                break;
             }
+
+            for (Node levelNode : levelNodes.values()) {
+                if (allNodes.getOrDefault(chunk.ids[levelNode.row][levelNode.column], null) != null) {
+                    continue;
+                }
+
+                allNodes.put(levelNode.id, levelNode);
+
+                int[] directions = chunk.getDirections(levelNode.row, levelNode.column);
+
+                int up = directions[0] == CellType.OBSTACLE ? 1 : 0;
+                int right = directions[1] == CellType.OBSTACLE ? 1 : 0;
+                int down = directions[2] == CellType.OBSTACLE ? 1 : 0;
+                int left = directions[3] == CellType.OBSTACLE ? 1 : 0;
+
+                levelNode.addChildren(up, right, down, left, chunk.ids);
+
+                for (int i = 0; i < 4; i++) {
+                    Node node = levelNode.children.get(i);
+
+                    if (node == null) {
+                        continue;
+                    }
+
+                    expandedNodes.put(node.id, node);
+                }
+            }
+
+            levelNodes = expandedNodes;
         }
+
+        // Assert
+        assertThat(zeros + ones).isEqualTo(chunk.rows * chunk.columns);
+        assertThat(nines).isEqualTo(0);
+        assertThat(allNodes.size()).isEqualTo(ones);
     }
 }
