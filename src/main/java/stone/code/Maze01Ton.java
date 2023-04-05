@@ -18,6 +18,6 @@ public class Maze01Ton extends Maze {
     }
 
     public int[] getDrawSizes() {
-        return new int[] { 500, 450, 50 };
+        return new int[] { 1000, 900, 100 };
     }
 }

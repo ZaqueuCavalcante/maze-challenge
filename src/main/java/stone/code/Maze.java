@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 
 import processing.core.PApplet;
+import processing.core.PConstants;
 
 public abstract class Maze {
     int turn;
@@ -32,6 +33,8 @@ public abstract class Maze {
 
     public Maze(String option) {
         this.option = option;
+
+        open = true;
 
         File file = new File("src/main/java/stone/code/mazes/maze_" + option + ".txt");
         InputStream input;
@@ -136,10 +139,20 @@ public abstract class Maze {
     }
 
     public void shift() {
+        updateParticles();
         current = next;
         calculateNeighbors();
         calculateNext();
         turn++;
+        addParticle();
+    }
+
+    public void updateParticles() {
+        for (Particle p : particles.values()) {
+            particlesIds[p.row][p.column] = 0;
+            p.column++;
+            particlesIds[p.row][p.column] = p.id;
+        }
     }
 
     protected void calculateNext() {
@@ -359,5 +372,11 @@ public abstract class Maze {
 
         game.fill(255, 0, 0);
         game.circle(column * game.CIZE + game.CIZE / 2, row * game.CIZE + game.CIZE / 2, game.CIZE / 2);
+
+        game.textSize((float) (game.CIZE * 0.35));
+        game.textAlign(PConstants.CENTER);
+        game.fill(0);
+        game.text(particlesIds[row][column], (float) (column * game.CIZE + game.CIZE * 0.48),
+                (float) ((row * game.CIZE) + game.CIZE * 0.63));
     }
 }
