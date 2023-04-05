@@ -106,7 +106,7 @@ public class Tree {
             }
         }
 
-        System.out.println("LEVEL = " + level);
+        // System.out.println("LEVEL = " + level);
         levelNodes = newNodes;
         level++;
     }
