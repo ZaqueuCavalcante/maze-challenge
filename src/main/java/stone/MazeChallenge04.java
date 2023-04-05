@@ -20,7 +20,7 @@ public class MazeChallenge04 extends Maze {
 
             String[] lines = PApplet.loadStrings(input);
             for (int i = 0; i < lines.length; i++) {
-                lines[i] = lines[i].replaceAll(" ", "");
+                lines[i] = lines[i].replaceAll(" ", "").replaceAll("x", "9");
             }
 
             rows = lines.length;

@@ -48,13 +48,7 @@ public class Tree {
                 .mapToInt(v -> v.column)
                 .max().getAsInt();
 
-        int limit = 6;
-        if (levelNodes.size() > 1000) {
-            limit = 1;
-        }
-
         for (int row = 0; row <= maxRow; row++) {
-            int count = 0;
             for (int column = maxColumn; column >= 0; column--) {
                 Node node = levelNodes.getOrDefault(ids[row][column], null);
 
@@ -63,36 +57,28 @@ public class Tree {
                 }
 
                 filteredNodes.add(node);
-                count++;
-                if (count == limit) {
-                    column = -1;
-                }
+                column = -1;
             }
         }
 
-        // for (int column = 0; column <= maxColumn; column++) {
-        // int count = 0;
-        // for (int row = maxRow; row >= 0; row--) {
-        // boolean nodeAlreadyFiltered = filteredNodes.contains(new Node(row, column,
-        // null, ids));
-        // if (nodeAlreadyFiltered) {
-        // row = -1;
-        // continue;
-        // }
+        for (int column = 0; column <= maxColumn; column++) {
+            for (int row = maxRow; row >= 0; row--) {
+                boolean nodeAlreadyFiltered = filteredNodes.contains(new Node(row, column, null, ids));
+                if (nodeAlreadyFiltered) {
+                    row = -1;
+                    continue;
+                }
 
-        // Node node = levelNodes.getOrDefault(ids[row][column], null);
+                Node node = levelNodes.getOrDefault(ids[row][column], null);
 
-        // if (node == null) {
-        // continue;
-        // }
+                if (node == null) {
+                    continue;
+                }
 
-        // filteredNodes.add(node);
-        // count++;
-        // if (count == limit) {
-        // row = -1;
-        // }
-        // }
-        // }
+                filteredNodes.add(node);
+                row = -1;
+            }
+        }
 
         return filteredNodes;
     }
@@ -118,12 +104,20 @@ public class Tree {
 
                 newNodes.put(node.id, node);
             }
+
+            int distance = Math.abs(maze.endCell.row - levelNode.row) + Math.abs(maze.endCell.column - levelNode.column);
+            if (distance < minDistance) {
+                minDistance = distance;
+                System.out.println("LEVEL = " + level + " --- minDistance = " + minDistance);
+            }
         }
 
-        System.out.println("LEVEL = " + level);
+        // System.out.println("LEVEL = " + level);
         levelNodes = newNodes;
         level++;
     }
+
+    int minDistance = 42_000;
 
     // Only for tests
     public void goToLevel(int targetLevel, Maze maze) {
