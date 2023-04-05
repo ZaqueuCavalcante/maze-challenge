@@ -98,7 +98,7 @@ public class NodeGetPathTests {
         String path = endNode.getPath();
 
         // Assert
-        assertThat(path).isEqualTo("RRD");
+        assertThat(path).isEqualTo("R R D");
     }
 
     @Test
@@ -119,6 +119,6 @@ public class NodeGetPathTests {
         String path = endNode.getPath();
 
         // Assert
-        assertThat(path).isEqualTo("DDR");
+        assertThat(path).isEqualTo("D D R");
     }
 }

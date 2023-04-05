@@ -263,9 +263,9 @@ public abstract class Maze {
         int row = startCell.row;
         int column = startCell.column;
 
-        path = path.replaceAll(" ", "");
+        char[] pathArray = path.replaceAll(" ", "").toCharArray();
 
-        for (char c : path.toCharArray()) {
+        for (char c : pathArray) {
             shift();
 
             String direction = String.valueOf(c).toString();

@@ -77,7 +77,7 @@ public class Maze02SolutionSearchTests {
 
             // Assert
             assertThat(isSolution).isTrue();
-            assertThat(path.length()).isEqualTo(maze.rows + maze.columns - 2);
+            assertThat(path.replaceAll(" ", "").length()).isEqualTo(maze.rows + maze.columns - 2);
             assertThat(path.chars().filter(c -> c == 'R').count()).isEqualTo(maze.columns - 1);
             assertThat(path.chars().filter(c -> c == 'D').count()).isEqualTo(maze.rows - 1);
         }

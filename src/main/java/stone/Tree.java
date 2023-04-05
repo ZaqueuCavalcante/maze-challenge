@@ -60,7 +60,7 @@ public class Tree {
 
                 filteredNodes.add(node);
                 count++;
-                if (count == 3) {
+                if (count == 1) {
                     column = -1;
                 }
             }
@@ -83,7 +83,7 @@ public class Tree {
 
                 filteredNodes.add(node);
                 count++;
-                if (count == 3) {
+                if (count == 1) {
                     row = -1;
                 }
 
@@ -151,7 +151,7 @@ public class Tree {
             }
         }
 
-        System.out.println("LEVEL = " + level);
+        // System.out.println("LEVEL = " + level);
         levelNodes = newNodes;
         level++;
     }
