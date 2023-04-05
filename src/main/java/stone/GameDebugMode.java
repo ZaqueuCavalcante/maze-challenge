@@ -7,7 +7,7 @@ public class GameDebugMode extends Game {
     Tree tree;
 
     public void settings() {
-        maze = new Maze01();
+        maze = new MazeChallenge04Mini();
         tree = new Tree(maze);
 
         int[] mazeSizes = maze.getDrawSizes();

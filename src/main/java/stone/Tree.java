@@ -105,11 +105,14 @@ public class Tree {
                 newNodes.put(node.id, node);
             }
 
-            int distance = Math.abs(maze.endCell.row - levelNode.row)
-                    + Math.abs(maze.endCell.column - levelNode.column);
+            int distance = Math.abs(maze.endCell.row - levelNode.row) + Math.abs(maze.endCell.column - levelNode.column);
             if (distance < minDistance) {
                 minDistance = distance;
                 System.out.println("LEVEL = " + level + " --- minDistance = " + minDistance);
+
+                if (minDistance == 2699) {
+                    solutions.add(levelNode);
+                }
             }
         }
 
