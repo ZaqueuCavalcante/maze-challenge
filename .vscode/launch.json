@@ -5,6 +5,13 @@
       "type": "java",
       "name": "App",
       "request": "launch",
+      "mainClass": "stone.code.App",
+      "projectName": "maze-challenge"
+    },
+    {
+      "type": "java",
+      "name": "App",
+      "request": "launch",
       "mainClass": "stone.App",
       "projectName": "maze-challenge"
     }
