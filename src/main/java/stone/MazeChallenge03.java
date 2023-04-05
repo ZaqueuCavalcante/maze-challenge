@@ -1,8 +1,8 @@
 package stone;
 
-public class MazeChallenge01 extends Maze {
-    public MazeChallenge01() {
-        super("challenge_01");
+public class MazeChallenge03 extends Maze {
+    public MazeChallenge03() {
+        super("challenge_03");
     }
 
     protected void useRules(int neighbors, int row, int column) {
