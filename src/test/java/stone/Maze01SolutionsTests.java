@@ -16,7 +16,7 @@ public class Maze01SolutionsTests {
     public void should_test_one_correct_solution_for_maze_01() {
         // Arrange
         Maze maze = new Maze01();
-        String path = "RRLLDRRULDDRRRLRDRDDRDR";
+        String path = "D D D D D R R L U U U R R R D R L D D R R D R";
 
         // Act
         boolean isSolution = maze.isSolution(path);
