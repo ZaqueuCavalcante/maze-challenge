@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 
 import processing.core.PApplet;
@@ -22,14 +25,19 @@ public abstract class Maze {
     Cell startCell;
     Cell endCell;
 
+    final int[][] cellsIds;
+
     int[][] current;
     int[][] next;
 
     int[][] currentNeighbors;
 
     int particleCounter;
-    int[][] particlesIds;
+    int[][] currentParticlesIds;
+    int[][] nextParticlesIds;
     HashMap<Integer, Particle> particles;
+
+    ArrayList<Particle> outParticles;
 
     public Maze(String option) {
         this.option = option;
@@ -70,15 +78,144 @@ public abstract class Maze {
             e.printStackTrace();
         }
 
+        int id = 0;
+        cellsIds = new int[rows][columns];
+        for (int row = 0; row < rows; row++) {
+            for (int column = 0; column < columns; column++) {
+                cellsIds[row][column] = id;
+                id++;
+            }
+        }
+
         particleCounter = 0;
-        particlesIds = new int[rows][columns];
+        currentParticlesIds = new int[rows][columns];
+        nextParticlesIds = new int[rows][columns];
         particles = new HashMap<>();
         addParticle();
+
+        outParticles = new ArrayList<>();
     }
 
     protected abstract void useRules(int neighbors, int row, int column);
 
     public abstract int[] getDrawSizes();
+
+    public void shift() {
+        updateParticles();
+        current = next;
+        calculateNeighbors();
+        calculateNext();
+        turn++;
+
+        if (outParticles.size() > 0) {
+            open = false;
+        }
+
+        ArrayList<Integer> turns = new ArrayList<>(Arrays.asList(3, 7, 10, 12, 14, 15));
+        if (turns.contains(turn)) {
+            addParticle();
+        }
+
+        if (particles.size() == 0) {
+            System.out.println("SOLVED!");
+
+            Collections.sort(outParticles, (a, b) -> Integer.compare(a.turn, b.turn));
+
+            for (Particle p : outParticles) {
+                System.out.println(p.getFormatedPath());
+            }
+        }
+    }
+
+    public void updateParticles() {
+        nextParticlesIds = new int[rows][columns];
+
+        for (Particle p : particles.values()) {
+            int[] directions = getNextDirections(p.row, p.column);
+            ArrayList<Integer> nextMoves = getNextCellsIds(p.row, p.column);
+            p.updateMoveOptions(directions, nextMoves);
+        }
+
+        ArrayList<Integer> outs = new ArrayList<>();
+
+        for (Particle p : particles.values()) {
+            // Error here!
+            if (p.canMoveRight() && nextParticlesIds[p.row][p.column + 1] == 0) {
+                p.right();
+            } else if (p.canMoveDown() && nextParticlesIds[p.row + 1][p.column] == 0) {
+                p.down();
+            } else if (p.canMoveLeft() && nextParticlesIds[p.row][p.column - 1] == 0) {
+                p.left();
+            } else if (p.canMoveUp() && nextParticlesIds[p.row - 1][p.column] == 0) {
+                p.up();
+            } else {
+                System.out.println("Stucked particle | id = " + p.id);
+            }
+            nextParticlesIds[p.row][p.column] = p.id;
+
+            // Handle end
+            if (p.row == endCell.row && p.column == endCell.column) {
+                nextParticlesIds[p.row][p.column] = 0;
+                outs.add(p.id);
+            }
+        }
+
+        for (int id : outs) {
+            Particle endParticle = particles.remove(id);
+            outParticles.add(endParticle);
+        }
+
+        currentParticlesIds = nextParticlesIds;
+    }
+
+    public int[] getNextDirections(int row, int column) {
+        int up = (row - 1) < 0 ? CellType.OUT : 0;
+        if (up != CellType.OUT) {
+            up = (next[row - 1][column] == CellType.OBSTACLE) ? CellType.OBSTACLE : CellType.EMPTY;
+        }
+
+        int right = (column + 1) == columns ? CellType.OUT : 0;
+        if (right != CellType.OUT) {
+            right = (next[row][column + 1] == CellType.OBSTACLE) ? CellType.OBSTACLE : CellType.EMPTY;
+        }
+
+        int down = (row + 1) == rows ? CellType.OUT : 0;
+        if (down != CellType.OUT) {
+            down = (next[row + 1][column] == CellType.OBSTACLE) ? CellType.OBSTACLE : CellType.EMPTY;
+        }
+
+        int left = (column - 1) < 0 ? CellType.OUT : 0;
+        if (left != CellType.OUT) {
+            left = (next[row][column - 1] == CellType.OBSTACLE) ? CellType.OBSTACLE : CellType.EMPTY;
+        }
+
+        return new int[] { up, right, down, left };
+    }
+
+    public ArrayList<Integer> getNextCellsIds(int row, int column) {
+        int[] directions = getNextDirections(row, column);
+        int up = directions[0];
+        int right = directions[1];
+        int down = directions[2];
+        int left = directions[3];
+
+        ArrayList<Integer> result = new ArrayList<>();
+
+        if (up == CellType.EMPTY) {
+            result.add(cellsIds[row - 1][column]);
+        }
+        if (right == CellType.EMPTY) {
+            result.add(cellsIds[row][column + 1]);
+        }
+        if (down == CellType.EMPTY) {
+            result.add(cellsIds[row + 1][column]);
+        }
+        if (left == CellType.EMPTY) {
+            result.add(cellsIds[row][column - 1]);
+        }
+
+        return result;
+    }
 
     public boolean currentIsStart(int row, int column) {
         return current[row][column] == CellType.START;
@@ -93,22 +230,18 @@ public abstract class Maze {
     }
 
     public boolean startCellIsFree() {
-        return particlesIds[startCell.row][startCell.column] == 0;
+        return currentParticlesIds[startCell.row][startCell.column] == 0;
     }
 
     public boolean hasParticleOnEndCell() {
-        return particlesIds[endCell.row][endCell.column] != 0;
-    }
-
-    public void close() {
-        open = false;
+        return currentParticlesIds[endCell.row][endCell.column] != 0;
     }
 
     public void addParticle() {
         // TODO: Improve this with some additional logic
-        if (startCellIsFree()) {
+        if (open && startCellIsFree()) {
             particleCounter++;
-            particlesIds[startCell.row][startCell.column] = particleCounter;
+            currentParticlesIds[startCell.row][startCell.column] = particleCounter;
             particles.put(particleCounter, new Particle(particleCounter, turn));
         }
     }
@@ -118,7 +251,7 @@ public abstract class Maze {
     }
 
     public boolean hasParticleOn(int row, int column) {
-        return particlesIds[row][column] != 0;
+        return currentParticlesIds[row][column] != 0;
     }
 
     public boolean currentIsObstacle(int row, int column) {
@@ -128,7 +261,7 @@ public abstract class Maze {
     public boolean isEmpty() {
         for (int row = 0; row < rows; row++) {
             for (int column = 0; column < columns; column++) {
-                if (particlesIds[row][column] != 0) {
+                if (currentParticlesIds[row][column] != 0) {
                     if (row != endCell.row && column != endCell.column) {
                         return false;
                     }
@@ -136,23 +269,6 @@ public abstract class Maze {
             }
         }
         return true;
-    }
-
-    public void shift() {
-        updateParticles();
-        current = next;
-        calculateNeighbors();
-        calculateNext();
-        turn++;
-        addParticle();
-    }
-
-    public void updateParticles() {
-        for (Particle p : particles.values()) {
-            particlesIds[p.row][p.column] = 0;
-            p.column++;
-            particlesIds[p.row][p.column] = p.id;
-        }
     }
 
     protected void calculateNext() {
@@ -358,15 +474,26 @@ public abstract class Maze {
         if (game.maze.currentIsObstacle(row, column)) {
             game.fill(0, 128, 0);
         }
-        if (game.maze.currentIsStart(row, column) || game.maze.currentIsEnd(row, column)) {
-            game.fill(255, 255, 0);
+        if (game.maze.currentIsStart(row, column)) {
+            if (open) {
+                game.fill(255, 255, 0);
+            } else {
+                game.fill(255, 255, 200);
+            }
+        }
+        if (game.maze.currentIsEnd(row, column)) {
+            if (open || particles.size() == 0) {
+                game.fill(255, 255, 200);
+            } else {
+                game.fill(255, 255, 0);
+            }
         }
 
         game.rect(column * game.CIZE, row * game.CIZE, game.CIZE, game.CIZE, game.CIZE / 4);
     }
 
     private void drawParticle(Game game, int row, int column) {
-        if (particlesIds[row][column] == 0) {
+        if (currentParticlesIds[row][column] == 0) {
             return;
         }
 
@@ -376,7 +503,7 @@ public abstract class Maze {
         game.textSize((float) (game.CIZE * 0.35));
         game.textAlign(PConstants.CENTER);
         game.fill(0);
-        game.text(particlesIds[row][column], (float) (column * game.CIZE + game.CIZE * 0.48),
+        game.text(currentParticlesIds[row][column], (float) (column * game.CIZE + game.CIZE * 0.48),
                 (float) ((row * game.CIZE) + game.CIZE * 0.63));
     }
 }

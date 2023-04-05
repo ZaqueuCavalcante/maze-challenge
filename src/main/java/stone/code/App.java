@@ -20,6 +20,8 @@ public class App {
         }
     }
 
+    // TODO: Add REPLAY MODE
+
     public static void funMode() {
         PApplet.main(new String[] { "stone.GameFunMode" });
     }

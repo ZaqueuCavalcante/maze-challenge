@@ -3,15 +3,19 @@ package stone.code;
 import java.util.ArrayList;
 
 public class Particle {
-    int id; // >= 1
-    int turn;
+    public int id;
+    public int turn;
 
-    int row;
-    int column;
+    public int row;
+    public int column;
 
     ArrayList<String> path;
 
-    Particle(int id, int turn) {
+    // Cells ids
+    ArrayList<Integer> moveOptions;
+    int[] options;
+
+    public Particle(int id, int turn) {
         this.id = id;
         this.turn = turn;
 
@@ -19,6 +23,13 @@ public class Particle {
         column = 0;
 
         path = new ArrayList<>();
+        moveOptions = new ArrayList<>();
+        options = new int[4];
+    }
+
+    public void updateMoveOptions(int[] options, ArrayList<Integer> moveOptions) {
+        this.options = options;
+        this.moveOptions = moveOptions;
     }
 
     public boolean isKamikaze(Maze maze) {
@@ -35,6 +46,42 @@ public class Particle {
         }
 
         return result;
+    }
+
+    public boolean canMoveUp() {
+        return options[0] == CellType.EMPTY;
+    }
+
+    public boolean canMoveRight() {
+        return options[1] == CellType.EMPTY;
+    }
+
+    public boolean canMoveDown() {
+        return options[2] == CellType.EMPTY;
+    }
+
+    public boolean canMoveLeft() {
+        return options[3] == CellType.EMPTY;
+    }
+
+    public void up() {
+        row--;
+        path.add("U");
+    }
+
+    public void right() {
+        column++;
+        path.add("R");
+    }
+
+    public void down() {
+        row++;
+        path.add("D");
+    }
+
+    public void left() {
+        column--;
+        path.add("L");
     }
 
     @Override
