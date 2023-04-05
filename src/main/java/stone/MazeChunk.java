@@ -46,10 +46,6 @@ public class MazeChunk {
         }
     }
 
-    public boolean isChangeable(int row, int column) {
-        return initial[row][column] == 9;
-    }
-
     public void solve() {
         values[0] = new int[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
         values[1] = new int[] { 1, 0, 0, 0, 0, 0, 1, 0, 0, 1 };

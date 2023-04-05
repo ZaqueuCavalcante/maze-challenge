@@ -23,6 +23,9 @@ public abstract class Maze {
     int[][] currentNeighbors;
     boolean showNeighbors;
 
+    public Maze() {
+    }
+
     public Maze(String option) {
         this.option = option;
         showNeighbors = false;
@@ -70,7 +73,7 @@ public abstract class Maze {
         calculateNext();
     }
 
-    private void calculateNext() {
+    protected void calculateNext() {
         next = new int[rows][columns];
 
         next[startCell.row][startCell.column] = CellType.START;
@@ -88,7 +91,7 @@ public abstract class Maze {
 
     public abstract int[] getDrawSizes();
 
-    private void calculateNeighbors() {
+    protected void calculateNeighbors() {
         currentNeighbors = new int[rows][columns];
 
         for (int column = 0; column < columns; column++) {
