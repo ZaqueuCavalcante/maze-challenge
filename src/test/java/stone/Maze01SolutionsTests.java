@@ -16,10 +16,10 @@ public class Maze01SolutionsTests {
     public void should_test_one_correct_solution_for_maze_01() {
         // Arrange
         Maze maze = new Maze01();
-        String path = "RRLLDRRULDDRRRLRDRDDRDR";
+        String path = "D D D R R R D R R D R R D";
 
         // Act
-        boolean isSolution = maze.isSolution(path, 1);
+        boolean isSolution = maze.isSolution(path, 6);
 
         // Assert
         assertThat(isSolution).isTrue();

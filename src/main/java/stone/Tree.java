@@ -50,6 +50,7 @@ public class Tree {
                 .max().getAsInt();
 
         for (int row = 0; row <= maxRow; row++) {
+            int count = 0;
             for (int column = maxColumn; column >= 0; column--) {
                 Node node = levelNodes.getOrDefault(ids[row][column], null);
 
@@ -58,11 +59,15 @@ public class Tree {
                 }
 
                 filteredNodes.add(node);
-                column = -1;
+                count++;
+                if (count == 3) {
+                    column = -1;
+                }
             }
         }
 
         for (int column = 0; column <= maxColumn; column++) {
+            int count = 0;
             for (int row = maxRow; row >= 0; row--) {
                 boolean nodeAlreadyFiltered = filteredNodes.contains(new Node(row, column, null, ids, 0));
                 if (nodeAlreadyFiltered) {
@@ -77,7 +82,11 @@ public class Tree {
                 }
 
                 filteredNodes.add(node);
-                row = -1;
+                count++;
+                if (count == 3) {
+                    row = -1;
+                }
+
             }
         }
 
@@ -110,6 +119,21 @@ public class Tree {
                 }
             }
 
+            if (up != CellType.EMPTY && left != CellType.EMPTY && levelNode.lifes >= 2) {
+                if (up == CellType.OBSTACLE && left == CellType.OBSTACLE) {
+                    Random r = new Random();
+                    if (r.nextDouble() >= 0.5) {
+                        up = CellType.OBSTACLE_LIFE;
+                    } else {
+                        left = CellType.OBSTACLE_LIFE;
+                    }
+                } else if (up == CellType.OBSTACLE) {
+                    up = CellType.OBSTACLE_LIFE;
+                } else if (left == CellType.OBSTACLE) {
+                    left = CellType.OBSTACLE_LIFE;
+                }
+            }
+
             levelNode.addChildren(up, right, down, left, ids);
 
             for (int i = 0; i < 4; i++) {
@@ -127,7 +151,7 @@ public class Tree {
             }
         }
 
-        // System.out.println("LEVEL = " + level);
+        System.out.println("LEVEL = " + level);
         levelNodes = newNodes;
         level++;
     }

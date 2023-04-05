@@ -263,6 +263,8 @@ public abstract class Maze {
         int row = startCell.row;
         int column = startCell.column;
 
+        path = path.replaceAll(" ", "");
+
         for (char c : path.toCharArray()) {
             shift();
 

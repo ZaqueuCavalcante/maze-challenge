@@ -26,7 +26,12 @@ public class Node {
     }
 
     public void addChildren(int up, int right, int down, int left, int[][] ids) {
-        Node upNode = (up == CellType.EMPTY) ? new Node(row - 1, column, this, ids, this.lifes) : null;
+        Node upNode = null;
+        if (up == CellType.EMPTY) {
+            upNode = new Node(row - 1, column, this, ids, this.lifes);
+        } else if (up == CellType.OBSTACLE_LIFE) {
+            upNode = new Node(row - 1, column, this, ids, this.lifes - 1);
+        }
 
         Node rightNode = null;
         if (right == CellType.EMPTY) {
@@ -42,7 +47,12 @@ public class Node {
             downNode = new Node(row + 1, column, this, ids, this.lifes - 1);
         }
 
-        Node leftNode = (left == CellType.EMPTY) ? new Node(row, column - 1, this, ids, this.lifes) : null;
+        Node leftNode = null;
+        if (left == CellType.EMPTY) {
+            leftNode = new Node(row, column - 1, this, ids, this.lifes);
+        } else if (left == CellType.OBSTACLE_LIFE) {
+            leftNode = new Node(row, column - 1, this, ids, this.lifes - 1);
+        }
 
         children.add(upNode);
         children.add(rightNode);
@@ -117,8 +127,10 @@ public class Node {
         String result = "";
 
         for (int i = path.size() - 1; i >= 0; i--) {
-            result = result + path.get(i);
+            result = result + path.get(i) + " ";
         }
+
+        result = result.trim();
 
         return result;
     }

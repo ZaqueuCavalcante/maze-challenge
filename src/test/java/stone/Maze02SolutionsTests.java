@@ -52,6 +52,19 @@ public class Maze02SolutionsTests {
     }
 
     @Test
+    public void should_test_another_of_best_solutions_for_maze_02_using_6_lifes() {
+        // Arrange
+        Maze maze = new Maze02();
+        String path = "RRRRRRRRRRRRRRRRRRRRRRRRRRDDDRDDRDDRRRRRDDDRRDDDRRDRRDRRRDRRRUUURRRRRDDLDDDLLURRRRRRDDDRRDDDDRRRDDRDDLRDRDDDDDLDLRLRDRDDRRDRRRRRURRRRDRDDRRRRRRUUDRRDDDDRLURRRRDDDDDDDLDDRDDDDDDDDDDDD";
+
+        // Act
+        boolean isSolution = maze.isSolution(path, 6);
+
+        // Assert
+        assertThat(isSolution).isTrue();
+    }
+
+    @Test
     public void should_test_one_wrong_solution_for_maze_02() {
         // Arrange
         Maze maze = new Maze02();
@@ -82,7 +95,7 @@ public class Maze02SolutionsTests {
             Maze maze = new Maze02();
 
             // Act
-            boolean isSolution = maze.isSolution(path, 1);
+            boolean isSolution = maze.isSolution(path, 6);
 
             // Assert
             assertThat(isSolution).isTrue();
