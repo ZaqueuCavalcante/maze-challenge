@@ -11,7 +11,7 @@ import processing.core.PApplet;
 
 public class GameResizerMode {
     public static void run() {
-        final int size = 15;
+        final int size = 45;
         int[][] newMaze = new int[size][size];
 
         for (int row = 0; row < size; row++) {
@@ -30,7 +30,7 @@ public class GameResizerMode {
             output.add(str);
         }
 
-        String fileName = "src/main/java/stone/code/mazes/maze_05_sinuca_15x15.txt";
+        String fileName = "src/main/java/stone/code/mazes/maze_05_sinuca_" + size + "x" + size + ".txt";
         File file = new File(fileName);
         OutputStream outputStream;
 
