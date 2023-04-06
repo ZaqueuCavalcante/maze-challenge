@@ -127,7 +127,13 @@ public abstract class Maze {
         if (open && startCellIsFree()) {
             particleCounter++;
             currentParticlesIds[startCell.row][startCell.column] = particleCounter;
-            particles.put(particleCounter, new Particle(particleCounter, turn));
+
+            Particle particle = new Particle(particleCounter, turn);
+            int[] directions = getNextDirections(particle.row, particle.column);
+            ArrayList<Integer> nextMoves = getNextCellsIds(particle.row, particle.column);
+            particle.updateMoveOptions(directions, nextMoves);
+
+            particles.put(particle.id, particle);
         }
     }
 
@@ -653,6 +659,7 @@ public abstract class Maze {
         for (int row = 0; row < game.maze.rows; row++) {
             for (int column = 0; column < game.maze.columns; column++) {
                 drawCell(game, row, column);
+                drawParticleMoveOptions(game, row, column);
                 drawParticle(game, row, column);
             }
         }
@@ -696,5 +703,33 @@ public abstract class Maze {
         game.fill(0);
         game.text(currentParticlesIds[row][column], (float) (column * game.CIZE + game.CIZE * 0.48),
                 (float) ((row * game.CIZE) + game.CIZE * 0.63));
+    }
+
+    private void drawParticleMoveOptions(Game game, int row, int column) {
+        if (currentParticlesIds[row][column] == 0) {
+            return;
+        }
+
+        game.fill(255, 0, 0);
+
+        float x = (float) (column * game.CIZE + game.CIZE / 2);
+        float y = row * game.CIZE + game.CIZE / 2;
+        float delta = game.CIZE / 4;
+        float radius = game.CIZE / 4;
+
+        Particle p = particles.get(currentParticlesIds[row][column]);
+
+        if (p.canMoveUp()) {
+            game.circle(x, y - delta, radius);
+        }
+        if (p.canMoveRight()) {
+            game.circle(x + delta, y, radius);
+        }
+        if (p.canMoveDown()) {
+            game.circle(x, y + delta, radius);
+        }
+        if (p.canMoveLeft()) {
+            game.circle(x - delta, y, radius);
+        }
     }
 }
