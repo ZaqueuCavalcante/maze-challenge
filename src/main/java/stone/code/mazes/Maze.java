@@ -151,6 +151,8 @@ public abstract class Maze {
         calculateNext();
         turn++;
 
+        obstaclesFilter(); // DEBUG ONLY
+
         if (outParticles.size() > 0) {
             open = false;
         }

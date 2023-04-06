@@ -33,7 +33,7 @@ public class App {
     }
 
     public static void debugMode() {
-        PApplet.main(new String[] { "stone.code.GameDebugMode" });
+        PApplet.main(new String[] { "stone.code.games.GameDebugMode" });
     }
 
     public static void releaseMode() {
