@@ -1,6 +1,9 @@
 package stone.code;
 
 import processing.core.PApplet;
+import stone.code.games.GameReleaseMode;
+import stone.code.games.GameResizerMode;
+import stone.code.games.Mode;
 
 public class App {
     static Mode mode = Mode.DEBUG;

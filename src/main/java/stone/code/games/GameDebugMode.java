@@ -1,4 +1,6 @@
-package stone.code;
+package stone.code.games;
+
+import stone.code.mazes.Maze05Sinuca10x10;
 
 public class GameDebugMode extends Game {
     public void settings() {

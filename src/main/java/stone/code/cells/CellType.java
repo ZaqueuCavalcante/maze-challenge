@@ -1,4 +1,4 @@
-package stone.code;
+package stone.code.cells;
 
 public final class CellType {
     public static final int OUT = -1;

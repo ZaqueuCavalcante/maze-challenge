@@ -1,4 +1,6 @@
-package stone.code;
+package stone.code.mazes;
+
+import stone.code.cells.CellType;
 
 public class Maze05Sinuca extends Maze {
     public Maze05Sinuca() {

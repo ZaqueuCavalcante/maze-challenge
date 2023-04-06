@@ -1,4 +1,4 @@
-package stone.code;
+package stone.code.mazes;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,6 +12,10 @@ import java.util.HashSet;
 
 import processing.core.PApplet;
 import processing.core.PConstants;
+import stone.code.Particle;
+import stone.code.cells.Cell;
+import stone.code.cells.CellType;
+import stone.code.games.Game;
 
 public abstract class Maze {
     int turn;

@@ -1,4 +1,4 @@
-package stone.code;
+package stone.code.games;
 
 import java.io.File;
 import java.io.FileNotFoundException;

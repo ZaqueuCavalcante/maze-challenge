@@ -1,4 +1,4 @@
-package stone.code;
+package stone.code.cells;
 
 public class Cell {
     public int row;

@@ -1,6 +1,6 @@
-package stone.code;
+package stone.code.games;
 
-enum Mode {
+public enum Mode {
     FUN,
     DEBUG,
     RELEASE,

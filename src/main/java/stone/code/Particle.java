@@ -2,6 +2,9 @@ package stone.code;
 
 import java.util.ArrayList;
 
+import stone.code.cells.CellType;
+import stone.code.mazes.Maze;
+
 public class Particle {
     public int id;
     public int turn;
@@ -11,7 +14,7 @@ public class Particle {
 
     ArrayList<String> path;
 
-    int[] options;
+    public int[] options;
     ArrayList<Integer> moveOptions;
 
     public Particle(int id, int turn) {

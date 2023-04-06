@@ -1,4 +1,4 @@
-package stone.code;
+package stone.code.games;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -8,6 +8,9 @@ import java.time.Instant;
 // import java.io.FileNotFoundException;
 // import java.io.FileOutputStream;
 // import java.io.OutputStream;
+
+import stone.code.mazes.Maze;
+import stone.code.mazes.Maze05Sinuca;
 
 // import processing.core.PApplet;
 

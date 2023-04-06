@@ -4,9 +4,9 @@ import static org.assertj.core.api.Assertions.*;
 
 import org.junit.Test;
 
-import stone.code.CellType;
-import stone.code.Maze;
-import stone.code.Maze01Ton;
+import stone.code.cells.CellType;
+import stone.code.mazes.Maze;
+import stone.code.mazes.Maze01Ton;
 
 public class MazeCreationTests {
     @Test

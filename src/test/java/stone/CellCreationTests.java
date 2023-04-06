@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.*;
 
 import org.junit.Test;
 
-import stone.code.Cell;
+import stone.code.cells.Cell;
 
 public class CellCreationTests {
     @Test

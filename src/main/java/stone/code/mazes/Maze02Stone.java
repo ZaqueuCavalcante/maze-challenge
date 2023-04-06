@@ -1,8 +1,10 @@
-package stone.code;
+package stone.code.mazes;
 
-public class Maze05Sinuca15x15 extends Maze {
-    public Maze05Sinuca15x15() {
-        super("05_sinuca_15x15");
+import stone.code.cells.CellType;
+
+public class Maze02Stone extends Maze {
+    public Maze02Stone() {
+        super("02_stone");
     }
 
     protected void useRules(int neighbors, int row, int column) {
@@ -18,6 +20,6 @@ public class Maze05Sinuca15x15 extends Maze {
     }
 
     public int[] getDrawSizes() {
-        return new int[] { 1200, 980, 60 };
+        return new int[] { 1305, 1010, 15 };
     }
 }

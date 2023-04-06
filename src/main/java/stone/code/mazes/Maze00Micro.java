@@ -1,4 +1,6 @@
-package stone.code;
+package stone.code.mazes;
+
+import stone.code.cells.CellType;
 
 public class Maze00Micro extends Maze {
     public Maze00Micro() {
