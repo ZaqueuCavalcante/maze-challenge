@@ -4,11 +4,14 @@ import static org.assertj.core.api.Assertions.*;
 
 import org.junit.Test;
 
+import stone.code.Maze;
+import stone.code.Maze01Ton;
+
 public class MazeGetNeighborsTests {
     @Test
     public void should_get_neighbors_for_the_maze_01_state_0() {
         // Arrange / Act
-        Maze maze = new Maze01();
+        Maze maze = new Maze01Ton();
 
         // Assert
         assertThat(maze.currentNeighbors[0]).isEqualTo(new int[] { 0, 0, 0, 1, 1, 1, 0, 0 });
@@ -23,7 +26,7 @@ public class MazeGetNeighborsTests {
     @Test
     public void should_get_neighbors_for_the_maze_01_state_1() {
         // Arrange / Act
-        Maze maze = new Maze01();
+        Maze maze = new Maze01Ton();
         maze.shift();
 
         // Assert
@@ -39,7 +42,7 @@ public class MazeGetNeighborsTests {
     @Test
     public void should_get_neighbors_for_the_maze_01_state_2() {
         // Arrange / Act
-        Maze maze = new Maze01();
+        Maze maze = new Maze01Ton();
         maze.shift();
         maze.shift();
 

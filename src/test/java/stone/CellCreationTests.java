@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.*;
 
 import org.junit.Test;
 
+import stone.code.Cell;
+
 public class CellCreationTests {
     @Test
     public void should_create_a_new_cell_with_correct_values() {

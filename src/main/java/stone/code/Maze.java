@@ -21,18 +21,18 @@ public abstract class Maze {
 
     String option;
 
-    int rows;
-    int columns;
+    public int rows;
+    public int columns;
 
-    Cell startCell;
-    Cell endCell;
+    public Cell startCell;
+    public Cell endCell;
 
     final int[][] cellsIds;
 
-    int[][] current;
-    int[][] next;
+    public int[][] current;
+    public int[][] next;
 
-    int[][] currentNeighbors;
+    public int[][] currentNeighbors;
 
     int particleCounter;
     int[][] currentParticlesIds;
@@ -48,7 +48,7 @@ public abstract class Maze {
         open = true;
         particleCanAccessEndCell = false;
 
-        File file = new File("src/main/java/stone/code/mazes/maze_" + option + ".txt");
+        File file = new File("src/main/java/stone/mazes/maze_" + option + ".txt");
         InputStream input;
 
         try {

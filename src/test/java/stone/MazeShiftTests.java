@@ -4,11 +4,14 @@ import static org.assertj.core.api.Assertions.*;
 
 import org.junit.Test;
 
+import stone.code.Maze;
+import stone.code.Maze01Ton;
+
 public class MazeShiftTests {
     @Test
     public void should_shift_the_maze_01_to_the_state_3() {
         // Arrange
-        Maze maze = new Maze01();
+        Maze maze = new Maze01Ton();
 
         // Act
         maze.shift();
@@ -27,7 +30,7 @@ public class MazeShiftTests {
     @Test
     public void should_shift_the_maze_01_to_the_state_4() {
         // Arrange
-        Maze maze = new Maze01();
+        Maze maze = new Maze01Ton();
 
         // Act
         maze.shift();
@@ -47,7 +50,7 @@ public class MazeShiftTests {
     @Test
     public void should_shift_the_maze_01_to_the_state_5() {
         // Arrange
-        Maze maze = new Maze01();
+        Maze maze = new Maze01Ton();
 
         // Act
         maze.shift();
@@ -68,7 +71,7 @@ public class MazeShiftTests {
     @Test
     public void should_shift_the_maze_01_to_the_state_6() {
         // Arrange
-        Maze maze = new Maze01();
+        Maze maze = new Maze01Ton();
 
         // Act
         maze.shift();

@@ -1,4 +1,4 @@
-package stone.tests;
+package stone;
 
 import static org.assertj.core.api.Assertions.*;
 
