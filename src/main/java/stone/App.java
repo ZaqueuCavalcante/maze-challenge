@@ -5,7 +5,7 @@ import processing.core.PApplet;
 public class App {
     static Mode mode = Mode.RELEASE;
 
-    public static void main(String[] args) {
+    public static void main2(String[] args) {
         if (mode == Mode.FUN) {
             funMode();
         }

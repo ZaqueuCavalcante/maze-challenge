@@ -3,7 +3,7 @@ package stone.code;
 import processing.core.PApplet;
 
 public class App {
-    static Mode mode = Mode.RESIZER;
+    static Mode mode = Mode.DEBUG;
 
     public static void main(String[] args) {
         if (mode == Mode.FUN) {

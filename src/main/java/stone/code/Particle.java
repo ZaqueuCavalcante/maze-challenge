@@ -11,8 +11,6 @@ public class Particle {
 
     ArrayList<String> path;
 
-    // Cells ids
-    ArrayList<Integer> moveOptions;
     int[] options;
 
     public Particle(int id, int turn) {
@@ -23,13 +21,11 @@ public class Particle {
         column = 0;
 
         path = new ArrayList<>();
-        moveOptions = new ArrayList<>();
         options = new int[4];
     }
 
-    public void updateMoveOptions(int[] options, ArrayList<Integer> moveOptions) {
+    public void updateMoveOptions(int[] options) {
         this.options = options;
-        this.moveOptions = moveOptions;
     }
 
     public boolean isKamikaze(Maze maze) {
