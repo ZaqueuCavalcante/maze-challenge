@@ -96,12 +96,32 @@ public abstract class Maze {
         outParticles = new ArrayList<>();
     }
 
+    ArrayList<Integer> emptiesList = new ArrayList<>();
+    ArrayList<Integer> obstaclesList = new ArrayList<>();
+
     protected abstract void useRules(int neighbors, int row, int column);
 
     public abstract int[] getDrawSizes();
 
     public void shift() {
-        updateParticles();
+        int empties = 0;
+        int obstacles = 0;
+        for (int row = 0; row < rows; row++) {
+            for (int column = 0; column < columns; column++) {
+                if (current[row][column] == 0) {
+                    empties++;
+                } else if (current[row][column] == 1) {
+                    obstacles++;
+                }
+            }
+        }
+        emptiesList.add(empties);
+        obstaclesList.add(obstacles);
+
+        System.out.println("TURN = " + turn + " --- [ ] = " + empties + " | [x] = " + obstacles + " | % [ ] = "
+                + (float) empties / (empties + obstacles));
+
+        // updateParticles();
         current = next;
         calculateNeighbors();
         calculateNext();
@@ -111,7 +131,7 @@ public abstract class Maze {
             open = false;
         }
 
-        ArrayList<Integer> turns = new ArrayList<>(Arrays.asList(3, 7, 10, 12, 14, 15));
+        ArrayList<Integer> turns = new ArrayList<>(Arrays.asList());
         if (turns.contains(turn)) {
             addParticle();
         }
