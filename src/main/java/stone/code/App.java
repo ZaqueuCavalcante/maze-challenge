@@ -3,7 +3,7 @@ package stone.code;
 import processing.core.PApplet;
 
 public class App {
-    static Mode mode = Mode.RELEASE;
+    static Mode mode = Mode.RESIZER;
 
     public static void main(String[] args) {
         if (mode == Mode.FUN) {
@@ -17,6 +17,9 @@ public class App {
         }
         if (mode == Mode.MAKER) {
             makerMode();
+        }
+        if (mode == Mode.RESIZER) {
+            resizerMode();
         }
     }
 
@@ -32,6 +35,10 @@ public class App {
 
     public static void releaseMode() {
         GameReleaseMode.run();
+    }
+
+    public static void resizerMode() {
+        GameResizerMode.run();
     }
 
     public static void makerMode() {

@@ -5,4 +5,5 @@ enum Mode {
     DEBUG,
     RELEASE,
     MAKER,
+    RESIZER,
 }
