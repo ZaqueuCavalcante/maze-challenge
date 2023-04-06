@@ -103,6 +103,8 @@ public abstract class Maze {
 
     public abstract int[] getDrawSizes();
 
+    int minEmpties = 1_000_000;
+
     public void shift() {
         int empties = 0;
         int obstacles = 0;
@@ -115,11 +117,22 @@ public abstract class Maze {
                 }
             }
         }
-        emptiesList.add(empties);
-        obstaclesList.add(obstacles);
 
-        System.out.println("TURN = " + turn + " --- [ ] = " + empties + " | [x] = " + obstacles + " | % [ ] = "
-                + (float) empties / (empties + obstacles));
+        if (empties < minEmpties) {
+            minEmpties = empties;
+            System.out.println("TURN = " + turn + " --- [ ] = " + empties);
+        }
+
+        if (turn >= empties) {
+            System.out.println(">= | TURN = " + turn + " --- [ ] = " + empties);
+        }
+
+        // emptiesList.add(empties);
+        // obstaclesList.add(obstacles);
+
+        // System.out.println("TURN = " + turn + " --- [ ] = " + empties + " | [x] = " +
+        // obstacles + " | % [ ] = "
+        // + (float) empties / (empties + obstacles));
 
         // updateParticles();
         current = next;
