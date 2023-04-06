@@ -11,7 +11,7 @@ import processing.core.PApplet;
 
 public class GameResizerMode {
     public static void run() {
-        final int size = 45;
+        final int size = 10;
         int[][] newMaze = new int[size][size];
 
         for (int row = 0; row < size; row++) {

@@ -12,6 +12,7 @@ public class Particle {
     ArrayList<String> path;
 
     int[] options;
+    ArrayList<Integer> moveOptions;
 
     public Particle(int id, int turn) {
         this.id = id;
@@ -22,10 +23,12 @@ public class Particle {
 
         path = new ArrayList<>();
         options = new int[4];
+        moveOptions = new ArrayList<>();
     }
 
-    public void updateMoveOptions(int[] options) {
+    public void updateMoveOptions(int[] options, ArrayList<Integer> moveOptions) {
         this.options = options;
+        this.moveOptions = moveOptions;
     }
 
     public boolean isKamikaze(Maze maze) {
@@ -42,6 +45,16 @@ public class Particle {
         }
 
         return result;
+    }
+
+    public int getEmpties() {
+        int empties = 0;
+        for (int i = 0; i < 4; i++) {
+            if (options[i] == 0) {
+                empties++;
+            }
+        }
+        return empties;
     }
 
     public boolean canMoveUp() {

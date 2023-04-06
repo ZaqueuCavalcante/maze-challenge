@@ -2,7 +2,7 @@ package stone.code;
 
 public class GameDebugMode extends Game {
     public void settings() {
-        maze = new Maze05Sinuca15x15();
+        maze = new Maze05Sinuca10x10();
 
         int[] mazeSizes = maze.getDrawSizes();
         size(mazeSizes[0], mazeSizes[1]);

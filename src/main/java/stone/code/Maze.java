@@ -17,6 +17,7 @@ public abstract class Maze {
     int turn;
 
     boolean open;
+    boolean particleCanAccessEndCell;
 
     String option;
 
@@ -38,12 +39,14 @@ public abstract class Maze {
     int[][] nextParticlesIds;
     HashMap<Integer, Particle> particles;
 
+    ArrayList<Integer> outs;
     ArrayList<Particle> outParticles;
 
     public Maze(String option) {
         this.option = option;
 
         open = true;
+        particleCanAccessEndCell = false;
 
         File file = new File("src/main/java/stone/code/mazes/maze_" + option + ".txt");
         InputStream input;
@@ -178,178 +181,179 @@ public abstract class Maze {
         }
     }
 
-    public void updateParticles() {
-        // Green Filter
-        for (Particle p : particles.values()) {
-            int[] directions = getNextDirections(p.row, p.column);
-            // ArrayList<Integer> nextMoves = getNextCellsIds(p.row, p.column);
-            p.updateMoveOptions(directions);
-        }
-
-        // Zero Move Filter
-        for (Particle p : particles.values()) {
-            int empties = 0;
-            for (int i = 0; i < 4; i++) {
-                if (p.options[i] == 0) {
-                    empties++;
-                }
+    private void obstaclesFilter() {
+        if (particleCanAccessEndCell) {
+            for (Particle p : particles.values()) {
+                int[] directions = getNextDirections(p.row, p.column);
+                ArrayList<Integer> nextMoves = getNextCellsIds(p.row, p.column);
+                p.updateMoveOptions(directions, nextMoves);
             }
-            if (empties == 0) {
+        } else {
+            next[endCell.row][endCell.column] = CellType.OBSTACLE;
+            for (Particle p : particles.values()) {
+                int[] directions = getNextDirections(p.row, p.column);
+                ArrayList<Integer> nextMoves = getNextCellsIds(p.row, p.column);
+                p.updateMoveOptions(directions, nextMoves);
+            }
+            next[endCell.row][endCell.column] = CellType.END;
+        }
+    }
+
+    private void zeroMovesFilter() {
+        for (Particle p : particles.values()) {
+            if (p.getEmpties() == 0) {
                 System.out.println("Stucked | id = " + p.id + " | (" + p.row + ", " + p.column + ")");
             }
         }
+    }
+
+    private void oneMovesFilter() {
+        for (Particle p : particles.values()) {
+            if (p.getEmpties() > 1) {
+                continue;
+            }
+
+            movedsIds.add(p.id);
+
+            if (p.canMoveRight() && nextParticlesIds[p.row][p.column + 1] == 0) {
+                p.right();
+            } else if (p.canMoveDown() && nextParticlesIds[p.row + 1][p.column] == 0) {
+                p.down();
+            } else if (p.canMoveLeft() && nextParticlesIds[p.row][p.column - 1] == 0) {
+                p.left();
+            } else if (p.canMoveUp() && nextParticlesIds[p.row - 1][p.column] == 0) {
+                p.up();
+            } else {
+                System.out.println("Stucked | id = " + p.id + " | (" + p.row + ", " + p.column + ")");
+            }
+            nextParticlesIds[p.row][p.column] = p.id;
+
+            // Handle end
+            if (p.row == endCell.row && p.column == endCell.column) {
+                nextParticlesIds[p.row][p.column] = 0;
+                outs.add(p.id);
+            }
+        }
+    }
+
+    private void twoMovesFilter() {
+        for (Particle p : particles.values()) {
+            if (movedsIds.contains(p.id)) {
+                continue;
+            }
+
+            if (p.getEmpties() > 2) {
+                continue;
+            }
+
+            movedsIds.add(p.id);
+            // Error here!
+            if (p.canMoveRight() && nextParticlesIds[p.row][p.column + 1] == 0) {
+                p.right();
+            } else if (p.canMoveDown() && nextParticlesIds[p.row + 1][p.column] == 0) {
+                p.down();
+            } else if (p.canMoveLeft() && nextParticlesIds[p.row][p.column - 1] == 0) {
+                p.left();
+            } else if (p.canMoveUp() && nextParticlesIds[p.row - 1][p.column] == 0) {
+                p.up();
+            } else {
+                System.out.println("Stucked | id = " + p.id + " | (" + p.row + ", " + p.column + ")");
+            }
+            nextParticlesIds[p.row][p.column] = p.id;
+
+            // Handle end
+            if (p.row == endCell.row && p.column == endCell.column) {
+                nextParticlesIds[p.row][p.column] = 0;
+                outs.add(p.id);
+            }
+        }
+    }
+
+    private void threeMovesFilter() {
+        for (Particle p : particles.values()) {
+            if (movedsIds.contains(p.id)) {
+                continue;
+            }
+
+            if (p.getEmpties() > 3) {
+                continue;
+            }
+
+            movedsIds.add(p.id);
+            // Error here!
+            if (p.canMoveRight() && nextParticlesIds[p.row][p.column + 1] == 0) {
+                p.right();
+            } else if (p.canMoveDown() && nextParticlesIds[p.row + 1][p.column] == 0) {
+                p.down();
+            } else if (p.canMoveLeft() && nextParticlesIds[p.row][p.column - 1] == 0) {
+                p.left();
+            } else if (p.canMoveUp() && nextParticlesIds[p.row - 1][p.column] == 0) {
+                p.up();
+            } else {
+                System.out.println("Stucked | id = " + p.id + " | (" + p.row + ", " + p.column + ")");
+            }
+            nextParticlesIds[p.row][p.column] = p.id;
+
+            // Handle end
+            if (p.row == endCell.row && p.column == endCell.column) {
+                nextParticlesIds[p.row][p.column] = 0;
+                outs.add(p.id);
+            }
+        }
+    }
+
+    private void fourMovesFilter() {
+        for (Particle p : particles.values()) {
+            if (movedsIds.contains(p.id)) {
+                continue;
+            }
+
+            movedsIds.add(p.id);
+            // Error here!
+            if (p.canMoveRight() && nextParticlesIds[p.row][p.column + 1] == 0) {
+                p.right();
+            } else if (p.canMoveDown() && nextParticlesIds[p.row + 1][p.column] == 0) {
+                p.down();
+            } else if (p.canMoveLeft() && nextParticlesIds[p.row][p.column - 1] == 0) {
+                p.left();
+            } else if (p.canMoveUp() && nextParticlesIds[p.row - 1][p.column] == 0) {
+                p.up();
+            } else {
+                System.out.println("Stucked | id = " + p.id + " | (" + p.row + ", " + p.column + ")");
+            }
+            nextParticlesIds[p.row][p.column] = p.id;
+
+            // Handle end
+            if (p.row == endCell.row && p.column == endCell.column) {
+                nextParticlesIds[p.row][p.column] = 0;
+                outs.add(p.id);
+            }
+        }
+    }
+
+    public void updateParticles() {
+        obstaclesFilter();
+
+        zeroMovesFilter();
 
         // Reset
         nextParticlesIds = new int[rows][columns];
-        ArrayList<Integer> outs = new ArrayList<>();
+        outs = new ArrayList<>();
         movedsIds = new HashSet<>();
 
-        // One Move Filter
-        for (Particle p : particles.values()) {
-            int empties = 0;
-            for (int i = 0; i < 4; i++) {
-                if (p.options[i] == 0) {
-                    empties++;
-                }
-            }
-            if (empties > 1) {
-                continue;
-            }
+        oneMovesFilter();
 
-            movedsIds.add(p.id);
-
-            if (p.canMoveRight() && nextParticlesIds[p.row][p.column + 1] == 0) {
-                p.right();
-            } else if (p.canMoveDown() && nextParticlesIds[p.row + 1][p.column] == 0) {
-                p.down();
-            } else if (p.canMoveLeft() && nextParticlesIds[p.row][p.column - 1] == 0) {
-                p.left();
-            } else if (p.canMoveUp() && nextParticlesIds[p.row - 1][p.column] == 0) {
-                p.up();
-            } else {
-                System.out.println("Stucked | id = " + p.id + " | (" + p.row + ", " + p.column + ")");
-            }
-            nextParticlesIds[p.row][p.column] = p.id;
-
-            // Handle end
-            if (p.row == endCell.row && p.column == endCell.column) {
-                nextParticlesIds[p.row][p.column] = 0;
-                outs.add(p.id);
-            }
-        }
-
-        // Quem ainda nao se moveu deve respeitar quem ja
         respectOthersMoves();
 
-        // Tow Moves Filter
-        for (Particle p : particles.values()) {
-            if (movedsIds.contains(p.id)) {
-                continue;
-            }
+        twoMovesFilter();
 
-            int empties = 0;
-            for (int i = 0; i < 4; i++) {
-                if (p.options[i] == 0) {
-                    empties++;
-                }
-            }
-            if (empties > 2) {
-                continue;
-            }
-
-            movedsIds.add(p.id);
-            // Error here!
-            if (p.canMoveRight() && nextParticlesIds[p.row][p.column + 1] == 0) {
-                p.right();
-            } else if (p.canMoveDown() && nextParticlesIds[p.row + 1][p.column] == 0) {
-                p.down();
-            } else if (p.canMoveLeft() && nextParticlesIds[p.row][p.column - 1] == 0) {
-                p.left();
-            } else if (p.canMoveUp() && nextParticlesIds[p.row - 1][p.column] == 0) {
-                p.up();
-            } else {
-                System.out.println("Stucked | id = " + p.id + " | (" + p.row + ", " + p.column + ")");
-            }
-            nextParticlesIds[p.row][p.column] = p.id;
-
-            // Handle end
-            if (p.row == endCell.row && p.column == endCell.column) {
-                nextParticlesIds[p.row][p.column] = 0;
-                outs.add(p.id);
-            }
-        }
-
-        // Quem ainda nao se moveu deve respeitar quem ja
         respectOthersMoves();
 
-        // Three Moves Filter
-        for (Particle p : particles.values()) {
-            if (movedsIds.contains(p.id)) {
-                continue;
-            }
+        threeMovesFilter();
 
-            int empties = 0;
-            for (int i = 0; i < 4; i++) {
-                if (p.options[i] == 0) {
-                    empties++;
-                }
-            }
-            if (empties > 3) {
-                continue;
-            }
-
-            movedsIds.add(p.id);
-            // Error here!
-            if (p.canMoveRight() && nextParticlesIds[p.row][p.column + 1] == 0) {
-                p.right();
-            } else if (p.canMoveDown() && nextParticlesIds[p.row + 1][p.column] == 0) {
-                p.down();
-            } else if (p.canMoveLeft() && nextParticlesIds[p.row][p.column - 1] == 0) {
-                p.left();
-            } else if (p.canMoveUp() && nextParticlesIds[p.row - 1][p.column] == 0) {
-                p.up();
-            } else {
-                System.out.println("Stucked | id = " + p.id + " | (" + p.row + ", " + p.column + ")");
-            }
-            nextParticlesIds[p.row][p.column] = p.id;
-
-            // Handle end
-            if (p.row == endCell.row && p.column == endCell.column) {
-                nextParticlesIds[p.row][p.column] = 0;
-                outs.add(p.id);
-            }
-        }
-
-        // Quem ainda nao se moveu deve respeitar quem ja
         respectOthersMoves();
 
-        // Four Moves Filter
-        for (Particle p : particles.values()) {
-            if (movedsIds.contains(p.id)) {
-                continue;
-            }
-
-            movedsIds.add(p.id);
-            // Error here!
-            if (p.canMoveRight() && nextParticlesIds[p.row][p.column + 1] == 0) {
-                p.right();
-            } else if (p.canMoveDown() && nextParticlesIds[p.row + 1][p.column] == 0) {
-                p.down();
-            } else if (p.canMoveLeft() && nextParticlesIds[p.row][p.column - 1] == 0) {
-                p.left();
-            } else if (p.canMoveUp() && nextParticlesIds[p.row - 1][p.column] == 0) {
-                p.up();
-            } else {
-                System.out.println("Stucked | id = " + p.id + " | (" + p.row + ", " + p.column + ")");
-            }
-            nextParticlesIds[p.row][p.column] = p.id;
-
-            // Handle end
-            if (p.row == endCell.row && p.column == endCell.column) {
-                nextParticlesIds[p.row][p.column] = 0;
-                outs.add(p.id);
-            }
-        }
+        fourMovesFilter();
 
         if (particles.size() != movedsIds.size()) {
             System.out.println("One or more particles not move");
