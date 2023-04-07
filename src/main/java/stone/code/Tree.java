@@ -98,7 +98,9 @@ public class Tree {
                     continue;
                 }
 
-                // TODO: Desconsiderar nos q expandem pra onde ja tem particula!
+                if (maze.currentParticlesIds[node.row][node.column] != -1) {
+                    continue;
+                }
 
                 if (node.row == maze.endCell.row && node.column == maze.endCell.column) {
                     solutions.put(solutions.size(), node);

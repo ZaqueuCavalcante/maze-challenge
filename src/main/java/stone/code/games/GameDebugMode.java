@@ -35,9 +35,7 @@ public class GameDebugMode extends Game {
     public void keyPressed() {
         if (keyCode == 10) { // Enter
 
-            if (maze.turn < 5) {
-                maze.addParticle();
-            }
+            maze.addParticle();
 
             for (Particle p : maze.particles.values()) {
                 p.tree.goToNextLevel(maze);
@@ -56,6 +54,8 @@ public class GameDebugMode extends Game {
             }
 
             maze.shift();
+
+            maze.checkForCloseMaze();
 
             if (maze.particles.size() == 0) {
                 ArrayList<String> output = new ArrayList<>();

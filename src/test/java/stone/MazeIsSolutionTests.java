@@ -59,12 +59,13 @@ public class MazeIsSolutionTests {
     public void should_test_solution_for_maze_01_with_5_particles() {
         // Arrange
         Maze maze = new Maze01Ton();
+
         ArrayList<String> paths = new ArrayList<>();
         paths.add("0 D D D D D R R L U U U R R R D R L D D R R D R");
         paths.add("1 R R L D D D D D R R R R R D R");
-        // paths.add("2 D D D R R L L R U R R R D R L D D R R D R");
-        // paths.add("3 R D D D D D R R R R R D R");
-        // paths.add("4 D D D R L R U R R R D R L D D R R D R");
+        paths.add("5 R R D R D R D R D R U D D D R");
+        paths.add("9 D D D D D R R R R L L R L R L R R R R R D");
+        paths.add("10 R D U R R R D R R U D U D U R L R D D D D D D");
 
         // Act
         boolean isSolution = maze.isSolution(paths);
