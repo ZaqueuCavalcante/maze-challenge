@@ -30,7 +30,7 @@ public abstract class Maze {
     public Cell startCell;
     public Cell endCell;
 
-    final int[][] cellsIds;
+    public final int[][] cellsIds;
 
     public int[][] current;
     public int[][] next;
