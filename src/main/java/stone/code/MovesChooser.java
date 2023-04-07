@@ -18,6 +18,20 @@ public class MovesChooser {
     }
 
     public HashMap<Integer, Integer> getMoves() {
+        // Todas com so UMA opcao
+
+
+        // 0, 1 ou 2 que tem a opcao de ir pro end
+
+
+
+        // Salvar estado ate aqui e ir tentando combinacoes ate resolver
+
+
+        // Fica mais facil iterar sobre as celulas q sobre a particulas?
+
+
+
         for (Particle p : particles.values()) {
             for (int cellId : p.moveOptions) {
                 if (cellId == endCellId) {

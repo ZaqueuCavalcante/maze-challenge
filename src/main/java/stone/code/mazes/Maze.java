@@ -148,7 +148,7 @@ public abstract class Maze {
         calculateNext();
         turn++;
 
-        obstaclesFilter(); // ONLY FOR DEBUG
+        updateParticlesMoveOptions(); // ONLY FOR DEBUG
 
         if (outParticles.size() > 0) {
             open = false;
@@ -159,6 +159,8 @@ public abstract class Maze {
             addParticle();
         }
 
+        addParticle();
+
         if (particles.size() == 0) {
             System.out.println("SOLVED!");
 
@@ -166,7 +168,7 @@ public abstract class Maze {
         }
     }
 
-    private void obstaclesFilter() {
+    private void updateParticlesMoveOptions() {
         if (particleCanAccessEndCell) {
             for (Particle p : particles.values()) {
                 int[] directions = getNextDirections(p.row, p.column);
@@ -197,7 +199,7 @@ public abstract class Maze {
     }
 
     public void updateParticles() {
-        obstaclesFilter();
+        updateParticlesMoveOptions();
 
         currentParticlesIds = new int[rows][columns];
 
@@ -208,6 +210,9 @@ public abstract class Maze {
             int newRow = getCellRow(cellId);
             int newColumn = getCellColumn(cellId);
             currentParticlesIds[newRow][newColumn] = particleId;
+            Particle p = particles.get(particleId);
+            p.row = newRow;
+            p.column = newColumn;
         });
 
         // Clear Maze

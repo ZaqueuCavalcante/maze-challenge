@@ -79,7 +79,7 @@ public class MovesChooserTests {
     }
 
     @Test
-    public void should_only_return_duplicated_value_when_the_move_option_is_the_end_cell() {
+    public void should_return_duplicated_value_when_the_move_option_is_the_end_cell() {
         // Arrange
         int[] options01 = new int[] { 0, -1, 0, 0 };
         ArrayList<Integer> moveOptions01 = new ArrayList<>(Arrays.asList(3, 11, 6));
@@ -106,5 +106,32 @@ public class MovesChooserTests {
         assertThat(moves.get(2)).isEqualTo(11);
         assertThat(chooser.outs.get(0)).isEqualTo(1);
         assertThat(chooser.outs.get(1)).isEqualTo(2);
+    }
+
+    @Test
+    public void should_only_return_duplicated_value_when_the_move_option_is_the_end_cell() {
+        // Arrange
+        int[] options01 = new int[] { -1, 0, 0, -1 };
+        ArrayList<Integer> moveOptions01 = new ArrayList<>(Arrays.asList(1, 4));
+        Particle particle01 = new Particle(2, 1);
+        particle01.updateMoveOptions(options01, moveOptions01);
+
+        int[] options02 = new int[] { 0, 0, 0, 0 };
+        ArrayList<Integer> moveOptions02 = new ArrayList<>(Arrays.asList(1, 6, 9, 4));
+        Particle particle02 = new Particle(1, 0);
+        particle02.updateMoveOptions(options02, moveOptions02);
+
+        HashMap<Integer, Particle> particles = new HashMap<>();
+        particles.put(particle01.id, particle01);
+        particles.put(particle02.id, particle02);
+
+        MovesChooser chooser = new MovesChooser(particles, 11);
+
+        // Act
+        HashMap<Integer, Integer> moves = chooser.getMoves();
+
+        // Assert
+        assertThat(moves.size()).isEqualTo(2);
+        assertThat(moves.get(1) != moves.get(2)).isTrue();
     }
 }
