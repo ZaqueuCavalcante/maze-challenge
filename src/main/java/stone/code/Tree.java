@@ -94,6 +94,8 @@ public class Tree {
                     continue;
                 }
 
+                // TODO: Desconsiderar nos q expandem pra onde ja tem particula!
+
                 if (node.row == maze.endCell.row && node.column == maze.endCell.column) {
                     solutions.add(node);
                 }
