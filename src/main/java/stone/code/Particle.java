@@ -3,7 +3,6 @@ package stone.code;
 import java.util.ArrayList;
 
 import stone.code.cells.CellType;
-import stone.code.mazes.Maze;
 
 public class Particle {
     public int id;
@@ -40,12 +39,6 @@ public class Particle {
 
     public int distanceToStart() {
         return row + column;
-    }
-
-    public boolean isKamikaze(Maze maze) {
-        boolean isGoingToObstacle = maze.getNextOf(row, column) == CellType.OBSTACLE;
-        boolean isGoingToAnotherParticle = maze.hasParticleOn(row, column);
-        return isGoingToObstacle || isGoingToAnotherParticle;
     }
 
     public String getFormatedPath() {

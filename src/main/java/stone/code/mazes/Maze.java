@@ -381,21 +381,6 @@ public abstract class Maze {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-
     int minEmpties = 1_000_000;
 
     public void calculateMinEmpties() {
@@ -454,6 +439,8 @@ public abstract class Maze {
         }
     }
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+
     public int getCellRow(int cellId) {
         int cellRow = cellId / columns;
 
@@ -482,33 +469,8 @@ public abstract class Maze {
         return currentParticlesIds[startCell.row][startCell.column] == -1;
     }
 
-    public boolean hasParticleOnEndCell() {
-        return currentParticlesIds[endCell.row][endCell.column] != -1;
-    }
-
-    public int getNextOf(int row, int column) {
-        return next[row][column];
-    }
-
-    public boolean hasParticleOn(int row, int column) {
-        return currentParticlesIds[row][column] != -1;
-    }
-
-    protected boolean currentIsObstacle(int row, int column) {
+    public boolean currentIsObstacle(int row, int column) {
         return current[row][column] == CellType.OBSTACLE;
-    }
-
-    public boolean isEmpty() {
-        for (int row = 0; row < rows; row++) {
-            for (int column = 0; column < columns; column++) {
-                if (currentParticlesIds[row][column] != -1) {
-                    if (row != endCell.row && column != endCell.column) {
-                        return false;
-                    }
-                }
-            }
-        }
-        return true;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
