@@ -1,2 +1,2 @@
-0 D D D D D R R L U U U R R R D R L D D R R D R
-1 R R L D D D D D R R R R R D R
+0 D D D D D R R L U U U R R R D R L D D R R R D
+1 R R L D D D D D R R R R R R D

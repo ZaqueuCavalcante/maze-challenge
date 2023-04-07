@@ -41,13 +41,12 @@ public class MazeIsSolutionTests {
     }
 
     @Test
-    public void should_test_solution_for_maze_01_with_3_particles() {
+    public void should_test_other_solution_for_maze_01_with_2_particles() {
         // Arrange
         Maze maze = new Maze01Ton();
         ArrayList<String> paths = new ArrayList<>();
-        paths.add("0 D D D D D R R L U U U R R R D R L D D R R D R");
-        paths.add("1 R R L D D D D D R R R R R D R");
-        // paths.add("3 R D D D D D R R R R R D R");
+        paths.add("0 D D D D D R R L U U U R R R D R L D D R R R D");
+        paths.add("1 R R L D D D D D R R R R R R D");
 
         // Act
         boolean isSolution = maze.isSolution(paths);
