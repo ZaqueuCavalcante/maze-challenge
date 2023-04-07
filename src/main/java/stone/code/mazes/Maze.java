@@ -11,7 +11,6 @@ import java.util.HashSet;
 
 import processing.core.PApplet;
 import processing.core.PConstants;
-import stone.code.MovesChooser;
 import stone.code.Particle;
 import stone.code.cells.Cell;
 import stone.code.cells.CellType;
@@ -202,30 +201,6 @@ public abstract class Maze {
         int cellColumn = cellId % columns;
 
         return cellColumn;
-    }
-
-    public void updateParticles() {
-        updateParticlesMoveOptions();
-
-        resetCurrentParticlesIds();
-
-        MovesChooser chooser = new MovesChooser(particles, cellsIds[endCell.row][endCell.column]);
-        HashMap<Integer, Integer> moves = chooser.getMoves();
-
-        moves.forEach((particleId, cellId) -> {
-            int newRow = getCellRow(cellId);
-            int newColumn = getCellColumn(cellId);
-            currentParticlesIds[newRow][newColumn] = particleId;
-            Particle p = particles.get(particleId);
-            p.row = newRow;
-            p.column = newColumn;
-        });
-
-        // Clear Maze
-        for (int id : chooser.outs) {
-            Particle endParticle = particles.remove(id);
-            outParticles.add(endParticle);
-        }
     }
 
     public int[] getNextDirections(int row, int column) {
