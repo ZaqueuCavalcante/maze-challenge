@@ -93,7 +93,7 @@ public abstract class Maze {
 
         resetCurrentParticlesIds();
         particles = new HashMap<>();
-
+        addParticle();
         outParticles = new ArrayList<>();
     }
 
@@ -131,7 +131,7 @@ public abstract class Maze {
 
     public void addParticle() {
         if (open && startCellIsFree()) {
-            currentParticlesIds[startCell.row][startCell.column] = turn;
+            // currentParticlesIds[startCell.row][startCell.column] = turn;
 
             Particle particle = new Particle(turn, turn);
             int[] directions = getNextDirections(particle.row, particle.column);
@@ -509,10 +509,10 @@ public abstract class Maze {
 
     private int getMaxTurn(String lastPath) {
         String turnAsString = lastPath.split(" ")[0];
-        int turn = Integer.parseInt(turnAsString);
+        int lastTurn = Integer.parseInt(turnAsString);
         String formatedPath = lastPath.substring(turnAsString.length()).replaceAll(" ", "");
 
-        int maxTurn = turn + formatedPath.length();
+        int maxTurn = lastTurn + formatedPath.length();
 
         return maxTurn;
     }
@@ -528,9 +528,9 @@ public abstract class Maze {
 
         for (String path : paths) {
             String turnAsString = path.split(" ")[0];
-            int turn = Integer.parseInt(turnAsString);
+            int lastTurn = Integer.parseInt(turnAsString);
             String formatedPath = path.substring(turnAsString.length()).replaceAll(" ", "");
-            pathsMap.put(turn, formatedPath);
+            pathsMap.put(lastTurn, formatedPath);
         }
 
         String lastPath = paths.get(paths.size() - 1);
@@ -632,13 +632,17 @@ public abstract class Maze {
 
     public void replay() {
         if (turn < replayTurnMax) {
+            resetCurrentParticlesIds();
+
             HashMap<Integer, Integer> nextParticlesCellsIds = new HashMap<>();
 
             replayPathsMap.forEach((particleTurn, particlePath) -> {
                 if (particleTurn == turn) {
                     replayPathsIndexes.put(particleTurn, 0);
                     replayParticlesCellsIds.put(particleTurn, 0);
-                    addParticle();
+                    if (turn > 0) {
+                        addParticle();
+                    }
                 }
 
                 if (particleTurn <= turn) {
