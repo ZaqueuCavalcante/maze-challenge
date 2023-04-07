@@ -38,6 +38,10 @@ public class Particle {
         }
     }
 
+    public int distanceToStart() {
+        return row + column;
+    }
+
     public boolean isKamikaze(Maze maze) {
         boolean isGoingToObstacle = maze.getNextOf(row, column) == CellType.OBSTACLE;
         boolean isGoingToAnotherParticle = maze.hasParticleOn(row, column);

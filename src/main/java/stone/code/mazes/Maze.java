@@ -124,7 +124,6 @@ public abstract class Maze {
     }
 
     public void addParticle() {
-        // TODO: Improve this with some additional logic
         if (open && startCellIsFree()) {
             particleCounter++;
             currentParticlesIds[startCell.row][startCell.column] = particleCounter;
@@ -154,18 +153,25 @@ public abstract class Maze {
             open = false;
         }
 
-        ArrayList<Integer> turns = new ArrayList<>(Arrays.asList());
-        if (turns.contains(turn)) {
+        if (hasSpace()) {
             addParticle();
         }
-
-        addParticle();
 
         if (particles.size() == 0) {
             System.out.println("SOLVED!");
 
             Collections.sort(outParticles, (a, b) -> Integer.compare(a.turn, b.turn));
         }
+    }
+
+    private boolean hasSpace() {
+        for (Particle p : particles.values()) {
+            if (p.distanceToStart() < 3) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private void updateParticlesMoveOptions() {
