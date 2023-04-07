@@ -3,9 +3,9 @@ package stone.code;
 import java.util.ArrayList;
 
 import stone.code.cells.CellType;
+import stone.code.mazes.Maze;
 
 public class Particle {
-    public int id;
     public int turn;
 
     public int row;
@@ -16,8 +16,9 @@ public class Particle {
     public int[] options;
     public int[] moveOptions;
 
-    public Particle(int id, int turn) {
-        this.id = id;
+    public Tree tree;
+
+    public Particle(int turn, Maze maze) {
         this.turn = turn;
 
         row = 0;
@@ -26,6 +27,8 @@ public class Particle {
         path = new ArrayList<>();
         options = new int[4];
         moveOptions = new int[4];
+
+        tree = new Tree(maze);
     }
 
     public void updateMoveOptions(int[] options, int[] moveOptions) {
@@ -33,7 +36,7 @@ public class Particle {
         this.moveOptions = moveOptions;
 
         if (getEmpties() == 0) {
-            System.out.println("Stucked | id = " + id + " | (" + row + ", " + column + ")");
+            System.out.println("Stucked | turn = " + turn + " | (" + row + ", " + column + ")");
         }
     }
 
@@ -99,12 +102,12 @@ public class Particle {
 
     @Override
     public int hashCode() {
-        return id;
+        return turn;
     }
 
     @Override
     public boolean equals(Object other) {
         Particle particle = (Particle) other;
-        return id == particle.id;
+        return turn == particle.turn;
     }
 }

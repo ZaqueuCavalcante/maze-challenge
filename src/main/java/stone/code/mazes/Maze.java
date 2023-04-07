@@ -317,13 +317,13 @@ public abstract class Maze {
 
     private void addParticle() {
         if (open && startCellIsFree()) {
-            Particle particle = new Particle(turn, turn);
+            Particle particle = new Particle(turn, this);
 
             int[] directions = getNextDirections(particle.row, particle.column);
             int[] nextMoves = getNextCellsIds(particle.row, particle.column, directions);
             particle.updateMoveOptions(directions, nextMoves);
 
-            particles.put(particle.id, particle);
+            particles.put(particle.turn, particle);
         }
     }
 
@@ -646,7 +646,7 @@ public abstract class Maze {
                     if (nextCellId == cellsIds[endCell.row][endCell.column]) {
                         Particle out = particles.remove(particleTurn);
                         outParticles.add(out);
-                        outParticlesIds.add(out.id);
+                        outParticlesIds.add(out.turn);
                     } else {
                         if (nextParticlesCellsIds.containsValue(nextCellId)) {
                             System.out.println("GAME OVER - PARTICLE COLLISION");
