@@ -23,7 +23,7 @@ public abstract class Maze {
     boolean open;
     boolean particleCanAccessEndCell;
 
-    String option;
+    public String option;
 
     public int rows;
     public int columns;
@@ -40,9 +40,9 @@ public abstract class Maze {
 
     int particleCounter;
     int[][] currentParticlesIds;
-    HashMap<Integer, Particle> particles;
+    public HashMap<Integer, Particle> particles;
 
-    ArrayList<Particle> outParticles;
+    public ArrayList<Particle> outParticles;
 
     public Maze(String option) {
         this.option = option;
@@ -154,7 +154,7 @@ public abstract class Maze {
             open = false;
         }
 
-        ArrayList<Integer> turns = new ArrayList<>(Arrays.asList(2, 5, 8, 10, 12, 14, 16));
+        ArrayList<Integer> turns = new ArrayList<>(Arrays.asList());
         if (turns.contains(turn)) {
             addParticle();
         }
@@ -163,10 +163,6 @@ public abstract class Maze {
             System.out.println("SOLVED!");
 
             Collections.sort(outParticles, (a, b) -> Integer.compare(a.turn, b.turn));
-
-            for (Particle p : outParticles) {
-                System.out.println(p.getFormatedPath());
-            }
         }
     }
 
@@ -209,7 +205,9 @@ public abstract class Maze {
         HashMap<Integer, Integer> moves = chooser.getMoves();
 
         moves.forEach((particleId, cellId) -> {
-            currentParticlesIds[getCellRow(cellId)][getCellColumn(cellId)] = particleId;
+            int newRow = getCellRow(cellId);
+            int newColumn = getCellColumn(cellId);
+            currentParticlesIds[newRow][newColumn] = particleId;
         });
 
         // Clear Maze
