@@ -30,7 +30,7 @@ public abstract class Maze {
     public Cell startCell;
     public Cell endCell;
 
-    public final int[][] cellsIds;
+    public int[][] cellsIds;
 
     public int[][] current;
     public int[][] next;
@@ -43,15 +43,34 @@ public abstract class Maze {
     public ArrayList<Particle> outParticles;
     public HashSet<Integer> outParticlesIds;
 
+    public abstract int[] getDrawSizes();
+
+    protected abstract void useRules(int neighbors, int row, int column);
+
     public Maze(String option) {
         this.option = option;
 
         open = true;
         particleCanAccessEndCell = false;
 
+        loadInitialState();
+        populateCellsIds();
+
+        calculateNeighbors();
+        calculateNext();
+
+        resetCurrentParticlesIds();
+        particles = new HashMap<>();
+        addParticle();
+        outParticles = new ArrayList<>();
+        outParticlesIds = new HashSet<>();
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+
+    private void loadInitialState() {
         File file = new File("src/main/java/stone/mazes/maze_" + option + ".txt");
         InputStream input;
-
         try {
             input = new FileInputStream(file);
 
@@ -68,7 +87,6 @@ public abstract class Maze {
                 for (int column = 0; column < columns; column++) {
                     int value = Integer.parseInt(String.valueOf(lines[row].charAt(column)));
                     current[row][column] = value;
-
                     if (currentIsStart(row, column)) {
                         startCell = new Cell(row, column, value);
                     } else if (currentIsEnd(row, column)) {
@@ -76,13 +94,12 @@ public abstract class Maze {
                     }
                 }
             }
-
-            calculateNeighbors();
-            calculateNext();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+    }
 
+    private void populateCellsIds() {
         int id = 0;
         cellsIds = new int[rows][columns];
         for (int row = 0; row < rows; row++) {
@@ -91,13 +108,44 @@ public abstract class Maze {
                 id++;
             }
         }
-
-        resetCurrentParticlesIds();
-        particles = new HashMap<>();
-        addParticle();
-        outParticles = new ArrayList<>();
-        outParticlesIds = new HashSet<>();
     }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+
+    private void calculateNeighbors() {
+        currentNeighbors = new int[rows][columns];
+
+        for (int column = 0; column < columns; column++) {
+            currentNeighbors[0][column] = getNeighborsTopRow(0, column);
+            currentNeighbors[rows - 1][column] = getNeighborsDownRow(rows - 1, column);
+        }
+
+        for (int row = 1; row < rows - 1; row++) {
+            currentNeighbors[row][0] = getNeighborsLeftColumn(row, 0);
+            currentNeighbors[row][columns - 1] = getNeighborsRightColumn(row, columns - 1);
+        }
+
+        for (int row = 1; row < rows - 1; row++) {
+            for (int column = 1; column < columns - 1; column++) {
+                currentNeighbors[row][column] = getNeighbors(row, column);
+            }
+        }
+    }
+
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
 
     public void resetCurrentParticlesIds() {
         currentParticlesIds = new int[rows][columns];
@@ -108,10 +156,6 @@ public abstract class Maze {
             }
         }
     }
-
-    protected abstract void useRules(int neighbors, int row, int column);
-
-    public abstract int[] getDrawSizes();
 
     int minEmpties = 1_000_000;
 
@@ -310,26 +354,6 @@ public abstract class Maze {
             for (int column = 0; column < columns; column++) {
                 int neighbors = currentNeighbors[row][column];
                 useRules(neighbors, row, column);
-            }
-        }
-    }
-
-    protected void calculateNeighbors() {
-        currentNeighbors = new int[rows][columns];
-
-        for (int column = 0; column < columns; column++) {
-            currentNeighbors[0][column] = getNeighborsTopRow(0, column);
-            currentNeighbors[rows - 1][column] = getNeighborsDownRow(rows - 1, column);
-        }
-
-        for (int row = 1; row < rows - 1; row++) {
-            currentNeighbors[row][0] = getNeighborsLeftColumn(row, 0);
-            currentNeighbors[row][columns - 1] = getNeighborsRightColumn(row, columns - 1);
-        }
-
-        for (int row = 1; row < rows - 1; row++) {
-            for (int column = 1; column < columns - 1; column++) {
-                currentNeighbors[row][column] = getNeighbors(row, column);
             }
         }
     }
