@@ -11,7 +11,7 @@ import stone.code.Particle;
 import stone.code.Tree;
 import stone.code.mazes.Maze03Free10x10;
 
-public class GameDebugMode extends Game {
+public class GameReplayMode extends Game {
     Tree tree;
 
     public void settings() {

@@ -95,7 +95,7 @@ public abstract class Maze {
         particleCounter = 0;
         currentParticlesIds = new int[rows][columns];
         particles = new HashMap<>();
-        addParticle();
+        // addParticle();
 
         outParticles = new ArrayList<>();
     }
@@ -153,7 +153,7 @@ public abstract class Maze {
         }
 
         if (hasSpace()) {
-            addParticle();
+            // addParticle();
         }
 
         if (particles.size() == 0) {
@@ -165,7 +165,7 @@ public abstract class Maze {
 
     private boolean hasSpace() {
         for (Particle p : particles.values()) {
-            if (p.distanceToStart() < 4) {
+            if (p.distanceToStart() < 3) {
                 return false;
             }
         }
@@ -507,6 +507,48 @@ public abstract class Maze {
         }
 
         return neighbors;
+    }
+
+    public boolean isSolution(ArrayList<String> paths) {
+        // Turn -> Path
+        HashMap<Integer, String> pathsMap = new HashMap<>();
+
+        for (String path : paths) {
+            String turnAsString = path.split(" ")[0];
+            int turn = Integer.parseInt(turnAsString);
+            String formatedPath = path.substring(turnAsString.length()).replaceAll(" ", "");
+            pathsMap.put(turn, formatedPath);
+        }
+
+        int row = startCell.row;
+        int column = startCell.column;
+
+        char[] pathAsCharArray = pathsMap.get(0).toCharArray();
+
+        for (char c : pathAsCharArray) {
+            shift();
+
+            String direction = String.valueOf(c).toString();
+
+            if (direction.equals("U")) {
+                row--;
+            }
+            if (direction.equals("R")) {
+                column++;
+            }
+            if (direction.equals("D")) {
+                row++;
+            }
+            if (direction.equals("L")) {
+                column--;
+            }
+
+            if (currentIsObstacle(row, column)) {
+                return false;
+            }
+        }
+
+        return row == endCell.row && column == endCell.column;
     }
 
     public void draw(Game game) {

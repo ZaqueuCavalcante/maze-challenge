@@ -3,6 +3,8 @@ package stone.code;
 import java.util.ArrayList;
 import java.util.List;
 
+import stone.code.cells.CellType;
+
 public class Node {
     int row;
     int column;
@@ -23,10 +25,10 @@ public class Node {
     }
 
     public void addChildren(int up, int right, int down, int left, int[][] ids) {
-        Node upNode = (up == 1) ? new Node(row - 1, column, this, ids) : null;
-        Node rightNode = (right == 1) ? new Node(row, column + 1, this, ids) : null;
-        Node downNode = (down == 1) ? new Node(row + 1, column, this, ids) : null;
-        Node leftNode = (left == 1) ? new Node(row, column - 1, this, ids) : null;
+        Node upNode = (up == CellType.EMPTY) ? new Node(row - 1, column, this, ids) : null;
+        Node rightNode = (right == CellType.EMPTY) ? new Node(row, column + 1, this, ids) : null;
+        Node downNode = (down == CellType.EMPTY) ? new Node(row + 1, column, this, ids) : null;
+        Node leftNode = (left == CellType.EMPTY) ? new Node(row, column - 1, this, ids) : null;
 
         children.add(upNode);
         children.add(rightNode);
