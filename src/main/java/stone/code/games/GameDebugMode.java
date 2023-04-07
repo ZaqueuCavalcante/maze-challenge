@@ -7,15 +7,22 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 
 import processing.core.PApplet;
-import stone.code.Particle;
 import stone.code.Tree;
-import stone.code.mazes.Maze03Free10x10;
+import stone.code.mazes.Maze01Ton;
 
 public class GameDebugMode extends Game {
     Tree tree;
 
     public void settings() {
-        maze = new Maze03Free10x10();
+        maze = new Maze01Ton();
+        maze.shift();
+        maze.shift();
+        maze.shift();
+        maze.shift();
+        maze.shift();
+        maze.shift();
+        maze.shift();
+        maze.shift();
         tree = new Tree(maze);
 
         int[] mazeSizes = maze.getDrawSizes();
@@ -36,12 +43,8 @@ public class GameDebugMode extends Game {
             tree.goToNextLevel(maze);
             maze.shift();
 
-            if (maze.particles.size() == 0) {
-                ArrayList<String> output = new ArrayList<>();
-
-                for (Particle p : maze.outParticles) {
-                    output.add(p.getFormatedPath());
-                }
+            if (tree.solutions.size() > 0) {
+                ArrayList<String> output = tree.getSolutionsPaths();
 
                 String fileName = "src/main/java/stone/solutions/debug/solutions_maze_" + maze.option + ".txt";
                 File file = new File(fileName);

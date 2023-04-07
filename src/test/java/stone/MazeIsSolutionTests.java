@@ -24,4 +24,35 @@ public class MazeIsSolutionTests {
         // Assert
         assertThat(isSolution).isTrue();
     }
+
+    @Test
+    public void should_test_solution_for_maze_01_with_2_particles() {
+        // Arrange
+        Maze maze = new Maze01Ton();
+        ArrayList<String> paths = new ArrayList<>();
+        paths.add("0 D D D D D R R L U U U R R R D R L D D R R D R");
+        paths.add("1 R R L D D D D D R R R R R D R");
+
+        // Act
+        boolean isSolution = maze.isSolution(paths);
+
+        // Assert
+        assertThat(isSolution).isTrue();
+    }
+
+    @Test
+    public void should_test_solution_for_maze_01_with_3_particles() {
+        // Arrange
+        Maze maze = new Maze01Ton();
+        ArrayList<String> paths = new ArrayList<>();
+        paths.add("0 D D D D D R R L U U U R R R D R L D D R R D R");
+        paths.add("1 R R L D D D D D R R R R R D R");
+        paths.add("3 R D D D D D R R R R R D R");
+
+        // Act
+        boolean isSolution = maze.isSolution(paths);
+
+        // Assert
+        assertThat(isSolution).isTrue();
+    }
 }

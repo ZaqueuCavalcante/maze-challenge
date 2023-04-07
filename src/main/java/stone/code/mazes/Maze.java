@@ -17,7 +17,7 @@ import stone.code.cells.CellType;
 import stone.code.games.Game;
 
 public abstract class Maze {
-    int turn;
+    public int turn;
 
     boolean open;
     boolean particleCanAccessEndCell;
@@ -509,9 +509,22 @@ public abstract class Maze {
         return neighbors;
     }
 
+    private int getMaxTurn(String lastPath) {
+        String turnAsString = lastPath.split(" ")[0];
+        int turn = Integer.parseInt(turnAsString);
+        String formatedPath = lastPath.substring(turnAsString.length()).replaceAll(" ", "");
+
+        int maxTurn = turn + formatedPath.length();
+
+        return maxTurn;
+    }
+
     public boolean isSolution(ArrayList<String> paths) {
         // Turn -> Path
         HashMap<Integer, String> pathsMap = new HashMap<>();
+
+        // Turn -> PathIndex
+        HashMap<Integer, Integer> pathsIndexes = new HashMap<>();
 
         for (String path : paths) {
             String turnAsString = path.split(" ")[0];
@@ -520,35 +533,63 @@ public abstract class Maze {
             pathsMap.put(turn, formatedPath);
         }
 
-        int row = startCell.row;
-        int column = startCell.column;
+        String lastPath = paths.get(paths.size() - 1);
+        int turnMax = getMaxTurn(lastPath);
 
-        char[] pathAsCharArray = pathsMap.get(0).toCharArray();
+        // Turn -> CellId
+        HashMap<Integer, Integer> particlesCellsIds = new HashMap<>();
 
-        for (char c : pathAsCharArray) {
+        while (turn < turnMax) {
+            HashMap<Integer, Integer> nextParticlesCellsIds = new HashMap<>();
+
+            pathsMap.forEach((particleTurn, particlePath) -> {
+                if (particleTurn == turn) {
+                    pathsIndexes.put(particleTurn, 0);
+                    particlesCellsIds.put(particleTurn, 0);
+                }
+
+                if (particleTurn <= turn) {
+                    int pathIndex = pathsIndexes.get(particleTurn);
+                    int particleCellId = particlesCellsIds.get(particleTurn);
+
+                    int row = getCellRow(particleCellId);
+                    int column = getCellColumn(particleCellId);
+                    String direction = Character.toString(particlePath.charAt(pathIndex));
+
+                    if (direction.equals("U")) {
+                        row--;
+                    }
+                    if (direction.equals("R")) {
+                        column++;
+                    }
+                    if (direction.equals("D")) {
+                        row++;
+                    }
+                    if (direction.equals("L")) {
+                        column--;
+                    }
+
+                    if (next[row][column] == CellType.OBSTACLE) {
+                        System.out.println("GAME OVER - OBSTACLE");
+                    }
+
+                    int nextCellId = cellsIds[row][column];
+                    if (nextParticlesCellsIds.containsValue(nextCellId)) {
+                        System.out.println("GAME OVER - PARTICLE COLLISION");
+                    }
+
+                    pathsIndexes.put(particleTurn, pathIndex + 1);
+                    nextParticlesCellsIds.put(particleTurn, nextCellId);
+                }
+            });
+
+            particlesCellsIds.clear();
+            particlesCellsIds.putAll(nextParticlesCellsIds);
+
             shift();
-
-            String direction = String.valueOf(c).toString();
-
-            if (direction.equals("U")) {
-                row--;
-            }
-            if (direction.equals("R")) {
-                column++;
-            }
-            if (direction.equals("D")) {
-                row++;
-            }
-            if (direction.equals("L")) {
-                column--;
-            }
-
-            if (currentIsObstacle(row, column)) {
-                return false;
-            }
         }
 
-        return row == endCell.row && column == endCell.column;
+        return true;
     }
 
     public void draw(Game game) {

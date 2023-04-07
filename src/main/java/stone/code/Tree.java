@@ -13,9 +13,11 @@ public class Tree {
     int level;
     HashMap<Integer, Node> levelNodes;
 
-    HashSet<Node> solutions;
+    public HashSet<Node> solutions;
 
     boolean showPathsOnMaze;
+
+    int turn;
 
     public Tree(Maze maze) {
         root = new Node(maze.startCell.row, maze.startCell.column, null, maze.cellsIds);
@@ -27,6 +29,8 @@ public class Tree {
         solutions = new HashSet<>();
 
         showPathsOnMaze = true;
+
+        turn = maze.turn;
     }
 
     public HashSet<Node> getFilteredNodes(int[][] ids) {
@@ -115,7 +119,8 @@ public class Tree {
         ArrayList<String> paths = new ArrayList<String>();
 
         for (Node node : solutions) {
-            paths.add(node.getPath());
+            String x = turn + " " + node.getPath();
+            paths.add(x);
         }
 
         return paths;
