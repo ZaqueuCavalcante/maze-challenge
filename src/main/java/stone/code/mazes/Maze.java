@@ -134,7 +134,7 @@ public abstract class Maze {
 
             Particle particle = new Particle(particleCounter, turn);
             int[] directions = getNextDirections(particle.row, particle.column);
-            ArrayList<Integer> nextMoves = getNextCellsIds(particle.row, particle.column);
+            ArrayList<Integer> nextMoves = getNextCellsIds(particle.row, particle.column, directions);
             particle.updateMoveOptions(directions, nextMoves);
 
             particles.put(particle.id, particle);
@@ -151,7 +151,7 @@ public abstract class Maze {
         calculateNext();
         turn++;
 
-        obstaclesFilter(); // DEBUG ONLY
+        obstaclesFilter(); // ONLY FOR DEBUG
 
         if (outParticles.size() > 0) {
             open = false;
@@ -197,25 +197,17 @@ public abstract class Maze {
         if (particleCanAccessEndCell) {
             for (Particle p : particles.values()) {
                 int[] directions = getNextDirections(p.row, p.column);
-                ArrayList<Integer> nextMoves = getNextCellsIds(p.row, p.column);
+                ArrayList<Integer> nextMoves = getNextCellsIds(p.row, p.column, directions);
                 p.updateMoveOptions(directions, nextMoves);
             }
         } else {
             next[endCell.row][endCell.column] = CellType.OBSTACLE;
             for (Particle p : particles.values()) {
                 int[] directions = getNextDirections(p.row, p.column);
-                ArrayList<Integer> nextMoves = getNextCellsIds(p.row, p.column);
+                ArrayList<Integer> nextMoves = getNextCellsIds(p.row, p.column, directions);
                 p.updateMoveOptions(directions, nextMoves);
             }
             next[endCell.row][endCell.column] = CellType.END;
-        }
-    }
-
-    private void zeroMovesFilter() {
-        for (Particle p : particles.values()) {
-            if (p.getEmpties() == 0) {
-                System.out.println("Stucked | id = " + p.id + " | (" + p.row + ", " + p.column + ")");
-            }
         }
     }
 
@@ -346,8 +338,6 @@ public abstract class Maze {
     public void updateParticles() {
         obstaclesFilter();
 
-        zeroMovesFilter();
-
         // Reset
         nextParticlesIds = new int[rows][columns];
         outs = new ArrayList<>();
@@ -404,8 +394,7 @@ public abstract class Maze {
         return new int[] { up, right, down, left };
     }
 
-    public ArrayList<Integer> getNextCellsIds(int row, int column) {
-        int[] directions = getNextDirections(row, column);
+    public ArrayList<Integer> getNextCellsIds(int row, int column, int[] directions) {
         int up = directions[0];
         int right = directions[1];
         int down = directions[2];

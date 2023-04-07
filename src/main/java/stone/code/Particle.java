@@ -32,6 +32,10 @@ public class Particle {
     public void updateMoveOptions(int[] options, ArrayList<Integer> moveOptions) {
         this.options = options;
         this.moveOptions = moveOptions;
+
+        if (moveOptions.size() == 0 || getEmpties() == 0) {
+            System.out.println("Stucked | id = " + id + " | (" + row + ", " + column + ")");
+        }
     }
 
     public boolean isKamikaze(Maze maze) {
