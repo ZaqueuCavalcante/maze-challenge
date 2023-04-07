@@ -1,2 +1,5 @@
-0 D D D D D R R L U U U R R R D R L D D R R R D
-1 R R L D D D D D R R R R R R D
+0 D D D D D R R L U U U R R R D R L D D R R D R
+1 R R L D D D D D R R R R R D R
+2 D D D R R L L R U R R R D R L D D R R D R
+3 R D D D D D R R R R R D R
+4 D D D R L R U R R R D R L D D R R D R

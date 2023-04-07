@@ -6,7 +6,7 @@ import stone.code.games.GameResizerMode;
 import stone.code.games.Mode;
 
 public class App {
-    static Mode mode = Mode.DEBUG;
+    static Mode mode = Mode.REPLAY;
 
     public static void main(String[] args) {
         if (mode == Mode.FUN) {

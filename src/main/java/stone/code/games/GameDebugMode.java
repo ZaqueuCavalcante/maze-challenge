@@ -35,7 +35,7 @@ public class GameDebugMode extends Game {
     public void keyPressed() {
         if (keyCode == 10) { // Enter
 
-            if (maze.turn == 1) {
+            if (maze.turn < 5) {
                 maze.addParticle();
             }
 
@@ -63,7 +63,7 @@ public class GameDebugMode extends Game {
                 Collections.sort(maze.outParticles, (a, b) -> Integer.compare(a.turn, b.turn));
 
                 for (Particle p : maze.outParticles) {
-                    Node node = p.tree.solutions.get(1);
+                    Node node = p.tree.solutions.get(0);
                     String path = p.turn + " " + node.getPath();
                     output.add(path);
                 }

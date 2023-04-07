@@ -545,7 +545,7 @@ public abstract class Maze {
                     int nextCellId = cellsIds[row][column];
                     if (nextParticlesCellsIds.containsValue(nextCellId)) {
                         gameOver = true;
-                        System.out.println("GAME OVER - PARTICLE COLLISION");
+                        System.out.println("GAME OVER - PARTICLE COLLISION - " + particleTurn);
                     }
 
                     pathsIndexes.put(particleTurn, pathIndex + 1);
@@ -649,7 +649,8 @@ public abstract class Maze {
                         outParticlesIds.add(out.turn);
                     } else {
                         if (nextParticlesCellsIds.containsValue(nextCellId)) {
-                            System.out.println("GAME OVER - PARTICLE COLLISION");
+                            System.out
+                                    .println("GAME OVER - PARTICLE COLLISION - " + particleTurn);
                         }
                         replayPathsIndexes.put(particleTurn, pathIndex + 1);
                         nextParticlesCellsIds.put(particleTurn, nextCellId);
