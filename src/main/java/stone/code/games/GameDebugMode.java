@@ -12,15 +12,31 @@ import processing.core.PApplet;
 import stone.code.Node;
 import stone.code.Particle;
 import stone.code.mazes.Maze;
-import stone.code.mazes.Maze01Ton;
+import stone.code.mazes.Maze05Sinuca15x15;
 
 public class GameDebugMode extends Game {
     public void settings() {
-        maze = new Maze01Ton();
+        maze = new Maze05Sinuca15x15();
 
         int[] mazeSizes = maze.getDrawSizes();
         size(mazeSizes[0], mazeSizes[1]);
         CIZE = mazeSizes[2];
+    }
+
+    private void filterPaths() {
+        boolean isSolution = false;
+
+        while (!isSolution) {
+            Maze filterMaze = new Maze05Sinuca15x15();
+
+            ArrayList<String> paths = new ArrayList<>(output.values());
+
+            isSolution = filterMaze.isSolution(paths);
+
+            if (filterMaze.gameOverTurn != -1) {
+                output.remove(filterMaze.gameOverTurn);
+            }
+        }
     }
 
     public void draw() {
@@ -84,22 +100,6 @@ public class GameDebugMode extends Game {
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
-            }
-        }
-    }
-
-    private void filterPaths() {
-        boolean isSolution = false;
-
-        while (!isSolution) {
-            Maze filterMaze = new Maze01Ton();
-
-            ArrayList<String> paths = new ArrayList<>(output.values());
-
-            isSolution = filterMaze.isSolution(paths);
-
-            if (filterMaze.gameOverTurn != -1) {
-                output.remove(filterMaze.gameOverTurn);
             }
         }
     }
