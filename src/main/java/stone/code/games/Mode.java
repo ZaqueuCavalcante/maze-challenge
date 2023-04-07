@@ -6,4 +6,5 @@ public enum Mode {
     RELEASE,
     MAKER,
     RESIZER,
+    REPLAY,
 }

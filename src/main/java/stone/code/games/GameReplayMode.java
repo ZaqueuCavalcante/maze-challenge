@@ -2,25 +2,36 @@ package stone.code.games;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
 
 import processing.core.PApplet;
-import stone.code.Particle;
-import stone.code.Tree;
-import stone.code.mazes.Maze03Free10x10;
+import stone.code.mazes.Maze01Ton;
+
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class GameReplayMode extends Game {
-    Tree tree;
-
     public void settings() {
-        maze = new Maze03Free10x10();
-        tree = new Tree(maze);
+        maze = new Maze01Ton();
 
         int[] mazeSizes = maze.getDrawSizes();
         size(mazeSizes[0], mazeSizes[1]);
         CIZE = mazeSizes[2];
+
+        File file = new File("src/main/java/stone/replays/replay_maze_" + maze.option + ".txt");
+        InputStream input;
+
+        try {
+            input = new FileInputStream(file);
+
+            String[] lines = PApplet.loadStrings(input);
+            ArrayList<String> paths = new ArrayList<String>(Arrays.asList(lines));
+
+            maze.setupReplay(paths);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     public void draw() {
@@ -28,32 +39,12 @@ public class GameReplayMode extends Game {
         fill(255);
         stroke(0);
         maze.draw(this);
-        tree.drawPathsOnMaze(this);
     }
 
     public void keyPressed() {
         if (keyCode == 10) { // Enter
-            tree.goToNextLevel(maze);
+            maze.replay();
             maze.shift();
-
-            if (maze.particles.size() == 0) {
-                ArrayList<String> output = new ArrayList<>();
-
-                for (Particle p : maze.outParticles) {
-                    output.add(p.getFormatedPath());
-                }
-
-                String fileName = "src/main/java/stone/solutions/debug/solutions_maze_" + maze.option + ".txt";
-                File file = new File(fileName);
-                OutputStream outputStream;
-
-                try {
-                    outputStream = new FileOutputStream(file);
-                    PApplet.saveStrings(outputStream, output.toArray(new String[0]));
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-            }
         }
     }
 }

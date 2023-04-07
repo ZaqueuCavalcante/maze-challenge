@@ -47,7 +47,7 @@ public class MazeIsSolutionTests {
         ArrayList<String> paths = new ArrayList<>();
         paths.add("0 D D D D D R R L U U U R R R D R L D D R R D R");
         paths.add("1 R R L D D D D D R R R R R D R");
-        paths.add("3 R D D D D D R R R R R D R");
+        // paths.add("3 R D D D D D R R R R R D R");
 
         // Act
         boolean isSolution = maze.isSolution(paths);

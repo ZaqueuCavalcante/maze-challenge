@@ -37,7 +37,6 @@ public abstract class Maze {
 
     public int[][] currentNeighbors;
 
-    int particleCounter;
     int[][] currentParticlesIds;
     public HashMap<Integer, Particle> particles;
 
@@ -92,12 +91,20 @@ public abstract class Maze {
             }
         }
 
-        particleCounter = 0;
-        currentParticlesIds = new int[rows][columns];
+        resetCurrentParticlesIds();
         particles = new HashMap<>();
-        // addParticle();
 
         outParticles = new ArrayList<>();
+    }
+
+    public void resetCurrentParticlesIds() {
+        currentParticlesIds = new int[rows][columns];
+
+        for (int row = 0; row < rows; row++) {
+            for (int column = 0; column < columns; column++) {
+                currentParticlesIds[row][column] = -1;
+            }
+        }
     }
 
     protected abstract void useRules(int neighbors, int row, int column);
@@ -124,10 +131,9 @@ public abstract class Maze {
 
     public void addParticle() {
         if (open && startCellIsFree()) {
-            particleCounter++;
-            currentParticlesIds[startCell.row][startCell.column] = particleCounter;
+            currentParticlesIds[startCell.row][startCell.column] = turn;
 
-            Particle particle = new Particle(particleCounter, turn);
+            Particle particle = new Particle(turn, turn);
             int[] directions = getNextDirections(particle.row, particle.column);
             int[] nextMoves = getNextCellsIds(particle.row, particle.column, directions);
             particle.updateMoveOptions(directions, nextMoves);
@@ -137,23 +143,15 @@ public abstract class Maze {
     }
 
     public void shift() {
-        // calculateMinEmpties();
-
-        updateParticles();
-
         current = next;
         calculateNeighbors();
         calculateNext();
         turn++;
+    }
 
-        updateParticlesMoveOptions(); // ONLY FOR DEBUG
-
+    public void checkForCloseMaze() {
         if (outParticles.size() > 0) {
             open = false;
-        }
-
-        if (hasSpace()) {
-            // addParticle();
         }
 
         if (particles.size() == 0) {
@@ -206,7 +204,7 @@ public abstract class Maze {
     public void updateParticles() {
         updateParticlesMoveOptions();
 
-        currentParticlesIds = new int[rows][columns];
+        resetCurrentParticlesIds();
 
         MovesChooser chooser = new MovesChooser(particles, cellsIds[endCell.row][endCell.column]);
         HashMap<Integer, Integer> moves = chooser.getMoves();
@@ -292,11 +290,11 @@ public abstract class Maze {
     }
 
     public boolean startCellIsFree() {
-        return currentParticlesIds[startCell.row][startCell.column] == 0;
+        return currentParticlesIds[startCell.row][startCell.column] == -1;
     }
 
     public boolean hasParticleOnEndCell() {
-        return currentParticlesIds[endCell.row][endCell.column] != 0;
+        return currentParticlesIds[endCell.row][endCell.column] != -1;
     }
 
     public int getNextOf(int row, int column) {
@@ -304,7 +302,7 @@ public abstract class Maze {
     }
 
     public boolean hasParticleOn(int row, int column) {
-        return currentParticlesIds[row][column] != 0;
+        return currentParticlesIds[row][column] != -1;
     }
 
     public boolean currentIsObstacle(int row, int column) {
@@ -314,7 +312,7 @@ public abstract class Maze {
     public boolean isEmpty() {
         for (int row = 0; row < rows; row++) {
             for (int column = 0; column < columns; column++) {
-                if (currentParticlesIds[row][column] != 0) {
+                if (currentParticlesIds[row][column] != -1) {
                     if (row != endCell.row && column != endCell.column) {
                         return false;
                     }
@@ -519,6 +517,8 @@ public abstract class Maze {
         return maxTurn;
     }
 
+    boolean gameOver = false;
+
     public boolean isSolution(ArrayList<String> paths) {
         // Turn -> Path
         HashMap<Integer, String> pathsMap = new HashMap<>();
@@ -570,11 +570,13 @@ public abstract class Maze {
                     }
 
                     if (next[row][column] == CellType.OBSTACLE) {
+                        gameOver = true;
                         System.out.println("GAME OVER - OBSTACLE");
                     }
 
                     int nextCellId = cellsIds[row][column];
                     if (nextParticlesCellsIds.containsValue(nextCellId)) {
+                        gameOver = true;
                         System.out.println("GAME OVER - PARTICLE COLLISION");
                     }
 
@@ -583,6 +585,10 @@ public abstract class Maze {
                 }
             });
 
+            if (gameOver) {
+                return false;
+            }
+
             particlesCellsIds.clear();
             particlesCellsIds.putAll(nextParticlesCellsIds);
 
@@ -590,6 +596,91 @@ public abstract class Maze {
         }
 
         return true;
+    }
+
+    // Turn -> Path
+    HashMap<Integer, String> replayPathsMap;
+
+    // Turn -> PathIndex
+    HashMap<Integer, Integer> replayPathsIndexes;
+
+    // Turn -> CellId
+    HashMap<Integer, Integer> replayParticlesCellsIds;
+
+    int replayTurnMax;
+
+    public void setupReplay(ArrayList<String> paths) {
+        // Turn -> Path
+        replayPathsMap = new HashMap<>();
+
+        // Turn -> PathIndex
+        replayPathsIndexes = new HashMap<>();
+
+        for (String path : paths) {
+            String turnAsString = path.split(" ")[0];
+            int turn = Integer.parseInt(turnAsString);
+            String formatedPath = path.substring(turnAsString.length()).replaceAll(" ", "");
+            replayPathsMap.put(turn, formatedPath);
+        }
+
+        String lastPath = paths.get(paths.size() - 1);
+        replayTurnMax = getMaxTurn(lastPath);
+
+        // Turn -> CellId
+        replayParticlesCellsIds = new HashMap<>();
+    }
+
+    public void replay() {
+        if (turn < replayTurnMax) {
+            HashMap<Integer, Integer> nextParticlesCellsIds = new HashMap<>();
+
+            replayPathsMap.forEach((particleTurn, particlePath) -> {
+                if (particleTurn == turn) {
+                    replayPathsIndexes.put(particleTurn, 0);
+                    replayParticlesCellsIds.put(particleTurn, 0);
+                    addParticle();
+                }
+
+                if (particleTurn <= turn) {
+                    int pathIndex = replayPathsIndexes.get(particleTurn);
+                    int particleCellId = replayParticlesCellsIds.get(particleTurn);
+
+                    int row = getCellRow(particleCellId);
+                    int column = getCellColumn(particleCellId);
+                    String direction = Character.toString(particlePath.charAt(pathIndex));
+
+                    if (direction.equals("U")) {
+                        row--;
+                    }
+                    if (direction.equals("R")) {
+                        column++;
+                    }
+                    if (direction.equals("D")) {
+                        row++;
+                    }
+                    if (direction.equals("L")) {
+                        column--;
+                    }
+
+                    if (next[row][column] == CellType.OBSTACLE) {
+                        System.out.println("GAME OVER - OBSTACLE");
+                    }
+
+                    int nextCellId = cellsIds[row][column];
+                    if (nextParticlesCellsIds.containsValue(nextCellId)) {
+                        System.out.println("GAME OVER - PARTICLE COLLISION");
+                    }
+
+                    replayPathsIndexes.put(particleTurn, pathIndex + 1);
+                    nextParticlesCellsIds.put(particleTurn, nextCellId);
+
+                    currentParticlesIds[row][column] = particleTurn;
+                }
+            });
+
+            replayParticlesCellsIds.clear();
+            replayParticlesCellsIds.putAll(nextParticlesCellsIds);
+        }
     }
 
     public void draw(Game game) {
@@ -630,7 +721,7 @@ public abstract class Maze {
     }
 
     private void drawParticle(Game game, int row, int column) {
-        if (currentParticlesIds[row][column] == 0) {
+        if (currentParticlesIds[row][column] == -1) {
             return;
         }
 
@@ -645,7 +736,7 @@ public abstract class Maze {
     }
 
     private void drawParticleMoveOptions(Game game, int row, int column) {
-        if (currentParticlesIds[row][column] == 0) {
+        if (currentParticlesIds[row][column] == -1) {
             return;
         }
 

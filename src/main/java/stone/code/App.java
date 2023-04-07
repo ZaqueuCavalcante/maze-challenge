@@ -6,7 +6,7 @@ import stone.code.games.GameResizerMode;
 import stone.code.games.Mode;
 
 public class App {
-    static Mode mode = Mode.DEBUG;
+    static Mode mode = Mode.REPLAY;
 
     public static void main(String[] args) {
         if (mode == Mode.FUN) {
@@ -24,9 +24,10 @@ public class App {
         if (mode == Mode.RESIZER) {
             resizerMode();
         }
+        if (mode == Mode.REPLAY) {
+            replayMode();
+        }
     }
-
-    // TODO: Add REPLAY MODE
 
     public static void funMode() {
         PApplet.main(new String[] { "stone.GameFunMode" });
@@ -46,5 +47,9 @@ public class App {
 
     public static void makerMode() {
         PApplet.main(new String[] { "stone.MazeGenerator" });
+    }
+
+    public static void replayMode() {
+        PApplet.main(new String[] { "stone.code.games.GameReplayMode" });
     }
 }
