@@ -1,10 +1,10 @@
 package stone.code.games;
 
-import stone.code.mazes.Maze05Sinuca10x10;
+import stone.code.mazes.Maze03Free10x10;
 
 public class GameDebugMode extends Game {
     public void settings() {
-        maze = new Maze05Sinuca10x10();
+        maze = new Maze03Free10x10();
 
         int[] mazeSizes = maze.getDrawSizes();
         size(mazeSizes[0], mazeSizes[1]);

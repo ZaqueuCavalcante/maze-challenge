@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 
 import processing.core.PApplet;
 import processing.core.PConstants;
+import stone.code.MovesChooser;
 import stone.code.Particle;
 import stone.code.cells.Cell;
 import stone.code.cells.CellType;
@@ -40,10 +40,8 @@ public abstract class Maze {
 
     int particleCounter;
     int[][] currentParticlesIds;
-    int[][] nextParticlesIds;
     HashMap<Integer, Particle> particles;
 
-    ArrayList<Integer> outs;
     ArrayList<Particle> outParticles;
 
     public Maze(String option) {
@@ -97,7 +95,6 @@ public abstract class Maze {
 
         particleCounter = 0;
         currentParticlesIds = new int[rows][columns];
-        nextParticlesIds = new int[rows][columns];
         particles = new HashMap<>();
         addParticle();
 
@@ -173,26 +170,6 @@ public abstract class Maze {
         }
     }
 
-    HashSet<Integer> movedsIds = new HashSet<>();
-
-    private void respectOthersMoves() {
-        for (Particle p : particles.values()) {
-            if (movedsIds.contains(p.id)) {
-                continue;
-            }
-
-            if (p.canMoveRight() && nextParticlesIds[p.row][p.column + 1] > 0) {
-                p.options[1] = 1; // Simula um verde
-            } else if (p.canMoveDown() && nextParticlesIds[p.row + 1][p.column] > 0) {
-                p.options[2] = 1; // Simula um verde
-            } else if (p.canMoveLeft() && nextParticlesIds[p.row][p.column - 1] > 0) {
-                p.options[3] = 1; // Simula um verde
-            } else if (p.canMoveUp() && nextParticlesIds[p.row - 1][p.column] > 0) {
-                p.options[0] = 1; // Simula um verde
-            }
-        }
-    }
-
     private void obstaclesFilter() {
         if (particleCanAccessEndCell) {
             for (Particle p : particles.values()) {
@@ -211,163 +188,35 @@ public abstract class Maze {
         }
     }
 
-    private void oneMovesFilter() {
-        for (Particle p : particles.values()) {
-            if (p.getEmpties() > 1) {
-                continue;
-            }
+    public int getCellRow(int cellId) {
+        int cellRow = cellId / columns;
 
-            movedsIds.add(p.id);
-
-            if (p.canMoveRight() && nextParticlesIds[p.row][p.column + 1] == 0) {
-                p.right();
-            } else if (p.canMoveDown() && nextParticlesIds[p.row + 1][p.column] == 0) {
-                p.down();
-            } else if (p.canMoveLeft() && nextParticlesIds[p.row][p.column - 1] == 0) {
-                p.left();
-            } else if (p.canMoveUp() && nextParticlesIds[p.row - 1][p.column] == 0) {
-                p.up();
-            } else {
-                System.out.println("Stucked | id = " + p.id + " | (" + p.row + ", " + p.column + ")");
-            }
-            nextParticlesIds[p.row][p.column] = p.id;
-
-            // Handle end
-            if (p.row == endCell.row && p.column == endCell.column) {
-                nextParticlesIds[p.row][p.column] = 0;
-                outs.add(p.id);
-            }
-        }
+        return cellRow;
     }
 
-    private void twoMovesFilter() {
-        for (Particle p : particles.values()) {
-            if (movedsIds.contains(p.id)) {
-                continue;
-            }
+    public int getCellColumn(int cellId) {
+        int cellColumn = cellId % columns;
 
-            if (p.getEmpties() > 2) {
-                continue;
-            }
-
-            movedsIds.add(p.id);
-            // Error here!
-            if (p.canMoveRight() && nextParticlesIds[p.row][p.column + 1] == 0) {
-                p.right();
-            } else if (p.canMoveDown() && nextParticlesIds[p.row + 1][p.column] == 0) {
-                p.down();
-            } else if (p.canMoveLeft() && nextParticlesIds[p.row][p.column - 1] == 0) {
-                p.left();
-            } else if (p.canMoveUp() && nextParticlesIds[p.row - 1][p.column] == 0) {
-                p.up();
-            } else {
-                System.out.println("Stucked | id = " + p.id + " | (" + p.row + ", " + p.column + ")");
-            }
-            nextParticlesIds[p.row][p.column] = p.id;
-
-            // Handle end
-            if (p.row == endCell.row && p.column == endCell.column) {
-                nextParticlesIds[p.row][p.column] = 0;
-                outs.add(p.id);
-            }
-        }
-    }
-
-    private void threeMovesFilter() {
-        for (Particle p : particles.values()) {
-            if (movedsIds.contains(p.id)) {
-                continue;
-            }
-
-            if (p.getEmpties() > 3) {
-                continue;
-            }
-
-            movedsIds.add(p.id);
-            // Error here!
-            if (p.canMoveRight() && nextParticlesIds[p.row][p.column + 1] == 0) {
-                p.right();
-            } else if (p.canMoveDown() && nextParticlesIds[p.row + 1][p.column] == 0) {
-                p.down();
-            } else if (p.canMoveLeft() && nextParticlesIds[p.row][p.column - 1] == 0) {
-                p.left();
-            } else if (p.canMoveUp() && nextParticlesIds[p.row - 1][p.column] == 0) {
-                p.up();
-            } else {
-                System.out.println("Stucked | id = " + p.id + " | (" + p.row + ", " + p.column + ")");
-            }
-            nextParticlesIds[p.row][p.column] = p.id;
-
-            // Handle end
-            if (p.row == endCell.row && p.column == endCell.column) {
-                nextParticlesIds[p.row][p.column] = 0;
-                outs.add(p.id);
-            }
-        }
-    }
-
-    private void fourMovesFilter() {
-        for (Particle p : particles.values()) {
-            if (movedsIds.contains(p.id)) {
-                continue;
-            }
-
-            movedsIds.add(p.id);
-            // Error here!
-            if (p.canMoveRight() && nextParticlesIds[p.row][p.column + 1] == 0) {
-                p.right();
-            } else if (p.canMoveDown() && nextParticlesIds[p.row + 1][p.column] == 0) {
-                p.down();
-            } else if (p.canMoveLeft() && nextParticlesIds[p.row][p.column - 1] == 0) {
-                p.left();
-            } else if (p.canMoveUp() && nextParticlesIds[p.row - 1][p.column] == 0) {
-                p.up();
-            } else {
-                System.out.println("Stucked | id = " + p.id + " | (" + p.row + ", " + p.column + ")");
-            }
-            nextParticlesIds[p.row][p.column] = p.id;
-
-            // Handle end
-            if (p.row == endCell.row && p.column == endCell.column) {
-                nextParticlesIds[p.row][p.column] = 0;
-                outs.add(p.id);
-            }
-        }
+        return cellColumn;
     }
 
     public void updateParticles() {
         obstaclesFilter();
 
-        // Reset
-        nextParticlesIds = new int[rows][columns];
-        outs = new ArrayList<>();
-        movedsIds = new HashSet<>();
+        currentParticlesIds = new int[rows][columns];
 
-        oneMovesFilter();
+        MovesChooser chooser = new MovesChooser(particles, cellsIds[endCell.row][endCell.column]);
+        HashMap<Integer, Integer> moves = chooser.getMoves();
 
-        respectOthersMoves();
-
-        twoMovesFilter();
-
-        respectOthersMoves();
-
-        threeMovesFilter();
-
-        respectOthersMoves();
-
-        fourMovesFilter();
-
-        if (particles.size() != movedsIds.size()) {
-            System.out.println("One or more particles not move");
-        }
+        moves.forEach((particleId, cellId) -> {
+            currentParticlesIds[getCellRow(cellId)][getCellColumn(cellId)] = particleId;
+        });
 
         // Clear Maze
-        for (int id : outs) {
+        for (int id : chooser.outs) {
             Particle endParticle = particles.remove(id);
             outParticles.add(endParticle);
         }
-
-        currentParticlesIds = nextParticlesIds;
     }
 
     public int[] getNextDirections(int row, int column) {

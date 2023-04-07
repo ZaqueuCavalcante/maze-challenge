@@ -75,6 +75,7 @@ public class MovesChooserTests {
         // Assert
         assertThat(moves.size()).isEqualTo(1);
         assertThat(moves.get(1)).isEqualTo(11);
+        assertThat(chooser.outs.get(0)).isEqualTo(1);
     }
 
     @Test
@@ -103,5 +104,7 @@ public class MovesChooserTests {
         assertThat(moves.size()).isEqualTo(2);
         assertThat(moves.get(1)).isEqualTo(11);
         assertThat(moves.get(2)).isEqualTo(11);
+        assertThat(chooser.outs.get(0)).isEqualTo(1);
+        assertThat(chooser.outs.get(1)).isEqualTo(2);
     }
 }
