@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 
@@ -130,7 +129,7 @@ public abstract class Maze {
 
             Particle particle = new Particle(particleCounter, turn);
             int[] directions = getNextDirections(particle.row, particle.column);
-            ArrayList<Integer> nextMoves = getNextCellsIds(particle.row, particle.column, directions);
+            int[] nextMoves = getNextCellsIds(particle.row, particle.column, directions);
             particle.updateMoveOptions(directions, nextMoves);
 
             particles.put(particle.id, particle);
@@ -166,7 +165,7 @@ public abstract class Maze {
 
     private boolean hasSpace() {
         for (Particle p : particles.values()) {
-            if (p.distanceToStart() < 3) {
+            if (p.distanceToStart() < 4) {
                 return false;
             }
         }
@@ -178,14 +177,14 @@ public abstract class Maze {
         if (particleCanAccessEndCell) {
             for (Particle p : particles.values()) {
                 int[] directions = getNextDirections(p.row, p.column);
-                ArrayList<Integer> nextMoves = getNextCellsIds(p.row, p.column, directions);
+                int[] nextMoves = getNextCellsIds(p.row, p.column, directions);
                 p.updateMoveOptions(directions, nextMoves);
             }
         } else {
             next[endCell.row][endCell.column] = CellType.OBSTACLE;
             for (Particle p : particles.values()) {
                 int[] directions = getNextDirections(p.row, p.column);
-                ArrayList<Integer> nextMoves = getNextCellsIds(p.row, p.column, directions);
+                int[] nextMoves = getNextCellsIds(p.row, p.column, directions);
                 p.updateMoveOptions(directions, nextMoves);
             }
             next[endCell.row][endCell.column] = CellType.END;
@@ -252,25 +251,29 @@ public abstract class Maze {
         return new int[] { up, right, down, left };
     }
 
-    public ArrayList<Integer> getNextCellsIds(int row, int column, int[] directions) {
+    public int[] getNextCellsIds(int row, int column, int[] directions) {
         int up = directions[0];
         int right = directions[1];
         int down = directions[2];
         int left = directions[3];
 
-        ArrayList<Integer> result = new ArrayList<>();
+        int[] result = new int[4];
+        result[0] = -1;
+        result[1] = -1;
+        result[2] = -1;
+        result[3] = -1;
 
         if (up == CellType.EMPTY) {
-            result.add(cellsIds[row - 1][column]);
+            result[0] = cellsIds[row - 1][column];
         }
         if (right == CellType.EMPTY) {
-            result.add(cellsIds[row][column + 1]);
+            result[1] = cellsIds[row][column + 1];
         }
         if (down == CellType.EMPTY) {
-            result.add(cellsIds[row + 1][column]);
+            result[2] = cellsIds[row + 1][column];
         }
         if (left == CellType.EMPTY) {
-            result.add(cellsIds[row][column - 1]);
+            result[3] = cellsIds[row][column - 1];
         }
 
         return result;

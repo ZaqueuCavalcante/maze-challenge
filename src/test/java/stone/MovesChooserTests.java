@@ -2,8 +2,6 @@ package stone;
 
 import static org.assertj.core.api.Assertions.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 import org.junit.Test;
@@ -16,7 +14,7 @@ public class MovesChooserTests {
     public void should_return_the_unique_solution_possible() {
         // Arrange
         int[] options = new int[] { -1, 0, 1, -1 };
-        ArrayList<Integer> moveOptions = new ArrayList<>(Arrays.asList(1));
+        int[] moveOptions = new int[] { -1, 1, -1, -1 };
 
         Particle particle = new Particle(1, 0);
         particle.updateMoveOptions(options, moveOptions);
@@ -38,7 +36,7 @@ public class MovesChooserTests {
     public void should_return_the_first_move_option_when_has_more_that_one() {
         // Arrange
         int[] options = new int[] { -1, 0, 0, -1 };
-        ArrayList<Integer> moveOptions = new ArrayList<>(Arrays.asList(1, 10));
+        int[] moveOptions = new int[] { -1, 1, 10, -1 };
 
         Particle particle = new Particle(1, 0);
         particle.updateMoveOptions(options, moveOptions);
@@ -60,7 +58,7 @@ public class MovesChooserTests {
     public void should_return_the_end_cell_when_she_is_a_option() {
         // Arrange
         int[] options01 = new int[] { 0, -1, 0, 0 };
-        ArrayList<Integer> moveOptions01 = new ArrayList<>(Arrays.asList(3, 11, 6));
+        int[] moveOptions01 = new int[] { 3, -1, 11, 6 };
         Particle particle01 = new Particle(1, 0);
         particle01.updateMoveOptions(options01, moveOptions01);
 
@@ -82,12 +80,12 @@ public class MovesChooserTests {
     public void should_return_duplicated_value_when_the_move_option_is_the_end_cell() {
         // Arrange
         int[] options01 = new int[] { 0, -1, 0, 0 };
-        ArrayList<Integer> moveOptions01 = new ArrayList<>(Arrays.asList(3, 11, 6));
+        int[] moveOptions01 = new int[] { 3, -1, 11, 6 };
         Particle particle01 = new Particle(1, 0);
         particle01.updateMoveOptions(options01, moveOptions01);
 
         int[] options02 = new int[] { 0, 0, -1, 0 };
-        ArrayList<Integer> moveOptions02 = new ArrayList<>(Arrays.asList(6, 11, 9));
+        int[] moveOptions02 = new int[] { 6, 11, 9 };
         Particle particle02 = new Particle(2, 1);
         particle02.updateMoveOptions(options02, moveOptions02);
 
@@ -112,12 +110,12 @@ public class MovesChooserTests {
     public void should_only_return_duplicated_value_when_the_move_option_is_the_end_cell() {
         // Arrange
         int[] options01 = new int[] { -1, 0, 0, -1 };
-        ArrayList<Integer> moveOptions01 = new ArrayList<>(Arrays.asList(1, 4));
+        int[] moveOptions01 = new int[] { -1, 1, 4, -1 };
         Particle particle01 = new Particle(2, 1);
         particle01.updateMoveOptions(options01, moveOptions01);
 
         int[] options02 = new int[] { 0, 0, 0, 0 };
-        ArrayList<Integer> moveOptions02 = new ArrayList<>(Arrays.asList(1, 6, 9, 4));
+        int[] moveOptions02 = new int[] { 1, 6, 9, 4 };
         Particle particle02 = new Particle(1, 0);
         particle02.updateMoveOptions(options02, moveOptions02);
 

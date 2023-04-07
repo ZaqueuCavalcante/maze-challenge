@@ -15,7 +15,7 @@ public class Particle {
     ArrayList<String> path;
 
     public int[] options;
-    ArrayList<Integer> moveOptions;
+    public int[] moveOptions;
 
     public Particle(int id, int turn) {
         this.id = id;
@@ -26,14 +26,14 @@ public class Particle {
 
         path = new ArrayList<>();
         options = new int[4];
-        moveOptions = new ArrayList<>();
+        moveOptions = new int[4];
     }
 
-    public void updateMoveOptions(int[] options, ArrayList<Integer> moveOptions) {
+    public void updateMoveOptions(int[] options, int[] moveOptions) {
         this.options = options;
         this.moveOptions = moveOptions;
 
-        if (moveOptions.size() == 0 || getEmpties() == 0) {
+        if (getEmpties() == 0) {
             System.out.println("Stucked | id = " + id + " | (" + row + ", " + column + ")");
         }
     }
