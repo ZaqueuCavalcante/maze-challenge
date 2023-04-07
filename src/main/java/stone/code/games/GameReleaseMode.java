@@ -10,13 +10,13 @@ import java.io.OutputStream;
 
 import stone.code.Particle;
 import stone.code.mazes.Maze;
-import stone.code.mazes.Maze05Sinuca;
+import stone.code.mazes.Maze01Ton;
 
 import processing.core.PApplet;
 
 public class GameReleaseMode {
     public static void run() {
-        Maze maze = new Maze05Sinuca();
+        Maze maze = new Maze01Ton();
 
         Instant start = Instant.now();
         while (maze.particles.size() > 0) {

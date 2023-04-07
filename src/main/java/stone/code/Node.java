@@ -36,17 +36,6 @@ public class Node {
         children.add(leftNode);
     }
 
-    @Override
-    public boolean equals(Object other) {
-        Node node = (Node) other;
-        return id == node.id;
-    }
-
-    @Override
-    public int hashCode() {
-        return id;
-    }
-
     public Node getUpNode() {
         return children.get(0);
     }
@@ -109,5 +98,16 @@ public class Node {
         result = result.trim();
 
         return result;
+    }
+
+    @Override
+    public int hashCode() {
+        return id;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        Node node = (Node) other;
+        return id == node.id;
     }
 }

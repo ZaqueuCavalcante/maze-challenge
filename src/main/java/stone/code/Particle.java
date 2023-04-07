@@ -49,7 +49,7 @@ public class Particle {
     }
 
     public String getFormatedPath() {
-        String result = turn + ""; // TODO: Use StringBuilder or something like that
+        String result = turn + "";
 
         for (String direction : path) {
             result = result + " " + direction;

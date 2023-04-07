@@ -15,14 +15,6 @@ public class GameDebugMode extends Game {
 
     public void settings() {
         maze = new Maze01Ton();
-        maze.shift();
-        maze.shift();
-        maze.shift();
-        maze.shift();
-        maze.shift();
-        maze.shift();
-        maze.shift();
-        maze.shift();
         tree = new Tree(maze);
 
         int[] mazeSizes = maze.getDrawSizes();
