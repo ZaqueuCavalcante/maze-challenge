@@ -13,11 +13,13 @@ public class Tree {
     int level;
     HashMap<Integer, Node> levelNodes;
 
-    public HashSet<Node> solutions;
+    public HashMap<Integer, Node> solutions;
 
     boolean showPathsOnMaze;
 
     int turn;
+
+    final TreeColor color;
 
     public Tree(Maze maze) {
         root = new Node(maze.startCell.row, maze.startCell.column, null, maze.cellsIds);
@@ -26,11 +28,13 @@ public class Tree {
         levelNodes = new HashMap<Integer, Node>();
         levelNodes.put(root.id, root);
 
-        solutions = new HashSet<>();
+        solutions = new HashMap<>();
 
         showPathsOnMaze = true;
 
         turn = maze.turn;
+
+        color = new TreeColor();
     }
 
     public HashSet<Node> getFilteredNodes(int[][] ids) {
@@ -97,7 +101,7 @@ public class Tree {
                 // TODO: Desconsiderar nos q expandem pra onde ja tem particula!
 
                 if (node.row == maze.endCell.row && node.column == maze.endCell.column) {
-                    solutions.add(node);
+                    solutions.put(solutions.size(), node);
                 }
 
                 newNodes.put(node.id, node);
@@ -111,7 +115,7 @@ public class Tree {
     public ArrayList<String> getSolutionsPaths() {
         ArrayList<String> paths = new ArrayList<String>();
 
-        for (Node node : solutions) {
+        for (Node node : solutions.values()) {
             String x = turn + " " + node.getPath();
             paths.add(x);
         }
@@ -124,8 +128,8 @@ public class Tree {
             return;
         }
 
-        game.fill(255, 0, 0);
-        game.stroke(255, 0, 0);
+        game.fill(color.r, color.g, color.b);
+        game.stroke(color.r, color.g, color.b);
 
         game.strokeWeight(2.50f);
 

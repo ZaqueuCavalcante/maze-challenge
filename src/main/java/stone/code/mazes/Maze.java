@@ -315,7 +315,7 @@ public abstract class Maze {
         }
     }
 
-    private void addParticle() {
+    public void addParticle() {
         if (open && startCellIsFree()) {
             Particle particle = new Particle(turn, this);
 
@@ -675,6 +675,10 @@ public abstract class Maze {
                 // drawParticleMoveOptions(game, row, column);
                 drawParticle(game, row, column);
             }
+        }
+
+        for (Particle p : particles.values()) {
+            p.tree.drawPathsOnMaze(game);
         }
     }
 
