@@ -305,23 +305,8 @@ public abstract class Maze {
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 
-    public void resetCurrentParticlesIds() {
+    private void resetCurrentParticlesIds() {
         currentParticlesIds = new int[rows][columns];
         for (int row = 0; row < rows; row++) {
             for (int column = 0; column < columns; column++) {
@@ -329,6 +314,87 @@ public abstract class Maze {
             }
         }
     }
+
+    private void addParticle() {
+        if (open && startCellIsFree()) {
+            Particle particle = new Particle(turn, turn);
+
+            int[] directions = getNextDirections(particle.row, particle.column);
+            int[] nextMoves = getNextCellsIds(particle.row, particle.column, directions);
+            particle.updateMoveOptions(directions, nextMoves);
+
+            particles.put(particle.id, particle);
+        }
+    }
+
+    public int[] getNextDirections(int row, int column) {
+        int up = (row - 1) < 0 ? CellType.OUT : 0;
+        if (up != CellType.OUT) {
+            up = (next[row - 1][column] == CellType.OBSTACLE) ? CellType.OBSTACLE : CellType.EMPTY;
+        }
+
+        int right = (column + 1) == columns ? CellType.OUT : 0;
+        if (right != CellType.OUT) {
+            right = (next[row][column + 1] == CellType.OBSTACLE) ? CellType.OBSTACLE : CellType.EMPTY;
+        }
+
+        int down = (row + 1) == rows ? CellType.OUT : 0;
+        if (down != CellType.OUT) {
+            down = (next[row + 1][column] == CellType.OBSTACLE) ? CellType.OBSTACLE : CellType.EMPTY;
+        }
+
+        int left = (column - 1) < 0 ? CellType.OUT : 0;
+        if (left != CellType.OUT) {
+            left = (next[row][column - 1] == CellType.OBSTACLE) ? CellType.OBSTACLE : CellType.EMPTY;
+        }
+
+        return new int[] { up, right, down, left };
+    }
+
+    public int[] getNextCellsIds(int row, int column, int[] directions) {
+        int up = directions[0];
+        int right = directions[1];
+        int down = directions[2];
+        int left = directions[3];
+
+        int[] result = new int[4];
+        result[0] = -1;
+        result[1] = -1;
+        result[2] = -1;
+        result[3] = -1;
+
+        if (up == CellType.EMPTY) {
+            result[0] = cellsIds[row - 1][column];
+        }
+        if (right == CellType.EMPTY) {
+            result[1] = cellsIds[row][column + 1];
+        }
+        if (down == CellType.EMPTY) {
+            result[2] = cellsIds[row + 1][column];
+        }
+        if (left == CellType.EMPTY) {
+            result[3] = cellsIds[row][column - 1];
+        }
+
+        return result;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 
     int minEmpties = 1_000_000;
 
@@ -345,19 +411,6 @@ public abstract class Maze {
         if (empties < minEmpties) {
             minEmpties = empties;
             System.out.println("TURN = " + turn + " --- [ ] = " + empties);
-        }
-    }
-
-    public void addParticle() {
-        if (open && startCellIsFree()) {
-            // currentParticlesIds[startCell.row][startCell.column] = turn;
-
-            Particle particle = new Particle(turn, turn);
-            int[] directions = getNextDirections(particle.row, particle.column);
-            int[] nextMoves = getNextCellsIds(particle.row, particle.column, directions);
-            particle.updateMoveOptions(directions, nextMoves);
-
-            particles.put(particle.id, particle);
         }
     }
 
@@ -413,58 +466,6 @@ public abstract class Maze {
         return cellColumn;
     }
 
-    public int[] getNextDirections(int row, int column) {
-        int up = (row - 1) < 0 ? CellType.OUT : 0;
-        if (up != CellType.OUT) {
-            up = (next[row - 1][column] == CellType.OBSTACLE) ? CellType.OBSTACLE : CellType.EMPTY;
-        }
-
-        int right = (column + 1) == columns ? CellType.OUT : 0;
-        if (right != CellType.OUT) {
-            right = (next[row][column + 1] == CellType.OBSTACLE) ? CellType.OBSTACLE : CellType.EMPTY;
-        }
-
-        int down = (row + 1) == rows ? CellType.OUT : 0;
-        if (down != CellType.OUT) {
-            down = (next[row + 1][column] == CellType.OBSTACLE) ? CellType.OBSTACLE : CellType.EMPTY;
-        }
-
-        int left = (column - 1) < 0 ? CellType.OUT : 0;
-        if (left != CellType.OUT) {
-            left = (next[row][column - 1] == CellType.OBSTACLE) ? CellType.OBSTACLE : CellType.EMPTY;
-        }
-
-        return new int[] { up, right, down, left };
-    }
-
-    public int[] getNextCellsIds(int row, int column, int[] directions) {
-        int up = directions[0];
-        int right = directions[1];
-        int down = directions[2];
-        int left = directions[3];
-
-        int[] result = new int[4];
-        result[0] = -1;
-        result[1] = -1;
-        result[2] = -1;
-        result[3] = -1;
-
-        if (up == CellType.EMPTY) {
-            result[0] = cellsIds[row - 1][column];
-        }
-        if (right == CellType.EMPTY) {
-            result[1] = cellsIds[row][column + 1];
-        }
-        if (down == CellType.EMPTY) {
-            result[2] = cellsIds[row + 1][column];
-        }
-        if (left == CellType.EMPTY) {
-            result[3] = cellsIds[row][column - 1];
-        }
-
-        return result;
-    }
-
     public boolean currentIsStart(int row, int column) {
         return current[row][column] == CellType.START;
     }
@@ -493,7 +494,7 @@ public abstract class Maze {
         return currentParticlesIds[row][column] != -1;
     }
 
-    public boolean currentIsObstacle(int row, int column) {
+    protected boolean currentIsObstacle(int row, int column) {
         return current[row][column] == CellType.OBSTACLE;
     }
 
@@ -509,6 +510,8 @@ public abstract class Maze {
         }
         return true;
     }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 
     private int getMaxTurn(String lastPath) {
         String turnAsString = lastPath.split(" ")[0];
@@ -600,6 +603,8 @@ public abstract class Maze {
 
         return true;
     }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 
     // Turn -> Path
     HashMap<Integer, String> replayPathsMap;
@@ -696,6 +701,8 @@ public abstract class Maze {
             replayParticlesCellsIds.putAll(nextParticlesCellsIds);
         }
     }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 
     public void draw(Game game) {
         game.translate(game.CIZE, game.CIZE);
