@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import processing.core.PApplet;
 import processing.core.PConstants;
@@ -41,6 +42,7 @@ public abstract class Maze {
     public HashMap<Integer, Particle> particles;
 
     public ArrayList<Particle> outParticles;
+    public HashSet<Integer> outParticlesIds;
 
     public Maze(String option) {
         this.option = option;
@@ -95,6 +97,7 @@ public abstract class Maze {
         particles = new HashMap<>();
         addParticle();
         outParticles = new ArrayList<>();
+        outParticlesIds = new HashSet<>();
     }
 
     public void resetCurrentParticlesIds() {
@@ -625,6 +628,7 @@ public abstract class Maze {
 
         String lastPath = paths.get(paths.size() - 1);
         replayTurnMax = getMaxTurn(lastPath);
+        replayTurnMax = 10_000;
 
         // Turn -> CellId
         replayParticlesCellsIds = new HashMap<>();
@@ -645,7 +649,7 @@ public abstract class Maze {
                     }
                 }
 
-                if (particleTurn <= turn) {
+                if (particleTurn <= turn && !outParticlesIds.contains(particleTurn)) {
                     int pathIndex = replayPathsIndexes.get(particleTurn);
                     int particleCellId = replayParticlesCellsIds.get(particleTurn);
 
@@ -671,12 +675,18 @@ public abstract class Maze {
                     }
 
                     int nextCellId = cellsIds[row][column];
-                    if (nextParticlesCellsIds.containsValue(nextCellId)) {
-                        System.out.println("GAME OVER - PARTICLE COLLISION");
-                    }
 
-                    replayPathsIndexes.put(particleTurn, pathIndex + 1);
-                    nextParticlesCellsIds.put(particleTurn, nextCellId);
+                    if (nextCellId == cellsIds[endCell.row][endCell.column]) {
+                        Particle out = particles.remove(particleTurn);
+                        outParticles.add(out);
+                        outParticlesIds.add(out.id);
+                    } else {
+                        if (nextParticlesCellsIds.containsValue(nextCellId)) {
+                            System.out.println("GAME OVER - PARTICLE COLLISION");
+                        }
+                        replayPathsIndexes.put(particleTurn, pathIndex + 1);
+                        nextParticlesCellsIds.put(particleTurn, nextCellId);
+                    }
 
                     currentParticlesIds[row][column] = particleTurn;
                 }
@@ -693,7 +703,7 @@ public abstract class Maze {
         for (int row = 0; row < game.maze.rows; row++) {
             for (int column = 0; column < game.maze.columns; column++) {
                 drawCell(game, row, column);
-                drawParticleMoveOptions(game, row, column);
+                // drawParticleMoveOptions(game, row, column);
                 drawParticle(game, row, column);
             }
         }
