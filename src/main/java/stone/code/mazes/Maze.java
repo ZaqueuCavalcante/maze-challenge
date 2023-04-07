@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -480,6 +479,7 @@ public abstract class Maze {
     }
 
     boolean gameOver = false;
+    public int gameOverTurn = -1;
 
     public boolean isSolution(ArrayList<String> paths) {
         // Turn -> Path
@@ -505,54 +505,59 @@ public abstract class Maze {
             HashMap<Integer, Integer> nextParticlesCellsIds = new HashMap<>();
 
             pathsMap.forEach((particleTurn, particlePath) -> {
-                if (particleTurn == turn) {
-                    pathsIndexes.put(particleTurn, 0);
-                    particlesCellsIds.put(particleTurn, 0);
-                    if (turn > 0) {
-                        addParticle();
-                    }
-                }
+                if (!gameOver) {
 
-                if (particleTurn <= turn && !outParticlesIds.contains(particleTurn)) {
-                    int pathIndex = pathsIndexes.get(particleTurn);
-                    int particleCellId = particlesCellsIds.get(particleTurn);
-
-                    int row = getCellRow(particleCellId);
-                    int column = getCellColumn(particleCellId);
-                    String direction = Character.toString(particlePath.charAt(pathIndex));
-
-                    if (direction.equals("U")) {
-                        row--;
-                    }
-                    if (direction.equals("R")) {
-                        column++;
-                    }
-                    if (direction.equals("D")) {
-                        row++;
-                    }
-                    if (direction.equals("L")) {
-                        column--;
+                    if (particleTurn == turn) {
+                        pathsIndexes.put(particleTurn, 0);
+                        particlesCellsIds.put(particleTurn, 0);
+                        if (turn > 0) {
+                            addParticle();
+                        }
                     }
 
-                    if (next[row][column] == CellType.OBSTACLE) {
-                        gameOver = true;
-                        System.out.println("GAME OVER - OBSTACLE");
-                    }
+                    if (particleTurn <= turn && !outParticlesIds.contains(particleTurn)) {
+                        int pathIndex = pathsIndexes.get(particleTurn);
+                        int particleCellId = particlesCellsIds.get(particleTurn);
 
-                    int nextCellId = cellsIds[row][column];
+                        int row = getCellRow(particleCellId);
+                        int column = getCellColumn(particleCellId);
+                        String direction = Character.toString(particlePath.charAt(pathIndex));
 
-                    if (nextCellId == cellsIds[endCell.row][endCell.column]) {
-                        Particle out = particles.remove(particleTurn);
-                        outParticles.add(out);
-                        outParticlesIds.add(out.turn);
-                    } else {
-                        if (nextParticlesCellsIds.containsValue(nextCellId)) {
-                            gameOver = true;
-                            System.out.println("GAME OVER - PARTICLE COLLISION - " + particleTurn);
+                        if (direction.equals("U")) {
+                            row--;
+                        }
+                        if (direction.equals("R")) {
+                            column++;
+                        }
+                        if (direction.equals("D")) {
+                            row++;
+                        }
+                        if (direction.equals("L")) {
+                            column--;
                         }
 
-                        pathsIndexes.put(particleTurn, pathIndex + 1);
-                        nextParticlesCellsIds.put(particleTurn, nextCellId);
+                        if (next[row][column] == CellType.OBSTACLE) {
+                            gameOver = true;
+                            gameOverTurn = particleTurn;
+                            System.out.println("GAME OVER - OBSTACLE");
+                        }
+
+                        int nextCellId = cellsIds[row][column];
+
+                        if (nextCellId == cellsIds[endCell.row][endCell.column]) {
+                            Particle out = particles.remove(particleTurn);
+                            outParticles.add(out);
+                            outParticlesIds.add(out.turn);
+                        } else {
+                            if (nextParticlesCellsIds.containsValue(nextCellId)) {
+                                gameOver = true;
+                                gameOverTurn = particleTurn;
+                                System.out.println("GAME OVER - PARTICLE COLLISION - " + particleTurn);
+                            }
+
+                            pathsIndexes.put(particleTurn, pathIndex + 1);
+                            nextParticlesCellsIds.put(particleTurn, nextCellId);
+                        }
                     }
                 }
             });

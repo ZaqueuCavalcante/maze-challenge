@@ -6,10 +6,12 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 
 import processing.core.PApplet;
 import stone.code.Node;
 import stone.code.Particle;
+import stone.code.mazes.Maze;
 import stone.code.mazes.Maze01Ton;
 
 public class GameDebugMode extends Game {
@@ -31,6 +33,8 @@ public class GameDebugMode extends Game {
             p.tree.drawPathsOnMaze(this);
         }
     }
+
+    HashMap<Integer, String> output;
 
     public void keyPressed() {
         if (keyCode == 10) { // Enter
@@ -58,15 +62,17 @@ public class GameDebugMode extends Game {
             maze.checkForCloseMaze();
 
             if (maze.particles.size() == 0) {
-                ArrayList<String> output = new ArrayList<>();
+                output = new HashMap<>();
 
                 Collections.sort(maze.outParticles, (a, b) -> Integer.compare(a.turn, b.turn));
 
                 for (Particle p : maze.outParticles) {
                     Node node = p.tree.solutions.get(0);
                     String path = p.turn + " " + node.getPath();
-                    output.add(path);
+                    output.put(p.turn, path);
                 }
+
+                filterPaths();
 
                 String fileName = "src/main/java/stone/solutions/debug/solutions_maze_" + maze.option + ".txt";
                 File file = new File(fileName);
@@ -74,10 +80,26 @@ public class GameDebugMode extends Game {
 
                 try {
                     outputStream = new FileOutputStream(file);
-                    PApplet.saveStrings(outputStream, output.toArray(new String[0]));
+                    PApplet.saveStrings(outputStream, output.values().toArray(new String[0]));
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
+            }
+        }
+    }
+
+    private void filterPaths() {
+        boolean isSolution = false;
+
+        while (!isSolution) {
+            Maze filterMaze = new Maze01Ton();
+
+            ArrayList<String> paths = new ArrayList<>(output.values());
+
+            isSolution = filterMaze.isSolution(paths);
+
+            if (filterMaze.gameOverTurn != -1) {
+                output.remove(filterMaze.gameOverTurn);
             }
         }
     }
