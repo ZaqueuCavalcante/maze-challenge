@@ -20,6 +20,6 @@ public class Maze05Sinuca extends Maze {
     }
 
     public int[] getDrawSizes() {
-        return new int[] { 1305, 1010, 3 };
+        return new int[] { 500, 500, 3 };
     }
 }

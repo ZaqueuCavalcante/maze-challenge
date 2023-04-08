@@ -40,6 +40,10 @@ public class Tree {
     public HashSet<Node> getFilteredNodes(int[][] ids) {
         HashSet<Node> filteredNodes = new HashSet<>();
 
+        if (levelNodes.size() == 0) {
+            return filteredNodes;
+        }
+
         int maxRow = levelNodes.values().stream()
                 .mapToInt(v -> v.row)
                 .max().getAsInt();
