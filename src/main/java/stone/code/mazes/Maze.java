@@ -404,7 +404,7 @@ public abstract class Maze {
         }
     }
 
-    private boolean hasSpace() {
+    public boolean hasSpace() {
         for (Particle p : particles.values()) {
             if (p.distanceToStart() < 3) {
                 return false;
@@ -414,7 +414,7 @@ public abstract class Maze {
         return true;
     }
 
-    private void updateParticlesMoveOptions() {
+    public void updateParticlesMoveOptions() {
         if (particleCanAccessEndCell) {
             for (Particle p : particles.values()) {
                 int[] directions = getNextDirections(p.row, p.column);
@@ -731,7 +731,7 @@ public abstract class Maze {
                 (float) ((row * game.CIZE) + game.CIZE * 0.63));
     }
 
-    private void drawParticleMoveOptions(Game game, int row, int column) {
+    public void drawParticleMoveOptions(Game game, int row, int column) {
         if (currentParticlesIds[row][column] == -1) {
             return;
         }
