@@ -1,5 +1,9 @@
-0 D D D D D R R L U U U R R R D R L D D R R D R
-1 R R L D D D D D R R R R R D R
-5 R R D R D R D R D R U D D D R
-9 D D D D D R R R R L L R L R L R R R R R D
+0 D D D D D R R L U U U R R R D R L D D R R R U D U D L R U D D
+1 R R L D D D D D R L L R L R R R R L L R L R L R R R R R L D R
 10 R D U R R R D R R U D U D U R L R D D D D D D
+21 D R R R R R R D D L R D D R D
+22 R R D L R D D D D R R R R D R
+25 D D D R L R R R R R D D R D R
+26 R R R R D R R R D D U D D D D
+27 D U D R D D R R R L R R L L R L D D R L U U R R D D R D R
+28 R L R R D R D D R L L R R L R L L R D R D L R D R R R

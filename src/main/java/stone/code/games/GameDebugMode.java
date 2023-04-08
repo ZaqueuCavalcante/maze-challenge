@@ -11,12 +11,13 @@ import java.util.HashMap;
 import processing.core.PApplet;
 import stone.code.Node;
 import stone.code.Particle;
+import stone.code.cells.CellType;
 import stone.code.mazes.Maze;
-import stone.code.mazes.Maze05Sinuca15x15;
+import stone.code.mazes.Maze01Ton;
 
 public class GameDebugMode extends Game {
     public void settings() {
-        maze = new Maze05Sinuca15x15();
+        maze = new Maze01Ton();
 
         int[] mazeSizes = maze.getDrawSizes();
         size(mazeSizes[0], mazeSizes[1]);
@@ -27,7 +28,7 @@ public class GameDebugMode extends Game {
         boolean isSolution = false;
 
         while (!isSolution) {
-            Maze filterMaze = new Maze05Sinuca15x15();
+            Maze filterMaze = new Maze01Ton();
 
             ArrayList<String> paths = new ArrayList<>(output.values());
 
@@ -57,12 +58,22 @@ public class GameDebugMode extends Game {
 
             maze.addParticle();
 
-            for (Particle p : maze.particles.values()) {
-                p.tree.goToNextLevel(maze);
-
-                if (p.tree.solutions.size() > 0) {
-                    maze.outParticlesIds.add(p.turn);
+            if (maze.particleCanAccessEndCell) {
+                for (Particle p : maze.particles.values()) {
+                    p.tree.goToNextLevel(maze);
+                    if (p.tree.solutions.size() > 0) {
+                        maze.outParticlesIds.add(p.turn);
+                    }
                 }
+            } else {
+                maze.next[maze.endCell.row][maze.endCell.column] = CellType.OBSTACLE;
+                for (Particle p : maze.particles.values()) {
+                    p.tree.goToNextLevel(maze);
+                    if (p.tree.solutions.size() > 0) {
+                        maze.outParticlesIds.add(p.turn);
+                    }
+                }
+                maze.next[maze.endCell.row][maze.endCell.column] = CellType.END;
             }
 
             for (int pId : maze.outParticlesIds) {

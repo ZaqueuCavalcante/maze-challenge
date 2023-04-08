@@ -19,7 +19,7 @@ public abstract class Maze {
     public int turn;
 
     boolean open;
-    boolean particleCanAccessEndCell;
+    public boolean particleCanAccessEndCell;
 
     public String option;
 
@@ -399,8 +399,9 @@ public abstract class Maze {
     }
 
     public void checkForCloseMaze() {
-        if (outParticles.size() > 0) {
+        if (turn == 30) {
             open = false;
+            particleCanAccessEndCell = true;
         }
     }
 
@@ -412,24 +413,6 @@ public abstract class Maze {
         }
 
         return true;
-    }
-
-    public void updateParticlesMoveOptions() {
-        if (particleCanAccessEndCell) {
-            for (Particle p : particles.values()) {
-                int[] directions = getNextDirections(p.row, p.column);
-                int[] nextMoves = getNextCellsIds(p.row, p.column, directions);
-                p.updateMoveOptions(directions, nextMoves);
-            }
-        } else {
-            next[endCell.row][endCell.column] = CellType.OBSTACLE;
-            for (Particle p : particles.values()) {
-                int[] directions = getNextDirections(p.row, p.column);
-                int[] nextMoves = getNextCellsIds(p.row, p.column, directions);
-                p.updateMoveOptions(directions, nextMoves);
-            }
-            next[endCell.row][endCell.column] = CellType.END;
-        }
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
