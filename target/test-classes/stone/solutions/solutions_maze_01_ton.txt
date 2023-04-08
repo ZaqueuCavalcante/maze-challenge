@@ -1,0 +1,5 @@
+0 D D D D D R R L U U U R R R D R L D D R R D R
+1 R R L D D D D D R R R R R D R
+5 R R D R D R D R D R U D D D R
+9 D D D D D R R R R L L R L R L R R R R R D
+10 R D U R R R D R R U D U D U R L R D D D D D D
