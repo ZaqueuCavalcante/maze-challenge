@@ -401,7 +401,7 @@ public abstract class Maze {
     }
 
     public void checkForCloseMaze() {
-        if (turn == 100) {
+        if (turn == 150) {
             open = false;
             particleCanAccessEndCell = true;
         }

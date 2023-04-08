@@ -41,7 +41,7 @@ public class GameDebugMode extends Game {
     }
 
     public void draw() {
-        background(100);
+        // background(100);
         // fill(255);
         // stroke(0);
         // maze.draw(this);
@@ -55,65 +55,71 @@ public class GameDebugMode extends Game {
 
     public void keyPressed() {
         if (keyCode == 10) { // Enter
-
-            System.out.println("TURN = " + maze.turn + " -- PARTICLES = " + maze.particles.size());
-
-            maze.addParticle();
-
-            if (maze.particleCanAccessEndCell) {
-                for (Particle p : maze.particles.values()) {
-                    p.tree.goToNextLevel(maze);
-                    if (p.tree.solutions.size() > 0) {
-                        maze.outParticlesIds.add(p.turn);
-                    }
-                }
-            } else {
-                maze.next[maze.endCell.row][maze.endCell.column] = CellType.OBSTACLE;
-                for (Particle p : maze.particles.values()) {
-                    p.tree.goToNextLevel(maze);
-                    if (p.tree.solutions.size() > 0) {
-                        maze.outParticlesIds.add(p.turn);
-                    }
-                }
-                maze.next[maze.endCell.row][maze.endCell.column] = CellType.END;
-            }
-
-            for (int pId : maze.outParticlesIds) {
-                Particle out = maze.particles.remove(pId);
-
-                if (out != null) {
-                    maze.outParticles.add(out);
-                }
-            }
-
-            maze.shift();
-
-            maze.checkForCloseMaze();
-
-            if (maze.particles.size() == 0) {
-                output = new HashMap<>();
-
-                Collections.sort(maze.outParticles, (a, b) -> Integer.compare(a.turn, b.turn));
-
-                for (Particle p : maze.outParticles) {
-                    Node node = p.tree.solutions.get(0);
-                    String path = p.turn + " " + node.getPath();
-                    output.put(p.turn, path);
-                }
-
-                filterPaths();
-
-                String fileName = "src/main/java/stone/solutions/debug/solutions_maze_" + maze.option + ".txt";
-                File file = new File(fileName);
-                OutputStream outputStream;
-
-                try {
-                    outputStream = new FileOutputStream(file);
-                    PApplet.saveStrings(outputStream, output.values().toArray(new String[0]));
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
+            while (2 > 1) {
+                run();
             }
         }
+    }
+
+    public void run() {
+        System.out.println("TURN = " + maze.turn + " -- PARTICLES = " + maze.particles.size());
+
+        maze.addParticle();
+
+        if (maze.particleCanAccessEndCell) {
+            for (Particle p : maze.particles.values()) {
+                p.tree.goToNextLevel(maze);
+                if (p.tree.solutions.size() > 0) {
+                    maze.outParticlesIds.add(p.turn);
+                }
+            }
+        } else {
+            maze.next[maze.endCell.row][maze.endCell.column] = CellType.OBSTACLE;
+            for (Particle p : maze.particles.values()) {
+                p.tree.goToNextLevel(maze);
+                if (p.tree.solutions.size() > 0) {
+                    maze.outParticlesIds.add(p.turn);
+                }
+            }
+            maze.next[maze.endCell.row][maze.endCell.column] = CellType.END;
+        }
+
+        for (int pId : maze.outParticlesIds) {
+            Particle out = maze.particles.remove(pId);
+
+            if (out != null) {
+                maze.outParticles.add(out);
+            }
+        }
+
+        maze.shift();
+
+        maze.checkForCloseMaze();
+
+        if (maze.particles.size() == 0) {
+            output = new HashMap<>();
+
+            Collections.sort(maze.outParticles, (a, b) -> Integer.compare(a.turn, b.turn));
+
+            for (Particle p : maze.outParticles) {
+                Node node = p.tree.solutions.get(0);
+                String path = p.turn + " " + node.getPath();
+                output.put(p.turn, path);
+            }
+
+            filterPaths();
+
+            String fileName = "src/main/java/stone/solutions/debug/solutions_maze_" + maze.option + ".txt";
+            File file = new File(fileName);
+            OutputStream outputStream;
+
+            try {
+                outputStream = new FileOutputStream(file);
+                PApplet.saveStrings(outputStream, output.values().toArray(new String[0]));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 }
