@@ -16,6 +16,7 @@ import java.io.InputStream;
 
 import stone.code.mazes.Maze;
 import stone.code.mazes.Maze01Ton;
+import stone.code.mazes.Maze05Sinuca;
 import stone.code.mazes.Maze05Sinuca15x15;
 
 public class MazeIsSolutionTests {
@@ -104,6 +105,30 @@ public class MazeIsSolutionTests {
 
         ArrayList<String> pathsAL = new ArrayList<>(Arrays.asList(paths));
         Maze maze = new Maze05Sinuca15x15();
+
+        // Act
+        boolean isSolution = maze.isSolution(pathsAL);
+
+        // Assert
+        assertThat(isSolution).isTrue();
+    }
+
+    @Test
+    public void should_test_solution_for_maze_05_sinuca() {
+        // Arrange
+        File file = new File("src/test/java/stone/solutions/solutions_maze_05_sinuca.txt");
+        InputStream input;
+        String[] paths = new String[0];
+
+        try {
+            input = new FileInputStream(file);
+            paths = PApplet.loadStrings(input);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        ArrayList<String> pathsAL = new ArrayList<>(Arrays.asList(paths));
+        Maze maze = new Maze05Sinuca();
 
         // Act
         boolean isSolution = maze.isSolution(pathsAL);

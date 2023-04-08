@@ -322,7 +322,9 @@ public abstract class Maze {
             int[] nextMoves = getNextCellsIds(particle.row, particle.column, directions);
             particle.updateMoveOptions(directions, nextMoves);
 
-            particles.put(particle.turn, particle);
+            if (particle.getEmpties() > 0) {
+                particles.put(particle.turn, particle);
+            }
         }
     }
 
@@ -399,7 +401,7 @@ public abstract class Maze {
     }
 
     public void checkForCloseMaze() {
-        if (turn == 30) {
+        if (turn == 100) {
             open = false;
             particleCanAccessEndCell = true;
         }

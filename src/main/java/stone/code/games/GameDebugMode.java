@@ -13,11 +13,11 @@ import stone.code.Node;
 import stone.code.Particle;
 import stone.code.cells.CellType;
 import stone.code.mazes.Maze;
-import stone.code.mazes.Maze01Ton;
+import stone.code.mazes.Maze05Sinuca;
 
 public class GameDebugMode extends Game {
     public void settings() {
-        maze = new Maze01Ton();
+        maze = new Maze05Sinuca();
 
         int[] mazeSizes = maze.getDrawSizes();
         size(mazeSizes[0], mazeSizes[1]);
@@ -28,7 +28,7 @@ public class GameDebugMode extends Game {
         boolean isSolution = false;
 
         while (!isSolution) {
-            Maze filterMaze = new Maze01Ton();
+            Maze filterMaze = new Maze05Sinuca();
 
             ArrayList<String> paths = new ArrayList<>(output.values());
 
@@ -42,19 +42,21 @@ public class GameDebugMode extends Game {
 
     public void draw() {
         background(100);
-        fill(255);
-        stroke(0);
-        maze.draw(this);
+        // fill(255);
+        // stroke(0);
+        // maze.draw(this);
 
-        for (Particle p : maze.particles.values()) {
-            p.tree.drawPathsOnMaze(this);
-        }
+        // for (Particle p : maze.particles.values()) {
+        // p.tree.drawPathsOnMaze(this);
+        // }
     }
 
     HashMap<Integer, String> output;
 
     public void keyPressed() {
         if (keyCode == 10) { // Enter
+
+            System.out.println("TURN = " + maze.turn + " -- PARTICLES = " + maze.particles.size());
 
             maze.addParticle();
 
